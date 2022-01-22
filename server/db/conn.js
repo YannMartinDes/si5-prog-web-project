@@ -1,7 +1,5 @@
 const { MongoClient } = require('mongodb');
 const dataBaseName="ProgServer"
-const collectionName="prixEssence"
-const urlINSTANTANE='https://donnees.roulez-eco.fr/opendata/instantane'
 const connectionString = "mongodb://localhost:27017/"
 
 const client = new MongoClient(connectionString, {
