@@ -1,0 +1,4 @@
+node_modules
+yarn.lock
+config.env
+find . -name .DS_Store -print0 | xargs -0 git gm --ignore-unmatch

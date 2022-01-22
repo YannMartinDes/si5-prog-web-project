@@ -19,20 +19,33 @@ const recordRoutes = express.Router();
 const dbo = require('../db/conn');
 
 
-recordRoutes.route('/createcollection').get(async function (req, res) {
+recordRoutes.route('/createcollection').post(async function (req, res) {
   const dbConnect = dbo.getDb();
   console.log(req.query.collectionName)
   dbConnect.
-    createCollection(req.query.collectionName, function (err, result) {
-      if (err) {
-        res.status(400).send('Error fetching listings!');
+    createCollection(req.query.collectionName, function (result, err) {
+      if (result) {
+        res.json('Collection created '+req.query.collectionName)
+        res.status(200).send('Collection created '+req.query.collectionName);
       } else {
-        res.json(result);
-        console.log(result)
+        res.json('Collection created '+req.query.collectionName)
       }
     });
 });
-
+recordRoutes.route('/drop').post(async function (req, res) {
+  const dbConnect = dbo.getDb();
+  console.log(req.query.collectionName)
+  dbConnect
+  .collection(req.query.collectionName)
+    .drop(req.query.collectionName, function (result, err) {
+      if (result) {
+        res.status(200).send('Collection droped '+req.query.collectionName);
+        res.json('Collection droped '+req.query.collectionName)
+      } else {
+        res.json('Collection droped '+req.query.collectionName)
+      }
+    });
+});
 // This section will help you get a list of all the records.
 recordRoutes.route('/findall').get(async function (req, res) {
   const dbConnect = dbo.getDb();
@@ -51,19 +64,18 @@ recordRoutes.route('/findall').get(async function (req, res) {
 });
 
 // This section will help you create a new record.
-recordRoutes.route('/insertone').get(function (req, res) {
+recordRoutes.route('/insertone').put(function (req, res) {
   const dbConnect = dbo.getDb();
 
-
+  console.log(JSON.parse(req.query.body))
   dbConnect
     .collection(req.query.collectionName)
-    .insertOne(req.query.body, function (err, result) {
+    .insertOne(JSON.parse(req.query.body), function (err, result) {
       console.log(err)
       if (err) {
         res.status(400).send('Error inserting obj!');
       } else {
-        console.log(`Added a new obj with id ${result}`);
-        res.status(204).send();
+        res.status(204).send('Inserting obj : '+req.query.body)
       }
     });
 });
@@ -134,7 +146,7 @@ async function getJsonFromUrl(url){
   return convert.xml2json(xml, {compact: true});
 }
 
-recordRoutes.route('/insertdata').get(function (req, res) {
+recordRoutes.route('/insertdata').put(function (req, res) {
   const dbConnect = dbo.getDb();
   console.log(req.query)
   getJsonFromUrl(req.query.url).then((resultJson)=>{
@@ -149,6 +161,7 @@ recordRoutes.route('/insertdata').get(function (req, res) {
       .insertMany(arrayLocal, function (err, result) {
         if (err) {
           res.status(400).send('Error inserting obj!');
+          res.json("data added from url :" + req.query.url +"to collection :"+req.query.collectionName)
         } else {
           console.log(`Added a new obj with id ${result}`);
           res.status(204).send();
