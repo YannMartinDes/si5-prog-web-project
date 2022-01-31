@@ -1,6 +1,7 @@
-import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Res ,Put,Delete,Param} from '@nestjs/common';
 import { AppService } from './app.service';
 import { CreateStationDto } from './schemas/createStationDto';
+import { Station } from './schemas/station.schema';
 
 @Controller('/')
 export class AppController {
@@ -40,4 +41,34 @@ export class AppController {
   getStationInfo() {
     return this.appService.retrieveStationInfo(1);
   }
+
+  @Get(':id')
+  async findById(@Res() response, @Param('id') id) {
+      const station = await this.appService.readById(id);
+      return response.status(HttpStatus.OK).json({
+          station
+      })
+  }
+
+  @Put(':id')
+  async update(@Res() response, @Param('id') id, @Body() station: Station) {
+      const updatedBook = await this.appService.update(id, station);
+      return response.status(HttpStatus.OK).json({
+          updatedBook
+      })
+  }
+
+  @Delete(':id')
+  async delete(@Res() response, @Param('id') id) {
+      const deletedBook = await this.appService.delete(id);
+      return response.status(HttpStatus.OK).json({
+          deletedBook
+      })
+  }
+  // @Put('/upall')
+  // async loadFrom(@Res() response, @Body('body') body) {
+  //     console.log(body.url)
+  //     const station = await this.appService.loadFromUrl(body.url);
+  // }
+
 }
