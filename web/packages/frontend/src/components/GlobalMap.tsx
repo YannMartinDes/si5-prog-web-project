@@ -13,7 +13,7 @@ export default function GlobalMap({markersList}:
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {markersList.map((value,index) => {return (<MapMarker popupText={value.id} position={value.position}/>)})}
+                {markersList.map((value,index) => {return (<MapMarker popupText={value.id} tooltipText={value.position.lat + " ; "+value.position.lon} position={value.position}/>)})}
             </MapContainer>
         </div>
     );
