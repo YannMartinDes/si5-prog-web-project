@@ -1,23 +1,43 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Document, SchemaTypeOptions} from 'mongoose';
+import {locationSchema } from './location.schema'
+import { textSchema } from './text.schema';
+
 
 @Schema()
 export class Station extends Document {
 
   @Prop()
-  name:string;
+  _attributes: locationSchema
 
   @Prop()
-  _attributes: string;
+  adresse:textSchema
 
   @Prop()
-  adress: string;
+  ville: textSchema
 
   @Prop()
-  ville: string;
+  services: [{service : string}]
 
   @Prop()
-  horaires: string;
+  prix: [{
+        _attributes: {
+            nom: string,
+            id: string,
+            maj: string,
+            valeur: string
+        }
+    }]
+
+  @Prop()
+  rupture : [{
+    _attributes: {
+        id: string,
+        nom: string,
+        debut: string,
+        fin: string
+    }
+}]
 }
 
 export const StationSchema = SchemaFactory.createForClass(Station);

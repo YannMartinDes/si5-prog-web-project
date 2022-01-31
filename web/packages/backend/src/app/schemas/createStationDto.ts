@@ -2,19 +2,22 @@ import { MaxLength, IsNotEmpty, IsEmail, IsString } from 'class-validator';
 
 export class CreateStationDto {
 
-  @IsString()
-  readonly name:any;
-  
   @IsNotEmpty()
-  readonly _attributes: any;
+  readonly _attributes;
 
   @IsNotEmpty()
-  readonly adress: any;
+  readonly adresse;
 
   @IsNotEmpty()
-  readonly ville: any;
+  readonly ville;
 
   @IsNotEmpty()
-  readonly horaires: string;
+  readonly services;
+
+  @IsNotEmpty()
+  readonly prix;
+
+  @IsNotEmpty()
+  readonly rupture;
 }
 

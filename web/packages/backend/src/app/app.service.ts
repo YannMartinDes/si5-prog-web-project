@@ -62,14 +62,14 @@ export class AppService {
     return convert.xml2json(xml, {compact: true});
   }
 
-  async loadFromUrl(url:string): Promise<any[]> {
+  async loadFromUrl(url:string) {
       let resultJson=await this.getJsonFromUrl(url);
       let dict=JSON.parse(resultJson)
       let arrayLocal=[]
       for (const element of dict["pdv_liste"]["pdv"]){
           arrayLocal.push(element)
           }
-      console.log(arrayLocal)
+      //console.log(JSON.stringify(arrayLocal[0]))
     return this.stationModel.insertMany(arrayLocal)
   }
 

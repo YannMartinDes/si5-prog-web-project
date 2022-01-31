@@ -11,6 +11,12 @@ export class AppController {
   getData() {
     return this.appService.getData();
   }
+  @Put('/upall')
+  async loadFrom(@Res() res, @Body('body') body) {
+      console.log(body)
+      const station = await this.appService.loadFromUrl(body.url);
+      return res.status(HttpStatus.OK).json(station)
+  }
   @Post("add-station")
   public async addStation(
     @Res() res,
@@ -42,7 +48,7 @@ export class AppController {
     return this.appService.retrieveStationInfo(1);
   }
 
-  @Get(':id')
+  @Get('/:id')
   async findById(@Res() response, @Param('id') id) {
       const station = await this.appService.readById(id);
       return response.status(HttpStatus.OK).json({
@@ -65,10 +71,6 @@ export class AppController {
           deletedBook
       })
   }
-  // @Put('/upall')
-  // async loadFrom(@Res() response, @Body('body') body) {
-  //     console.log(body.url)
-  //     const station = await this.appService.loadFromUrl(body.url);
-  // }
+
 
 }
