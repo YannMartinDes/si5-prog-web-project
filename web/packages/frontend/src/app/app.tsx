@@ -1,28 +1,19 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import styles from './app.module.scss';
-import NxWelcome from './nx-welcome';
 
 import { Route, Link } from 'react-router-dom';
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+import { LatLng } from 'leaflet';
+
+const position = new LatLng(51.505, -0.09)
 
 export function App() {
   return (
     <>
-      <NxWelcome title="frontend" />
-      <div />
-
-      {/* START: routes */}
-      {/* These routes and navigation have been generated for you */}
-      {/* Feel free to move and update them to fit your needs */}
-      <br />
-      <hr />
-      <br />
       <div role="navigation">
         <ul>
           <li>
             <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/page-2">Page 2</Link>
           </li>
         </ul>
       </div>
@@ -30,22 +21,19 @@ export function App() {
         path="/"
         exact
         render={() => (
-          <div>
-            This is the generated root route.{' '}
-            <Link to="/page-2">Click here for page 2.</Link>
-          </div>
+          <MapContainer center={position} zoom={13} scrollWheelZoom={false}>
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <Marker position={position}>
+              <Popup>
+                A pretty CSS3 popup. <br /> Easily customizable.
+              </Popup>
+            </Marker>
+          </MapContainer>
         )}
       />
-      <Route
-        path="/page-2"
-        exact
-        render={() => (
-          <div>
-            <Link to="/">Click here to go back to root page.</Link>
-          </div>
-        )}
-      />
-      {/* END: routes */}
     </>
   );
 }
