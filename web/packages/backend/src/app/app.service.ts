@@ -6,8 +6,8 @@ import { Station } from './schemas/station.schema';
 
 @Injectable()
 export class AppService {
-  constructor(@InjectConnection('stations') private connection: Connection,
-    @InjectModel(Station.name) private readonly stationModel: Model<Station>,
+  constructor(@InjectConnection() private connection: Connection,
+    @InjectModel("STATION") private readonly stationModel: Model<Station>,
   ) {}
 
   getData(): { message: string } {

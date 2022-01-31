@@ -5,19 +5,19 @@ import { Document, Types } from 'mongoose';
 export class Station extends Document {
 
   @Prop()
-  name:any;
-  
-  @Prop()
-  _attributes: any;
+  name:string;
 
   @Prop()
-  adress: any;
+  _attributes: string;
 
   @Prop()
-  ville: any;
+  adress: string;
 
   @Prop()
-  horaires: any;
+  ville: string;
+
+  @Prop()
+  horaires: string;
 }
 
 export const StationSchema = SchemaFactory.createForClass(Station);

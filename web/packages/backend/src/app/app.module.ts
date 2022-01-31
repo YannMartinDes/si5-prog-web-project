@@ -7,14 +7,14 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { environment } from '../environments/environment';
 
-import { Station,StationSchema } from './schemas/station.schema';
+import { StationSchema } from './schemas/station.schema';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(`mongodb://${environment.DATABASE}`,{connectionName: 'stations'}),
+    MongooseModule.forRoot(`mongodb://${environment.DATABASE}`),
     MongooseModule.forFeature([
-      { name:Station.name,schema: StationSchema },
+      { name:"STATION",schema: StationSchema },
     ])
   ],
   controllers: [AppController],
