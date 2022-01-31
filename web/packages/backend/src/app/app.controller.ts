@@ -35,4 +35,9 @@ export class AppController {
     const stations = await this.appService.findAll();
     return res.status(HttpStatus.OK).json(stations);
   }
+
+  @Get()
+  getStationInfo() {
+    return this.appService.retrieveStationInfo(1);
+  }
 }
