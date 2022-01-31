@@ -22,4 +22,12 @@ export class AppService {
   async findAll(): Promise<Station[]> {
     return this.stationModel.find().exec();
   }
+
+  /**
+   * Method to retrieve information of a station such as its name and essence price.
+   * @param stationId
+   */
+  retrieveStationInfo(stationId: number){
+
+  }
 }
