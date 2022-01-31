@@ -5,14 +5,14 @@ import { ConfigModule } from '@nestjs/config';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { environment } from '../environments/environment';
 
 import { StationSchema } from './schemas/station.schema';
+import { environment } from '../environments/environment';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(`mongodb://${environment.DATABASE}`),
+    MongooseModule.forRoot(environment.DATABASE),
     MongooseModule.forFeature([
       { name:"STATION",schema: StationSchema },
     ])
