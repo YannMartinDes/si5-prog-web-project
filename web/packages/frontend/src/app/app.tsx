@@ -2,17 +2,16 @@
 import styles from './app.module.scss';
 
 import { Route, Link } from 'react-router-dom';
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
-
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import L from 'leaflet';
+import GlobalMap from '../components/GlobalMap';
 
+//Extend marker prototype to fix : https://stackoverflow.com/questions/49441600/react-leaflet-marker-files-not-found
 let DefaultIcon = L.icon({
     iconUrl: icon,
     shadowUrl: iconShadow
 });
-
 L.Marker.prototype.options.icon = DefaultIcon;
 
 export function App() {
@@ -29,19 +28,7 @@ export function App() {
         path="/"
         exact
         render={() => (
-          <div id='map'>
-            <MapContainer center={[46.25000, 5.64400]} zoom={13} scrollWheelZoom={false}>
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              <Marker position={[46.25000, 5.64400]}>
-                <Popup>
-                  A pretty CSS3 popup. <br /> Easily customizable.
-                </Popup>
-              </Marker>
-            </MapContainer>
-          </div>
+          <GlobalMap markersList={[{id:"ID1",position:{lat:46.25000, lon:5.64400}},{id:"ID2",position:{lat:46.25100, lon:5.64500}},{id:"ID3",position:{lat:46.25200, lon:5.64600}}]}/>
         )}
       />
     </>
