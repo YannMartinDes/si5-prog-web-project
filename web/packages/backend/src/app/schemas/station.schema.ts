@@ -5,6 +5,9 @@ import { textSchema } from './text.schema';
 
 @Schema()
 export class Station extends Document {
+  
+  @Prop()
+  _id:string
 
   @Prop()
   coordinates:[number]

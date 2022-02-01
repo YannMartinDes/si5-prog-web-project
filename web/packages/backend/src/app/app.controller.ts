@@ -11,8 +11,9 @@ export class AppController {
   getData() {
     return this.appService.getData();
   }
+
   @Put('/upall')
-  async loadFrom(@Res() res, @Body('body') body) {
+  async loadFrom(@Res() res, @Body() body) {
       console.log(body)
       const station = await this.appService.loadFromUrl(body.url);
       await this.appService.createIndex();
@@ -21,6 +22,7 @@ export class AppController {
         status:201
       })
   }
+
   @Post("add-station")
   public async addStation(
     @Res() res,
@@ -39,11 +41,12 @@ export class AppController {
       });
     }
   }
+  
   @Get('get-station')
   public async getAllStation(
-    @Res() res,
+    @Res() res, @Body() Body,
   ) {
-    const stations = await this.appService.findAll();
+    const stations = await this.appService.findAll(Body);
     return res.status(HttpStatus.OK).json(stations);
   }
 

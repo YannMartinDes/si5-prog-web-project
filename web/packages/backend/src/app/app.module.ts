@@ -9,8 +9,11 @@ import { AppService } from './app.service';
 import { StationSchema } from './schemas/station.schema';
 import { environment } from '../environments/environment';
 
+import { ScheduleModule } from '@nestjs/schedule';
+
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot(),
     MongooseModule.forRoot(environment.DATABASE),
     MongooseModule.forFeature([
