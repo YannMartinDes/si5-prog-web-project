@@ -34,8 +34,15 @@ export class AppService {
     return await this.stationModel.findByIdAndUpdate(id, station, { new: true })
   }
 
-  async delete(id): Promise<any> {
+  async delete(id): Promise<Station> {
     return await this.stationModel.findByIdAndRemove(id);
+  }
+
+  async createIndex(): Promise<any> {
+    return await this.stationModel.collection.createIndex({coordinates:"2dsphere"});
+  }
+  async findSphere(longitudeCurrent,latitudeCurrent,maxDist){
+    return await this.stationModel.find({coordinates:{ $nearSphere: { $geometry: { type: "Point", coordinates: [ longitudeCurrent, latitudeCurrent ] }, $maxDistance: maxDist } } }).exec();
   }
 
   async get(url) {
@@ -67,6 +74,7 @@ export class AppService {
       let dict=JSON.parse(resultJson)
       let arrayLocal=[]
       for (const element of dict["pdv_liste"]["pdv"]){
+          element["coordinates"]= [element["_attributes"]["longitude"]*0.00001 , element["_attributes"]["latitude"]*0.00001]
           arrayLocal.push(element)
           }
       //console.log(JSON.stringify(arrayLocal[0]))

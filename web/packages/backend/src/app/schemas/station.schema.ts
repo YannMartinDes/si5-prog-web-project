@@ -3,9 +3,11 @@ import { Document, SchemaTypeOptions} from 'mongoose';
 import {locationSchema } from './location.schema'
 import { textSchema } from './text.schema';
 
-
 @Schema()
 export class Station extends Document {
+
+  @Prop()
+  coordinates:[number]
 
   @Prop()
   _attributes: locationSchema

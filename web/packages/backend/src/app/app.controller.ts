@@ -15,7 +15,11 @@ export class AppController {
   async loadFrom(@Res() res, @Body('body') body) {
       console.log(body)
       const station = await this.appService.loadFromUrl(body.url);
-      return res.status(HttpStatus.OK).json(station)
+      await this.appService.createIndex();
+      return res.status(HttpStatus.OK).json({
+        message: 'Stations has been created successfully',
+        status:201
+      })
   }
   @Post("add-station")
   public async addStation(
@@ -26,7 +30,7 @@ export class AppController {
       const station = await this.appService.create(createStationDto);
       return res.status(HttpStatus.OK).json({
         message: 'Station has been created successfully',
-        station,
+        status:201
       });
     } catch (err) {
       return res.status(HttpStatus.BAD_REQUEST).json({
@@ -36,10 +40,19 @@ export class AppController {
     }
   }
   @Get('get-station')
-  public async getAllCustomer(
+  public async getAllStation(
     @Res() res,
   ) {
     const stations = await this.appService.findAll();
+    return res.status(HttpStatus.OK).json(stations);
+  }
+
+  @Get('get-near-station')
+  public async getAllNearStation(
+    @Res() res,
+    @Body() Body,
+  ) {
+    const stations = await this.appService.findSphere(Body.longitude,Body.latitude,Body.maxDist);
     return res.status(HttpStatus.OK).json(stations);
   }
 
