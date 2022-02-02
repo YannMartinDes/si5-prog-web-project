@@ -14,7 +14,26 @@ let DefaultIcon = L.icon({
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
-export function App() {
+import useSwr from "swr";
+
+const fetcher = (...args:any) => fetch(args).then(response => response.json());
+
+function App() {
+  const url =
+    "http://localhost:3333/api/get-near-station/7.289429/43.675819/10000"
+  const { data, error } = useSwr(url, { fetcher });
+  const crimes = data && !error ? data : [];
+  let myMarkerList: any[]=[]
+  for( let jsonData of crimes){
+    let parsedJsonData:any ={}
+    let stringPrice=""
+    for (let priceData of jsonData["prix"]){
+      stringPrice=priceData["_attributes"]["nom"]+" : "+(priceData["_attributes"]["valeur"])+" € "
+    }
+    parsedJsonData["prix"]=stringPrice
+    parsedJsonData["position"]={lat:jsonData["coordinates"][1],lon:jsonData["coordinates"][0]}
+    myMarkerList.push(parsedJsonData)
+  }
   return (
     <>
       <div role="navigation">
@@ -28,7 +47,7 @@ export function App() {
         path="/"
         exact
         render={() => (
-          <GlobalMap markersList={[{id:"ID1",position:{lat:46.25000, lon:5.64400}},{id:"ID2",position:{lat:46.25100, lon:5.64500}},{id:"ID3",position:{lat:46.25200, lon:5.64600}}]}/>
+          <GlobalMap markersList={myMarkerList}/>
         )}
       />
     </>

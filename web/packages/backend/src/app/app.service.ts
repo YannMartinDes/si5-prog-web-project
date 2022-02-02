@@ -79,7 +79,6 @@ export class AppService {
       let dict=JSON.parse(resultJson)
       let arrayLocal=[]
       for (const element of dict["pdv_liste"]["pdv"]){
-          element["_id"]=element["_attributes"]["id"]
           element["coordinates"]= [element["_attributes"]["longitude"]*0.00001 , element["_attributes"]["latitude"]*0.00001]
           arrayLocal.push(element)
           }
@@ -97,7 +96,7 @@ export class AppService {
 
   }
 
-  @Cron(CronExpression.EVERY_5_MINUTES)
+  @Cron(CronExpression.EVERY_DAY_AT_1AM)
   async handleCron() {  
     const today = new Date()
     const date = new Date(today)

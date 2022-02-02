@@ -50,12 +50,9 @@ export class AppController {
     return res.status(HttpStatus.OK).json(stations);
   }
 
-  @Get('get-near-station')
-  public async getAllNearStation(
-    @Res() res,
-    @Body() Body,
-  ) {
-    const stations = await this.appService.findSphere(Body.longitude,Body.latitude,Body.maxDist);
+  @Get('get-near-station/:longitude/:latitude/:maxDist')
+  public async getAllNearStation(@Res() res,@Param('longitude') longitude,@Param('latitude') latitude,@Param('maxDist') maxDist) {
+    const stations = await this.appService.findSphere(longitude,latitude,maxDist);
     return res.status(HttpStatus.OK).json(stations);
   }
 
