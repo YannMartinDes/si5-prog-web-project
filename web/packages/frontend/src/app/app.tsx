@@ -1,56 +1,67 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import styles from './app.module.scss';
-
-import { Route, Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import L from 'leaflet';
-import GlobalMap from '../components/GlobalMap';
+import axios from 'axios';
+import GlobalMap from './components/GlobalMap';
+import { GasStationInfo, GasStationPosition, Position } from '@web/common/dto';
+import SideMenu from './components/SideMenu';
+
 
 //Extend marker prototype to fix : https://stackoverflow.com/questions/49441600/react-leaflet-marker-files-not-found
-let DefaultIcon = L.icon({
+const DefaultIcon = L.icon({
     iconUrl: icon,
     shadowUrl: iconShadow
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
-import useSwr from "swr";
+const ALL_STATION_URL = "http://localhost:3333/api/get-near-station/"
+const STATION_INFO = "http://localhost:3333/api/get-station-info/"
 
-const fetcher = (...args:any) => fetch(args).then(response => response.json());
 
 function App() {
-  const url =
-    "http://localhost:3333/api/get-near-station/7.289429/43.675819/10000"
-  const { data, error } = useSwr(url, { fetcher });
-  const crimes = data && !error ? data : [];
-  const myMarkerList: any[]=[]
-  for( let jsonData of crimes){
-    let parsedJsonData:any ={}
-    let stringPrice=""
-    for (let priceData of jsonData["prix"]){
-      stringPrice=priceData["_attributes"]["nom"]+" : "+(priceData["_attributes"]["valeur"])+" € "
-    }
-    parsedJsonData["prix"]=stringPrice
-    parsedJsonData["position"]={lat:jsonData["coordinates"][1],lon:jsonData["coordinates"][0]}
-    myMarkerList.push(parsedJsonData)
+
+  const [stationList,SetStationList] = useState<GasStationPosition[]>([]);
+
+  function getAllStation(currentPos:Position, radius:number) {
+    axios.get(ALL_STATION_URL, { params: { lat: currentPos.lat, lon: currentPos.lon, radius: radius } })
+       .then(res => {
+           SetStationList(res.data);
+       });
   }
+
+  function getStationInfo(stationId:string) {
+    axios.get(STATION_INFO, { params: { stationId:stationId } })
+       .then(res => {
+           setGasStationInfo(res.data);
+       });
+  }
+
+  const currentPos:Position = {lat:43.675819, lon:7.289429}//replace by geolocalisation
+
+  useEffect(()=>{
+    //getAllStation(currentPos,10000);
+    SetStationList([{id:"station test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], address:"rue de mon cul"}])
+  },[])
+
+  const [gasStationInfo,setGasStationInfo] = useState<GasStationInfo>();
+
+  const onMarkerClick = (stationId:string) =>{
+    //getStationInfo(stationId)
+    setGasStationInfo({id:"station test", address:"Station de mon cul", 
+      prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], 
+      services:["Station de gonflage", "Location de véhicule"], 
+      schedules:[{day:"Lundi", openned:true,hourSchedule:[{openHour:"8h00", closedHour:"22h00"}]},
+        {day:"Mardi", openned:true,hourSchedule:[{openHour:"8h00", closedHour:"12h00"},{openHour:"14h00", closedHour:"22h00"}] },{day:"Samedi",openned:false}]})
+  }
+
   return (
-    <>
-      <div role="navigation">
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-        </ul>
-      </div>
-      <Route
-        path="/"
-        exact
-        render={() => (
-          <GlobalMap markersList={myMarkerList}/>
-        )}
-      />
-    </>
+    <div>
+      <SideMenu gasStationInfo={gasStationInfo}/>
+      <GlobalMap markersList={stationList} position={currentPos} onMarkerClick={onMarkerClick}/>
+    </div>
   );
 }
 
