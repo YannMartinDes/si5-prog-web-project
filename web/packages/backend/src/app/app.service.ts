@@ -1,18 +1,25 @@
+import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { InjectConnection, InjectModel } from '@nestjs/mongoose';
+
+import { InjectModel } from '@nestjs/mongoose';
 import { Cron , CronExpression} from '@nestjs/schedule';
-import { Connection, Model } from 'mongoose';
+import AdmZip = require('adm-zip');
+import { Model } from 'mongoose';
+import { firstValueFrom } from 'rxjs';
 import { CreateStationDto } from './schemas/createStationDto';
 import { Station } from './schemas/station.schema';
-const convert = require('xml-js');
-const axios = require("axios");
-const AdmZip = require('adm-zip');
+import convert = require('xml-js');
+
 @Injectable()
 export class AppService {
-  constructor(@InjectConnection() private connection: Connection,
+  constructor(
+    private http:HttpService,
     @InjectModel("STATION") private readonly stationModel: Model<Station>,
   ) { }
 
+  onModuleInit(){
+    this.handleCron();
+  }
   getData(): { message: string } {
     return ({ message: 'Welcome to backend!' });
   }
@@ -50,39 +57,30 @@ export class AppService {
     return await this.stationModel.find({coordinates:{ $nearSphere: { $geometry: { type: "Point", coordinates: [ longitudeCurrent, latitudeCurrent ] }, $maxDistance: maxDist } } }).exec();
   }
 
-  async get(url:string) {
-    const options =  { 
-        method: 'GET',
-        url: url,
-        responseType: "arraybuffer"
-    };
-    const { data } = await axios(options);
-    return data;
-  }
-  
+
   async getAndUnZip(url:string) {
-    const zipFileBuffer = await this.get(url);
-    const zip = await new AdmZip(zipFileBuffer);
+    const zipFileBuffer:Buffer = await firstValueFrom(this.http.get(url,{responseType: "arraybuffer"})).then((data)=>data.data);
+    const zip = new AdmZip(zipFileBuffer);
     const entries = await zip.getEntries();
-    for(let entry of entries) {
+    for(const entry of entries) {
         const buffer = entry.getData();
         return buffer.toString("latin1");
     }
   }
   async getJsonFromUrl(url:string){
-    let xml=await this.getAndUnZip(url)
+    const xml=await this.getAndUnZip(url)
     return convert.xml2json(xml, {compact: true});
   }
 
   async loadFromUrl(url:string) {
-      let resultJson=await this.getJsonFromUrl(url);
-      let dict=JSON.parse(resultJson)
-      let arrayLocal=[]
+      const resultJson=await this.getJsonFromUrl(url);
+      const dict=JSON.parse(resultJson)
+      const arrayLocal=[]
       for (const element of dict["pdv_liste"]["pdv"]){
           element["coordinates"]= [element["_attributes"]["longitude"]*0.00001 , element["_attributes"]["latitude"]*0.00001]
           arrayLocal.push(element)
           }
-      console.log("Update data in progress")    
+      console.log("Update data in progress")
       await this.stationModel.deleteMany()
       return this.stationModel.insertMany(arrayLocal)
   }
@@ -97,13 +95,13 @@ export class AppService {
   }
 
   @Cron(CronExpression.EVERY_DAY_AT_1AM)
-  async handleCron() {  
+  async handleCron() {
     const today = new Date()
     const date = new Date(today)
 
     date.setDate(date.getDate() - 1)
-    let day = date.toString().split(" ")[2]
-    let month = date.getUTCMonth()+1
+    const day = date.toString().split(" ")[2]
+    const month = date.getUTCMonth()+1
 
     let url = ""
 
@@ -112,7 +110,7 @@ export class AppService {
     }
     else {
       url="https://donnees.roulez-eco.fr/opendata/jour/"+date.getFullYear()+ month +day}
-    await this.createIndex()  
+    await this.createIndex()
     await this.loadFromUrl(url)
     console.log('Called '+url+' every 5 minutes at '+ (new Date().toString()))
 
@@ -123,8 +121,8 @@ export class AppService {
 
   deltaDate(input, days, months, years) {
     return new Date(
-      input.getFullYear() + years, 
-      input.getMonth() + months, 
+      input.getFullYear() + years,
+      input.getMonth() + months,
       Math.min(
         input.getDate() + days,
         new Date(input.getFullYear() + years, input.getMonth() + months + 1, 0).getDate()

@@ -10,15 +10,17 @@ import { StationSchema } from './schemas/station.schema';
 import { environment } from '../environments/environment';
 
 import { ScheduleModule } from '@nestjs/schedule';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
     ScheduleModule.forRoot(),
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(environment.DATABASE),
+    MongooseModule.forRoot(environment.DATABASE,{authSource:"admin"}),
     MongooseModule.forFeature([
       { name:"STATION",schema: StationSchema },
-    ])
+    ]),
+    HttpModule
   ],
   controllers: [AppController],
   providers: [AppService],

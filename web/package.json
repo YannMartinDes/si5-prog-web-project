@@ -5,12 +5,15 @@
   "scripts": {},
   "private": true,
   "dependencies": {
+    "@nestjs/axios": "^0.0.5",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^1.1.6",
     "@nestjs/core": "^8.0.0",
     "@nestjs/mongoose": "^9.0.2",
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/schedule": "^1.0.2",
+    "@types/adm-zip": "^0.4.34",
+    "adm-zip": "^0.5.9",
     "class-validator": "^0.13.2",
     "core-js": "^3.6.5",
     "leaflet": "^1.7.1",
@@ -24,7 +27,8 @@
     "regenerator-runtime": "0.13.7",
     "rxjs": "^7.0.0",
     "swr": "^1.2.0",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.0",
+    "xml-js": "^1.6.11"
   },
   "devDependencies": {
     "@nestjs/schematics": "^8.0.0",
