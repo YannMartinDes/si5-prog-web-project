@@ -1,6 +1,5 @@
-import GasType from "./gas-type.enum";
 
-export default interface GasPrice {
-    gasType:GasType;
+export interface GasPrice {
+    gasType:string;
     price:string
   }

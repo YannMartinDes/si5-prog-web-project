@@ -1,7 +1,7 @@
-import GasPrice from './gas-price';
-import Position from './position';
+import { GasPrice } from './gas-price';
+import { Position } from './position';
 
-export default interface GasStationPosition {
+export interface GasStationPosition {
   id: string;
   position: Position;
   address:string;
