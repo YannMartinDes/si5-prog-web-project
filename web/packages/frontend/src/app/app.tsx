@@ -23,7 +23,7 @@ function App() {
     "http://localhost:3333/api/get-near-station/7.289429/43.675819/10000"
   const { data, error } = useSwr(url, { fetcher });
   const crimes = data && !error ? data : [];
-  let myMarkerList: any[]=[]
+  const myMarkerList: any[]=[]
   for( let jsonData of crimes){
     let parsedJsonData:any ={}
     let stringPrice=""
