@@ -1,16 +1,26 @@
-import Position from 'packages/common/dto/src/lib/position';
-import { MapContainer, Marker, Popup, TileLayer, Tooltip } from 'react-leaflet';
+/* eslint-disable @nrwl/nx/enforce-module-boundaries */
+import GasStationPosition from 'packages/common/dto/src/lib/gas-station-position';
+import { Marker, Tooltip } from 'react-leaflet';
 import gasStationIcon from '../assets/GasStationIcon';
 
 
-export default function MapMarker({popupText, tooltipText,position}
-:{popupText:string,tooltipText?:string,position:Position}) {
+export default function MapMarker({gasStation}
+:{gasStation:GasStationPosition}) {
 
+    const gasStationPos = gasStation.position;
+
+    function createTooltipText(gasStation:GasStationPosition){
+        let tooltipText = ""+gasStation.id+"\n";
+        tooltipText += gasStation.address+"\n";
+
+        gasStation.prices.map((value,index) => {tooltipText += value.gasType+" : "+value.price+"\n"});
+
+        return tooltipText;
+    }
 
     return (
-        <Marker position={[position.lat, position.lon]} icon={gasStationIcon}>
-            <Popup>{popupText}</Popup>
-            {tooltipText && <Tooltip>{tooltipText}</Tooltip>}
+        <Marker position={[gasStationPos.lat, gasStationPos.lon]} icon={gasStationIcon}>
+            <Tooltip>{createTooltipText(gasStation)}</Tooltip>
         </Marker>        
     );
 }
