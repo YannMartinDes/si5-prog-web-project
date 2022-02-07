@@ -8,12 +8,12 @@ export default function GlobalMap({markersList}:
 {
     return(
         <div id='map'>
-            <MapContainer center={[46.25000, 5.64400]} zoom={13} scrollWheelZoom={false}>
+            <MapContainer center={[43.675819,7.289429]} zoom={13} scrollWheelZoom={false}>
                 <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {markersList.map((value,index) => {return (<MapMarker popupText={value.id} tooltipText={value.position.lat + " ; "+value.position.lon} position={value.position}/>)})}
+                {markersList.map((value,index) => {return (<MapMarker popupText={value.id} tooltipText={value.prix} position={value.position}/>)})}
             </MapContainer>
         </div>
     );

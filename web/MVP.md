@@ -3,13 +3,13 @@
 ## MVP 1 :
 
 ### Frontend : 
-- Carte avec différentes marqueurs où chaque marqueurs représentent une station essence.
+- <s>Carte avec différentes marqueurs où chaque marqueurs représentent une station essence.</s>
 - Affichage du nom et du prix des essences de la station lors d'un clic sur un marqueur 
 
 ### Backend :
 - Fetch périodiquement avec un CRON les données des stations essence sur l'Open API du gouvernement
-- Pouvoir envoyer toutes les positions des stations essence en France (ou sur le département si ça tue le client) ainsi que leur id
-- Pouvoir fournir les infos d'une station essence en particulier en donnant son id
+- <s>Pouvoir envoyer toutes les positions des stations essence en France (ou sur le département si ça tue le client) ainsi que leur id</s>
+- <s>Pouvoir fournir les infos d'une station essence en particulier en donnant son id</s>
 
 
 ## Remain Todo :
