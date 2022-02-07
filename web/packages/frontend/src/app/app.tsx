@@ -1,6 +1,6 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import styles from './app.module.scss';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, Link } from 'react-router-dom';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
@@ -33,7 +33,10 @@ function App() {
   const currentPos:Position = {lat:43.675819, lon:7.289429}
   //getAllStation(currentPos,10000);
 
- SetStationList([{id:"test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"}], address:"rue de mon cul"}])
+
+  useEffect(()=>{
+    SetStationList([{id:"test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"}], address:"rue de mon cul"}])
+  },[])
 
   return (
     <>
