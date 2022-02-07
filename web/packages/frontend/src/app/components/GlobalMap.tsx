@@ -5,9 +5,10 @@ import React from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import MapMarker from './MapMarker';
 
-export default function GlobalMap({markersList,position}:
+export default function GlobalMap({markersList,position,onMarkerClick}:
 {markersList:GasStationPosition[],
-position:Position})
+position:Position,
+onMarkerClick:(Id:string)=>void})
 {
     return(
         <div id='map'>
@@ -16,7 +17,7 @@ position:Position})
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {markersList.map((value,index) => {return (<MapMarker gasStation={value}/>)})}
+                {markersList.map((value,index) => {return (<MapMarker key={value.id} gasStation={value} onMarkerClick={onMarkerClick}/>)})}
             </MapContainer>
         </div>
     );

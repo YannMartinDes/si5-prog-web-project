@@ -1,13 +1,13 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import styles from './app.module.scss';
 import React, { useEffect, useState } from 'react';
-import { Route, Link } from 'react-router-dom';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import L from 'leaflet';
 import axios from 'axios';
 import GlobalMap from './components/GlobalMap';
-import { GasStationPosition, Position } from '@web/common/dto';
+import { GasStationInfo, GasStationPosition, Position } from '@web/common/dto';
+import SideMenu from './components/SideMenu';
 
 
 //Extend marker prototype to fix : https://stackoverflow.com/questions/49441600/react-leaflet-marker-files-not-found
@@ -18,6 +18,8 @@ const DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 const ALL_STATION_URL = "http://localhost:3333/api/get-near-station/"
+const STATION_INFO = "http://localhost:3333/api/get-station-info/"
+
 
 function App() {
 
@@ -28,33 +30,38 @@ function App() {
        .then(res => {
            SetStationList(res.data);
        });
- }
+  }
 
-  const currentPos:Position = {lat:43.675819, lon:7.289429}
-  //getAllStation(currentPos,10000);
+  function getStationInfo(stationId:string) {
+    axios.get(STATION_INFO, { params: { stationId:stationId } })
+       .then(res => {
+           setGasStationInfo(res.data);
+       });
+  }
 
+  const currentPos:Position = {lat:43.675819, lon:7.289429}//replace by geolocalisation
 
   useEffect(()=>{
-    SetStationList([{id:"test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"}], address:"rue de mon cul"}])
+    //getAllStation(currentPos,10000);
+    SetStationList([{id:"station test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], address:"rue de mon cul"}])
   },[])
 
+  const [gasStationInfo,setGasStationInfo] = useState<GasStationInfo>();
+
+  const onMarkerClick = (stationId:string) =>{
+    //getStationInfo(stationId)
+    setGasStationInfo({id:"station test", address:"Station de mon cul", 
+      prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], 
+      services:["Station de gonflage", "Location de véhicule"], 
+      schedules:[{day:"Lundi", openned:true,hourSchedule:[{openHour:"8h00", closedHour:"22h00"}]},
+        {day:"Mardi", openned:true,hourSchedule:[{openHour:"8h00", closedHour:"12h00"},{openHour:"14h00", closedHour:"22h00"}] },{day:"Samedi",openned:false}]})
+  }
+
   return (
-    <>
-      <div role="navigation">
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-        </ul>
-      </div>
-      <Route
-        path="/"
-        exact
-        render={() => (
-          <GlobalMap markersList={stationList} position={currentPos}/>
-        )}
-      />
-    </>
+    <div>
+      <SideMenu gasStationInfo={gasStationInfo}/>
+      <GlobalMap markersList={stationList} position={currentPos} onMarkerClick={onMarkerClick}/>
+    </div>
   );
 }
 
