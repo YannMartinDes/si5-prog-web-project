@@ -11,6 +11,8 @@ import { environment } from '../environments/environment';
 
 import { ScheduleModule } from '@nestjs/schedule';
 import { HttpModule } from '@nestjs/axios';
+import { AuthModule } from '../services/authentication-service/src/auth/auth.module';
+import { UsersModule } from '../services/authentication-service/src/users/users.module';
 
 @Module({
   imports: [
@@ -20,7 +22,9 @@ import { HttpModule } from '@nestjs/axios';
     MongooseModule.forFeature([
       { name:"STATION",schema: StationSchema },
     ]),
-    HttpModule
+    HttpModule,
+    AuthModule,
+    UsersModule
   ],
   controllers: [AppController],
   providers: [AppService],
