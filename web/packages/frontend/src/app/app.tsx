@@ -6,8 +6,9 @@ import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import L from 'leaflet';
 import axios from 'axios';
 import GlobalMap from './components/GlobalMap';
-import { GasStationInfo, GasStationPosition, Position } from '@web/common/dto';
+import { Filter, GasStationInfo, GasStationPosition, Position } from '@web/common/dto';
 import SideMenu from './components/SideMenu';
+import FilterBar from './components/FilterBar';
 
 
 //Extend marker prototype to fix : https://stackoverflow.com/questions/49441600/react-leaflet-marker-files-not-found
@@ -22,13 +23,15 @@ const STATION_INFO = "http://localhost:3333/api/get-station-info/"
 
 
 function App() {
-
-  const [stationList,SetStationList] = useState<GasStationPosition[]>([]);
+  const currentPos:Position = {lat:43.675819, lon:7.289429}//replace by geolocalisation
+  const [stationList,setStationList] = useState<GasStationPosition[]>([]);
+  const [gasStationInfo,setGasStationInfo] = useState<GasStationInfo>();
+  const [filter, setFilter] = useState<Filter>({gas:['Gazole', 'SP95','E85', 'GPLc', 'E10', 'SP98'],schedules:[],services:[]});
 
   function getAllStation(currentPos:Position, radius:number) {
     axios.get(ALL_STATION_URL, { params: { lat: currentPos.lat, lon: currentPos.lon, radius: radius } })
        .then(res => {
-           SetStationList(res.data);
+          setStationList(res.data);
        });
   }
 
@@ -39,14 +42,12 @@ function App() {
        });
   }
 
-  const currentPos:Position = {lat:43.675819, lon:7.289429}//replace by geolocalisation
 
   useEffect(()=>{
     //getAllStation(currentPos,10000);
-    SetStationList([{id:"station test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], address:"rue de mon cul"}])
+    setStationList([{id:"station test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], address:"rue de mon cul"}])
   },[])
 
-  const [gasStationInfo,setGasStationInfo] = useState<GasStationInfo>();
 
   const onMarkerClick = (stationId:string) =>{
     //getStationInfo(stationId)
@@ -57,8 +58,24 @@ function App() {
         {day:"Mardi", openned:true,hourSchedule:[{openHour:"8h00", closedHour:"12h00"},{openHour:"14h00", closedHour:"22h00"}] },{day:"Samedi",openned:false}]})
   }
 
+  const onCheckBoxClick = (gas:string, checked:boolean) =>{
+    let newGasFilter:string[]|undefined;
+    if(checked){
+      newGasFilter = filter.gas.concat([gas]);
+    }
+    else{
+      newGasFilter = filter?.gas.filter((el) =>{return el !== gas});
+    }
+    setFilter({gas:newGasFilter, services:filter.services,schedules:filter.schedules})
+  }
+
+  useEffect(()=>{
+    console.log(filter);
+  },[filter])
+
   return (
     <div>
+      <FilterBar onCheckBoxClick={onCheckBoxClick} />
       <SideMenu gasStationInfo={gasStationInfo}/>
       <GlobalMap markersList={stationList} position={currentPos} onMarkerClick={onMarkerClick}/>
     </div>
