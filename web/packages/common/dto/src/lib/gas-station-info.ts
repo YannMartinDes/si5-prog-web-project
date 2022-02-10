@@ -3,7 +3,7 @@ import { GasStationSchedule } from "./gas-station-schedule";
 
 export interface GasStationInfo {
     id: string;
-    /*
+    /* ATTENTION IL EN MANQUE SUREMENT
       Station de gonflage
       Laverie
       Lavage automatique

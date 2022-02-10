@@ -58,15 +58,20 @@ function App() {
         {day:"Mardi", openned:true,hourSchedule:[{openHour:"8h00", closedHour:"12h00"},{openHour:"14h00", closedHour:"22h00"}] },{day:"Samedi",openned:false}]})
   }
 
-  const onCheckBoxClick = (gas:string, checked:boolean) =>{
-    let newGasFilter:string[]|undefined;
-    if(checked){
-      newGasFilter = filter.gas.concat([gas]);
+  const onFilterCheckBoxClick = (type:string, gas:string, checked:boolean) =>{
+    if(type === "gas"){
+      let newGasFilter:string[]|undefined;
+      if(checked){
+        newGasFilter = filter.gas.concat([gas]);
+      }
+      else{
+        newGasFilter = filter?.gas.filter((el) =>{return el !== gas});
+      }
+      setFilter({gas:newGasFilter, services:filter.services,schedules:filter.schedules})
     }
-    else{
-      newGasFilter = filter?.gas.filter((el) =>{return el !== gas});
+    if(type === "services"){
+      //TODO
     }
-    setFilter({gas:newGasFilter, services:filter.services,schedules:filter.schedules})
   }
 
   useEffect(()=>{
@@ -75,7 +80,7 @@ function App() {
 
   return (
     <div>
-      <FilterBar onCheckBoxClick={onCheckBoxClick} />
+      <FilterBar onCheckBoxClick={onFilterCheckBoxClick} />
       <SideMenu gasStationInfo={gasStationInfo}/>
       <GlobalMap markersList={stationList} position={currentPos} onMarkerClick={onMarkerClick}/>
     </div>
