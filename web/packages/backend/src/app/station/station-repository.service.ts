@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Station } from '../schemas/station.schema';
+import {Filter,GasStationPosition,Position,GasPrice} from '@web/common/dto';
 
 @Injectable()
 export class StationService {
@@ -24,8 +25,55 @@ export class StationService {
     return await this.stationModel.collection.createIndex({coordinates:"2dsphere"});
   }
 
-  async findSphere(longitudeCurrent:number,latitudeCurrent:number,maxDist:number){
-    return await this.stationModel.find({coordinates:{ $nearSphere: { $geometry: { type: "Point", coordinates: [ longitudeCurrent, latitudeCurrent ] }, $maxDistance: maxDist } } }).exec();
+  async findSphere(longitudeCurrent:number,latitudeCurrent:number,maxDist:number,filter:Filter){
+    let listCondition=[]
+    listCondition.push({coordinates:{ $nearSphere: { $geometry: { type: "Point", coordinates: [ longitudeCurrent, latitudeCurrent ] }, $maxDistance: maxDist } }})
+
+    let listOrGasType = []
+    if (filter.gas.length == 0){
+      filter.gas=["Gazole",
+        "SP95",
+        "E85",
+        "GPLc",
+        "E10",
+        "SP98"]
+    }
+    for (const gasType of filter.gas){
+
+      listOrGasType.push({ prix : { $elemMatch : { "_attributes.nom" : gasType } } })}
+
+    listCondition.push({"$or":listOrGasType})
+    
+    let query ={where:listCondition}
+    let listGasStationPosition : GasStationPosition[] =[]
+    let stations : Station[] = await this.stationModel.find(query).exec();
+
+    for (let station of stations){
+      let address=""
+      let id=""
+      let pos:Position={lat:0,lon:0}
+      let gasInfoArray = []
+      if (station?.adresse?._text){
+        address=station.adresse._text}
+      if (station?.coordinates){
+        let latLongArray:number[]=station.coordinates
+        pos.lat=latLongArray[0]
+        pos.lon=latLongArray[1]
+      }
+      if (station?._id){
+        id=station._id
+      }
+      if (station?.prix){
+        for (const gasInfo of station.prix){
+          gasInfoArray.push({gasType:gasInfo._attributes.nom,price:gasInfo._attributes.valeur})
+        }
+      }
+      let gasPrice :GasPrice[] = gasInfoArray
+      
+      let gasPos : GasStationPosition = {id:id,position:pos,address:address,prices:gasPrice}  
+      listGasStationPosition.push(gasPos)
+    }
+    return listGasStationPosition
   }
 
     async findAll(query:any): Promise<Station[]> {
