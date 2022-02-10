@@ -32,6 +32,8 @@ export class AuthService {
     try {
       await user.save();
     } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       if (error.code === 11000) {
         throw new ConflictException('User already exists');
       }
@@ -54,15 +56,4 @@ export class AuthService {
 
     return null;
   }
-
-  /*
-    async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOne(username);
-    if (user && user.password === pass) {
-      const { password, ...result } = user;
-      return result;
-    }
-    return null;
-  }
-   */
 }

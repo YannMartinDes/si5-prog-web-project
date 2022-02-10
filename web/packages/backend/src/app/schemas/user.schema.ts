@@ -4,9 +4,9 @@ import { Document } from 'mongoose';
 @Schema()
 export class User extends Document {
   @Prop()
-  readonly username: string;
+  readonly username?: string;
   @Prop()
-  readonly password: string;
+  readonly password?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

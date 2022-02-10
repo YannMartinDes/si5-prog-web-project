@@ -11,6 +11,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { AuthCredentialsDto } from './dtos/auth-credentials.dto';
 import {AuthService} from "./auth.service";
+import {User} from "../schemas/user.schema";
 
 @Controller('auth')
 export class AuthController {
@@ -30,13 +31,13 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('/login')
-  async login(@Request() req) {
+  async login(@Request() req: Request&{user:User}) {
     return this.authService.login(req.user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('/profile')
-  getProfile(@Request() req) {
+  getProfile(@Request() req: Request&{user:User}) {
     return req.user;
   }
 }
