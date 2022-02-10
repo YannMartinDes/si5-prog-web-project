@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param} from '@nestjs/common';
 import { StationService } from './station-repository.service';
+import {Filter} from '@web/common/dto';
 
 @Controller('station')
 export class StationController {
@@ -13,8 +14,9 @@ export class StationController {
   }
 
     @Get('near-station')
-  public async getAllNearStation(@Body('longitude') longitude:string,@Body('latitude') latitude:string,@Body('maxDist') maxDist:string) {
-    const stations = await this.stationRepository.findSphere(+longitude,+latitude,+maxDist);
+  public async getAllNearStation(@Body('longitude') longitude:string,@Body('latitude') latitude:string,@Body('maxDist') maxDist:string,@Body('filter') filter:Filter) {
+
+    const stations = await this.stationRepository.findSphere(+longitude,+latitude,+maxDist,filter);
     return stations;
   }
 }

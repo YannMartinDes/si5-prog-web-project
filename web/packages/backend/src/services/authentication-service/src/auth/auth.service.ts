@@ -23,7 +23,7 @@ export class AuthService {
   }
 
   async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
-    const { username, password } = authCredentialsDto;
+    const { username, password }:any = authCredentialsDto;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -31,7 +31,7 @@ export class AuthService {
 
     try {
       await user.save();
-    } catch (error) {
+    } catch (error:any) {
       if (error.code === 11000) {
         throw new ConflictException('User already exists');
       }
@@ -40,7 +40,7 @@ export class AuthService {
   }
 
   async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.userModel.findOne({ username });
+    const user : any = await this.userModel.findOne({ username });
 
     if (!user) {
       return null;
