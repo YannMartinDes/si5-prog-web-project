@@ -41,7 +41,7 @@ export class StationService {
       listOrGasType.push({ prix : { $elemMatch : { "_attributes.nom": gasType }} } )}
 
 
-    let query ={where:{coordinates:{ $nearSphere: { $geometry: { type: "Point", coordinates: [ longitudeCurrent, latitudeCurrent ] }, $maxDistance: maxDist } }},
+    let query ={coordinates:{ $nearSphere: { $geometry: { type: "Point", coordinates: [ longitudeCurrent, latitudeCurrent ] }, $maxDistance: maxDist }},
     "$or":listOrGasType}
     let listGasStationPosition : GasStationPosition[] =[]
     console.log(JSON.stringify(query))
