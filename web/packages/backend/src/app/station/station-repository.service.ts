@@ -59,8 +59,8 @@ export class StationService {
         pos.lon=latLongArray[0]
         pos.lat=latLongArray[1]
       }
-      if (station?._id){
-        id=station._id
+      if (station?._attributes?.id){
+        id=station._attributes.id
       }
       if (station?.prix){
         for (const gasInfo of station.prix){
