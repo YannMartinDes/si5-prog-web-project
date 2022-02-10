@@ -21,17 +21,20 @@ L.Marker.prototype.options.icon = DefaultIcon;
 const ALL_STATION_URL = "http://localhost:3333/api/get-near-station/"
 const STATION_INFO = "http://localhost:3333/api/get-station-info/"
 
+const currentPos:Position = {lat:43.675819, lon:7.289429}//replace by geolocalisation
+const range = 10000
+
 
 function App() {
-  const currentPos:Position = {lat:43.675819, lon:7.289429}//replace by geolocalisation
   const [stationList,setStationList] = useState<GasStationPosition[]>([]);
   const [gasStationInfo,setGasStationInfo] = useState<GasStationInfo>();
   const [filter, setFilter] = useState<Filter>({gas:['Gazole', 'SP95','E85', 'GPLc', 'E10', 'SP98'],schedules:[],services:[]});
 
-  function getAllStation(currentPos:Position, radius:number) {
-    axios.get(ALL_STATION_URL, { params: { lat: currentPos.lat, lon: currentPos.lon, radius: radius } })
+  function getAllStation(currentPos:Position, radius:number, filter:Filter) {
+    axios.get(ALL_STATION_URL, { params: { lat: currentPos.lat, lon: currentPos.lon, radius: radius, filter:filter } })
        .then(res => {
-          setStationList(res.data);
+          const stations:GasStationPosition[] = res.data;
+          setStationList(stations);
        });
   }
 
@@ -43,10 +46,15 @@ function App() {
   }
 
 
-  useEffect(()=>{
-    //getAllStation(currentPos,10000);
-    setStationList([{id:"station test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], address:"rue de mon cul"}])
+  useEffect(()=>{//== ComponentDidMount
+    getAllStation(currentPos,range,filter);
+    //setStationList([{id:"station test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], address:"rue de mon cul"}])
   },[])
+
+  useEffect(()=>{//== ComponentDidMount
+    getAllStation(currentPos,range,filter);
+    //setStationList([{id:"station test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], address:"rue de mon cul"}])
+  },[filter])
 
 
   const onMarkerClick = (stationId:string) =>{
@@ -73,10 +81,6 @@ function App() {
       //TODO
     }
   }
-
-  useEffect(()=>{
-    console.log(filter);
-  },[filter])
 
   return (
     <div>
