@@ -26,7 +26,6 @@ export class StationService {
   }
 
   async findSphere(longitudeCurrent:number,latitudeCurrent:number,maxDist:number,filter:Filter){
-    let listCondition=[]
     let listOrGasType = []
     if (filter.gas.length == 0){
       filter.gas=["Gazole",
@@ -75,7 +74,7 @@ export class StationService {
     return listGasStationPosition
   }
 
-    async findAll(query:any): Promise<Station[]> {
+  async findAll(query:any): Promise<Station[]> {
     console.log(query)
     return this.stationModel.find(query).exec();
   }

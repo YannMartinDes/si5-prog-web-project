@@ -1,6 +1,8 @@
 import { Body, Controller, Get, Param, Query} from '@nestjs/common';
 import { StationService } from './station-repository.service';
-import {Filter} from '@web/common/dto';
+import {Filter, GasStationInfo} from '@web/common/dto';
+import { stat } from 'fs';
+import { Station } from '../schemas/station.schema';
 
 @Controller('station')
 export class StationController {
@@ -19,8 +21,10 @@ export class StationController {
   @Get('stations/:id')
   async findById(@Param('id') id:string) {
       console.log("Stations Id : call with "+id);
-      const station = await this.stationRepository.readById(id);
-      return station;
+      const station:Station|null = await this.stationRepository.readById(id);
+      
+
+      return stationInfo;
   }
 }
 
