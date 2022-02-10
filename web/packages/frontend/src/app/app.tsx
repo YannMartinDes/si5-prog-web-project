@@ -18,8 +18,8 @@ const DefaultIcon = L.icon({
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
-const ALL_STATION_URL = "http://localhost:3333/api/get-near-station/"
-const STATION_INFO = "http://localhost:3333/api/get-station-info/"
+const ALL_STATION_URL = "http://localhost:3333/api/station/near-station"
+const STATION_INFO = "http://localhost:3333/api/station/station-info"
 
 const currentPos:Position = {lat:43.675819, lon:7.289429}//replace by geolocalisation
 const range = 10000
@@ -31,9 +31,11 @@ function App() {
   const [filter, setFilter] = useState<Filter>({gas:['Gazole', 'SP95','E85', 'GPLc', 'E10', 'SP98'],schedules:[],services:[]});
 
   function getAllStation(currentPos:Position, radius:number, filter:Filter) {
-    axios.get(ALL_STATION_URL, { params: { lat: currentPos.lat, lon: currentPos.lon, radius: radius, filter:filter } })
+    console.log("CALL BACKEND FOR ALL STATION")
+    axios.get(ALL_STATION_URL, { params: { latitude: currentPos.lat, longitude: currentPos.lon, maxDist: radius, filter:filter } })
        .then(res => {
           const stations:GasStationPosition[] = res.data;
+          console.log("Receive response "+JSON.stringify(stations));
           setStationList(stations);
        });
   }

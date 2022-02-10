@@ -22,8 +22,8 @@ import { UsersModule } from '../services/authentication-service/src/users/users.
       { name:"STATION",schema: StationSchema },
     ]),
     HttpModule,
-    AuthModule,
-    UsersModule,
+    //AuthModule,
+    //UsersModule,
   ],
   controllers: [
     StationController,
