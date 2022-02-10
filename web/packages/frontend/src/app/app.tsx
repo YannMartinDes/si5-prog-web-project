@@ -21,7 +21,7 @@ L.Marker.prototype.options.icon = DefaultIcon;
 const ALL_STATION_URL = "http://localhost:3333/api/station/near-station"
 const STATION_INFO = "http://localhost:3333/api/station/station-info"
 
-const range = 10000
+const range = 1000
 
 
 function App() {

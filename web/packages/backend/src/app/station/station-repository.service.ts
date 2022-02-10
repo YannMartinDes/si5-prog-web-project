@@ -27,8 +27,6 @@ export class StationService {
 
   async findSphere(longitudeCurrent:number,latitudeCurrent:number,maxDist:number,filter:Filter){
     let listCondition=[]
-    listCondition.push({coordinates:{ $nearSphere: { $geometry: { type: "Point", coordinates: [ longitudeCurrent, latitudeCurrent ] }, $maxDistance: maxDist } }})
-
     let listOrGasType = []
     if (filter.gas.length == 0){
       filter.gas=["Gazole",
@@ -40,12 +38,13 @@ export class StationService {
     }
     for (const gasType of filter.gas){
 
-      listOrGasType.push({ prix : { $elemMatch : { "_attributes.nom" : gasType } } })}
+      listOrGasType.push({ prix : { $elemMatch : { "_attributes.nom": gasType }} } )}
 
-    listCondition.push({"$or":listOrGasType})
-    
-    let query ={where:listCondition}
+
+    let query ={where:{coordinates:{ $nearSphere: { $geometry: { type: "Point", coordinates: [ longitudeCurrent, latitudeCurrent ] }, $maxDistance: maxDist } }},
+    "$or":listOrGasType}
     let listGasStationPosition : GasStationPosition[] =[]
+    console.log(JSON.stringify(query))
     let stations : Station[] = await this.stationModel.find(query).exec();
 
     for (let station of stations){
@@ -57,8 +56,8 @@ export class StationService {
         address=station.adresse._text}
       if (station?.coordinates){
         let latLongArray:number[]=station.coordinates
-        pos.lat=latLongArray[0]
-        pos.lon=latLongArray[1]
+        pos.lon=latLongArray[0]
+        pos.lat=latLongArray[1]
       }
       if (station?._id){
         id=station._id
