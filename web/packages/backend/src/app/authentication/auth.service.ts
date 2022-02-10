@@ -25,6 +25,8 @@ export class AuthService {
   async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
     const { username, password } = authCredentialsDto;
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = new this.userModel({ username, password: hashedPassword });
@@ -48,6 +50,8 @@ export class AuthService {
       return null;
     }
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const valid = await bcrypt.compare(pass, user.password);
 
     if (valid) {
