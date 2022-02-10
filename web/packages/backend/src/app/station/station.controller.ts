@@ -21,10 +21,8 @@ export class StationController {
   @Get('stations/:id')
   async findById(@Param('id') id:string) {
       console.log("Stations Id : call with "+id);
-      const station:Station|null = await this.stationRepository.readById(id);
-      
-
-      return stationInfo;
+      const station:GasStationInfo|undefined = await this.stationRepository.readById(id);
+      return station;
   }
 }
 

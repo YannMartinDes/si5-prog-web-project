@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Station } from '../schemas/station.schema';
-import {Filter,GasStationPosition,Position,GasPrice} from '@web/common/dto';
+import {Filter,GasStationPosition,Position,GasPrice, GasStationInfo, GasStationSchedule} from '@web/common/dto';
+import { GasStationHourSchedule } from 'packages/common/dto/src/lib/gas-station-hour-schedule';
 
 @Injectable()
 export class StationService {
@@ -81,13 +82,16 @@ export class StationService {
 
 
   async readById(id:string){
-    let stations : Station[] = await this.stationModel.find({_id:id}).exec();
-    let listGasStationPosition : GasStationPosition[] =[]
+    let stations : Station[] = await this.stationModel.find({"_attributes.id":id}).exec();
+    console.log("\n\n\n"+JSON.stringify(stations)+"\n\n\n");
+
+    let listGasStationInfo : GasStationInfo[] =[]
     for (let station of stations){
       let address=""
       let id=""
       let pos:Position={lat:0,lon:0}
       let gasInfoArray = []
+      let gasServicesArray = []
       if (station?.adresse?._text){
         address=station.adresse._text}
       if (station?.coordinates){
@@ -100,15 +104,60 @@ export class StationService {
       }
       if (station?.prix){
         for (const gasInfo of station.prix){
+          if (gasInfo?._attributes){
           gasInfoArray.push({gasType:gasInfo._attributes.nom,price:gasInfo._attributes.valeur})
+          }
         }
       }
+      if (station?.services?.service){
+        if (station?.services?.service.length>0){
+        for (const serviceInfo of station.services.service){
+          if (serviceInfo._text){
+          gasServicesArray.push(serviceInfo._text)
+            }
+          }
+        }
+      }
+      let schedules: GasStationSchedule[] = []
+      if (station?.horaires?.jour){
+
+
+        for (const scheduleInfo of station?.horaires?.jour){
+          let gasHourInfo:GasStationHourSchedule[]= []
+          if (scheduleInfo?.horaire?._attributes){
+          let openString :string = (+scheduleInfo.horaire._attributes.ouverture.split(".")[0])+"h"+scheduleInfo.horaire._attributes.ouverture.split(".")[1]
+          let closeString :string = (+scheduleInfo.horaire._attributes.fermeture.split(".")[0])+"h"+scheduleInfo.horaire._attributes.fermeture.split(".")[1]
+          gasHourInfo.push({
+            openHour:openString,
+            closedHour:closeString
+        })}
+        let closed : boolean
+        if (scheduleInfo?._attributes.ferme==''){
+          closed=true
+        }
+        else {
+          closed =false
+        }
+        
+        if(scheduleInfo?._attributes){
+        schedules.push({day:scheduleInfo._attributes.nom,openned:closed,
+          hourSchedule:gasHourInfo})
+        }
+        else {
+          schedules.push({day:"NoNameFund",openned:closed,
+          hourSchedule:gasHourInfo})
+        }
+      }
+    }
+
+
       let gasPrice :GasPrice[] = gasInfoArray
       
-      let gasPos : GasStationPosition = {id:id,position:pos,address:address,prices:gasPrice}  
-      listGasStationPosition.push(gasPos)
+      let gasStationInfoToPush : GasStationInfo = {id:id,address:address,prices:gasPrice,services:gasServicesArray,schedules:schedules}  
+      listGasStationInfo.push(gasStationInfoToPush)
     }
-    return listGasStationPosition[0]
+    console.log(JSON.stringify(listGasStationInfo[0]))
+    return listGasStationInfo[0]
   }
 
 }

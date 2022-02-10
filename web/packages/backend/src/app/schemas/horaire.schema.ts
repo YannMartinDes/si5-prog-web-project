@@ -23,4 +23,4 @@ export class horaireSchema extends Document {
             
 }
 
-  export const LocationSchema = SchemaFactory.createForClass(horaireSchema);
+  export const HoraireSchema = SchemaFactory.createForClass(horaireSchema);
