@@ -12,11 +12,11 @@ export class StationService {
 
   }
 
-  async update(id, station: Station): Promise<Station> {
+  async update(id:string, station: Station){
     return await this.stationModel.findByIdAndUpdate(id, station, { new: true })
   }
 
-  async delete(id): Promise<Station> {
+  async delete(id:string){
     return await this.stationModel.findByIdAndRemove(id);
   }
 
@@ -28,13 +28,13 @@ export class StationService {
     return await this.stationModel.find({coordinates:{ $nearSphere: { $geometry: { type: "Point", coordinates: [ longitudeCurrent, latitudeCurrent ] }, $maxDistance: maxDist } } }).exec();
   }
 
-    async findAll(query): Promise<Station[]> {
+    async findAll(query:any): Promise<Station[]> {
     console.log(query)
     return this.stationModel.find(query).exec();
   }
 
 
-  async readById(id): Promise<Station> {
+  async readById(id:string){
     return await this.stationModel.findById(id).exec();
   }
 

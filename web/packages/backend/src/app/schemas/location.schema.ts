@@ -5,19 +5,19 @@ import { Document, SchemaTypeOptions} from 'mongoose';
 export class locationSchema extends Document {
 
   @Prop()
-  id: string
+  id?: string
 
   @Prop()
-  latitude:string
+  latitude?:string
 
   @Prop()
-  longitude: string
+  longitude?: string
 
   @Prop()
-  cp: string
+  cp?: string
 
   @Prop()
-  pop:string
+  pop?:string
 }
 
   export const LocationSchema = SchemaFactory.createForClass(locationSchema);

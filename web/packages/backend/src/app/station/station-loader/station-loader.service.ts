@@ -48,7 +48,7 @@ export class StationLoaderService {
 
   }
 
-  async getAndUnZip() {
+  async getAndUnZip() :Promise<string>{
     const zipFileBuffer:Buffer = await firstValueFrom(this.http.get(this.URL_API_GOUV,{responseType: "arraybuffer"})).then((data)=>data.data);
     const zip = new AdmZip(zipFileBuffer);
     const entries = await zip.getEntries();
@@ -56,6 +56,7 @@ export class StationLoaderService {
         const buffer = entry.getData();
         return buffer.toString("latin1");
     }
+    throw "unable to update data"
   }
   async getJsonFromUrl(){
     const xml=await this.getAndUnZip()
