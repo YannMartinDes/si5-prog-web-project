@@ -12,6 +12,7 @@ import { StationService } from './station/station-repository.service';
 import { StationController } from './station/station.controller';
 import { AuthModule } from '../services/authentication-service/src/auth/auth.module';
 import { UsersModule } from '../services/authentication-service/src/users/users.module';
+import {UserSchema} from "../services/authentication-service/src/schemas/user.schema";
 
 @Module({
   imports: [
@@ -20,6 +21,9 @@ import { UsersModule } from '../services/authentication-service/src/users/users.
     MongooseModule.forRoot(environment.DATABASE,{authSource:"admin"}),
     MongooseModule.forFeature([
       { name:"STATION",schema: StationSchema },
+    ]),
+    MongooseModule.forFeature([
+      { name: 'USER', schema: UserSchema }
     ]),
     HttpModule,
     AuthModule,
