@@ -2,6 +2,8 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, SchemaTypeOptions} from 'mongoose';
 import {locationSchema } from './location.schema'
 import { textSchema } from './text.schema';
+import { horaireSchema } from './horaire.schema';
+
 
 @Schema()
 export class Station extends Document {
@@ -11,6 +13,9 @@ export class Station extends Document {
 
   @Prop()
   coordinates?:[number]
+
+  @Prop()
+  horaires?: horaireSchema
 
   @Prop()
   _attributes?: locationSchema
