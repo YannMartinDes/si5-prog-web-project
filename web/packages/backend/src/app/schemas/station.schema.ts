@@ -5,27 +5,27 @@ import { textSchema } from './text.schema';
 
 @Schema()
 export class Station extends Document {
-  
-  @Prop()
-  _id:string
 
   @Prop()
-  coordinates:[number]
+  _id?:string
 
   @Prop()
-  _attributes: locationSchema
+  coordinates?:[number]
 
   @Prop()
-  adresse:textSchema
+  _attributes?: locationSchema
 
   @Prop()
-  ville: textSchema
+  adresse?:textSchema
 
   @Prop()
-  services: [{service : string}]
+  ville?: textSchema
 
   @Prop()
-  prix: [{
+  services?: [{service : string}]
+
+  @Prop()
+  prix?: [{
         _attributes: {
             nom: string,
             id: string,
@@ -35,7 +35,7 @@ export class Station extends Document {
     }]
 
   @Prop()
-  rupture : [{
+  rupture ?: [{
     _attributes: {
         id: string,
         nom: string,

@@ -7,7 +7,7 @@ export class StationController {
   constructor(private stationRepository:StationService){}
 
   @Get('/:id')
-  async findById(@Param('id') id) {
+  async findById(@Param('id') id:string) {
       const station = await this.stationRepository.readById(id);
       return station;
   }
