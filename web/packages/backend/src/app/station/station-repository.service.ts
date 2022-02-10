@@ -81,7 +81,34 @@ export class StationService {
 
 
   async readById(id:string){
-    return await this.stationModel.findById(id).exec();
+    let stations : Station[] = await this.stationModel.find({_id:id}).exec();
+    let listGasStationPosition : GasStationPosition[] =[]
+    for (let station of stations){
+      let address=""
+      let id=""
+      let pos:Position={lat:0,lon:0}
+      let gasInfoArray = []
+      if (station?.adresse?._text){
+        address=station.adresse._text}
+      if (station?.coordinates){
+        let latLongArray:number[]=station.coordinates
+        pos.lon=latLongArray[0]
+        pos.lat=latLongArray[1]
+      }
+      if (station?._attributes?.id){
+        id=station._attributes.id
+      }
+      if (station?.prix){
+        for (const gasInfo of station.prix){
+          gasInfoArray.push({gasType:gasInfo._attributes.nom,price:gasInfo._attributes.valeur})
+        }
+      }
+      let gasPrice :GasPrice[] = gasInfoArray
+      
+      let gasPos : GasStationPosition = {id:id,position:pos,address:address,prices:gasPrice}  
+      listGasStationPosition.push(gasPos)
+    }
+    return listGasStationPosition[0]
   }
 
 }
