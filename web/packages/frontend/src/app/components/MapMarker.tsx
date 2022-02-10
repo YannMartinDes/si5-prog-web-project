@@ -23,7 +23,7 @@ onMarkerClick:(Id:string)=>void}) {
                 {gasStation.address}<br/>
                 {gasStation.prices.map((value) => {
                     const priceText = value.gasType+" : "+value.price+"€";
-                    return (<p key={value.gasType}>{priceText} <br/></p>)
+                    return (<div key={value.gasType}>{priceText}</div>)
                 })}
 
             </Tooltip>
