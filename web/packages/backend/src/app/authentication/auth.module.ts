@@ -9,6 +9,7 @@ import { jwtConstants } from './constants';
 import { ConfigModule } from '@nestjs/config';
 import { UserSchema } from '../schemas/user.schema';
 import { MongooseModule } from '@nestjs/mongoose';
+import {AuthController} from "./auth.controller";
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { MongooseModule } from '@nestjs/mongoose';
       signOptions: { expiresIn: '60s' },
     }),
   ],
+  controllers: [AuthController,],
   providers: [AuthService, LocalStrategy, JwtStrategy],
   exports: [AuthService],
 })

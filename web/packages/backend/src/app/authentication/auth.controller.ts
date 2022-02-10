@@ -13,10 +13,15 @@ import { AuthCredentialsDto } from './dtos/auth-credentials.dto';
 import {AuthService} from "./auth.service";
 
 @Controller('auth')
-export class AppController {
+export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post('/signup')
+  @Get('hello')
+  getHello(){
+    return 'Hello';
+  }
+
+  @Post('signup')
   async signUp(
     @Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto,
   ): Promise<void> {
