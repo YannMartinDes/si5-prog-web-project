@@ -19,7 +19,7 @@ const DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 const ALL_STATION_URL = "http://localhost:3333/api/station/near-station"
-const STATION_INFO = "http://localhost:3333/api/station/station-info"
+const STATION_INFO = "http://localhost:3333/api/station/stations"
 
 const range = 10000
 
@@ -36,16 +36,18 @@ function App() {
     console.log("CALL BACKEND FOR ALL STATION")
     axios.get(ALL_STATION_URL, { params: { latitude: currentPos.lat, longitude: currentPos.lon, maxDist: radius, filter:filter } })
        .then(res => {
+          console.log("Receive response "+JSON.stringify(res));
           const stations:GasStationPosition[] = res.data;
-          console.log("Receive response "+JSON.stringify(stations));
           setStationList(stations);
        });
   }
 
   function getStationInfo(stationId:string) {
-    axios.get(STATION_INFO, { params: { stationId:stationId } })
+    console.log("CALL BACKEND FOR STATION INFO "+stationId)
+    axios.get(STATION_INFO+"/"+stationId)
        .then(res => {
-           setGasStationInfo(res.data);
+          console.log("Receive response "+JSON.stringify(res))
+          setGasStationInfo(res.data);
        });
   }
 
@@ -61,12 +63,12 @@ function App() {
 
 
   const onMarkerClick = (stationId:string) =>{
-    //getStationInfo(stationId)
-    setGasStationInfo({id:"station test", address:"Station de mon cul",
-      prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}],
-      services:["Station de gonflage", "Location de véhicule"],
-      schedules:[{day:"Lundi", openned:true,hourSchedule:[{openHour:"8h00", closedHour:"22h00"}]},
-        {day:"Mardi", openned:true,hourSchedule:[{openHour:"8h00", closedHour:"12h00"},{openHour:"14h00", closedHour:"22h00"}] },{day:"Samedi",openned:false}]})
+    getStationInfo(stationId)
+    // setGasStationInfo({id:"station test", address:"Station de mon cul",
+    //   prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}],
+    //   services:["Station de gonflage", "Location de véhicule"],
+    //   schedules:[{day:"Lundi", openned:true,hourSchedule:[{openHour:"8h00", closedHour:"22h00"}]},
+    //     {day:"Mardi", openned:true,hourSchedule:[{openHour:"8h00", closedHour:"12h00"},{openHour:"14h00", closedHour:"22h00"}] },{day:"Samedi",openned:false}]})
   }
 
   const onFilterCheckBoxClick = (type:string, gas:string, checked:boolean) =>{
