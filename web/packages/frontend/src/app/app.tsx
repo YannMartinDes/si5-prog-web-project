@@ -21,17 +21,20 @@ L.Marker.prototype.options.icon = DefaultIcon;
 const ALL_STATION_URL = "http://localhost:3333/api/get-near-station/"
 const STATION_INFO = "http://localhost:3333/api/get-station-info/"
 
+const currentPos:Position = {lat:43.675819, lon:7.289429}//replace by geolocalisation
+const range = 10000
+
 
 function App() {
-  const currentPos:Position = {lat:43.675819, lon:7.289429}//replace by geolocalisation
   const [stationList,setStationList] = useState<GasStationPosition[]>([]);
   const [gasStationInfo,setGasStationInfo] = useState<GasStationInfo>();
   const [filter, setFilter] = useState<Filter>({gas:['Gazole', 'SP95','E85', 'GPLc', 'E10', 'SP98'],schedules:[],services:[]});
 
-  function getAllStation(currentPos:Position, radius:number) {
-    axios.get(ALL_STATION_URL, { params: { lat: currentPos.lat, lon: currentPos.lon, radius: radius } })
+  function getAllStation(currentPos:Position, radius:number, filter:Filter) {
+    axios.get(ALL_STATION_URL, { params: { lat: currentPos.lat, lon: currentPos.lon, radius: radius, filter:filter } })
        .then(res => {
-          setStationList(res.data);
+          const stations:GasStationPosition[] = res.data;
+          setStationList(stations);
        });
   }
 
@@ -43,10 +46,15 @@ function App() {
   }
 
 
-  useEffect(()=>{
-    //getAllStation(currentPos,10000);
-    setStationList([{id:"station test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], address:"rue de mon cul"}])
+  useEffect(()=>{//== ComponentDidMount
+    getAllStation(currentPos,range,filter);
+    //setStationList([{id:"station test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], address:"rue de mon cul"}])
   },[])
+
+  useEffect(()=>{//== ComponentDidMount
+    getAllStation(currentPos,range,filter);
+    //setStationList([{id:"station test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], address:"rue de mon cul"}])
+  },[filter])
 
 
   const onMarkerClick = (stationId:string) =>{
@@ -58,24 +66,25 @@ function App() {
         {day:"Mardi", openned:true,hourSchedule:[{openHour:"8h00", closedHour:"12h00"},{openHour:"14h00", closedHour:"22h00"}] },{day:"Samedi",openned:false}]})
   }
 
-  const onCheckBoxClick = (gas:string, checked:boolean) =>{
-    let newGasFilter:string[]|undefined;
-    if(checked){
-      newGasFilter = filter.gas.concat([gas]);
+  const onFilterCheckBoxClick = (type:string, gas:string, checked:boolean) =>{
+    if(type === "gas"){
+      let newGasFilter:string[]|undefined;
+      if(checked){
+        newGasFilter = filter.gas.concat([gas]);
+      }
+      else{
+        newGasFilter = filter?.gas.filter((el) =>{return el !== gas});
+      }
+      setFilter({gas:newGasFilter, services:filter.services,schedules:filter.schedules})
     }
-    else{
-      newGasFilter = filter?.gas.filter((el) =>{return el !== gas});
+    if(type === "services"){
+      //TODO
     }
-    setFilter({gas:newGasFilter, services:filter.services,schedules:filter.schedules})
   }
-
-  useEffect(()=>{
-    console.log(filter);
-  },[filter])
 
   return (
     <div>
-      <FilterBar onCheckBoxClick={onCheckBoxClick} />
+      <FilterBar onCheckBoxClick={onFilterCheckBoxClick} />
       <SideMenu gasStationInfo={gasStationInfo}/>
       <GlobalMap markersList={stationList} position={currentPos} onMarkerClick={onMarkerClick}/>
     </div>
