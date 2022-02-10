@@ -21,7 +21,6 @@ L.Marker.prototype.options.icon = DefaultIcon;
 const ALL_STATION_URL = "http://localhost:3333/api/get-near-station/"
 const STATION_INFO = "http://localhost:3333/api/get-station-info/"
 
-const currentPos:Position = {lat:43.675819, lon:7.289429}//replace by geolocalisation
 const range = 10000
 
 
@@ -29,6 +28,9 @@ function App() {
   const [stationList,setStationList] = useState<GasStationPosition[]>([]);
   const [gasStationInfo,setGasStationInfo] = useState<GasStationInfo>();
   const [filter, setFilter] = useState<Filter>({gas:['Gazole', 'SP95','E85', 'GPLc', 'E10', 'SP98'],schedules:[],services:[]});
+  const [position, setPosition] = useState<Position>({lat:43.675819, lon:7.289429});
+
+  //const testPos:Position = navigator.geolocation.getCurrentPosition(onPositionChange());
 
   function getAllStation(currentPos:Position, radius:number, filter:Filter) {
     axios.get(ALL_STATION_URL, { params: { lat: currentPos.lat, lon: currentPos.lon, radius: radius, filter:filter } })
@@ -45,23 +47,22 @@ function App() {
        });
   }
 
-
   useEffect(()=>{//== ComponentDidMount
-    getAllStation(currentPos,range,filter);
+    getAllStation(position,range,filter);
     //setStationList([{id:"station test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], address:"rue de mon cul"}])
   },[])
 
   useEffect(()=>{//== ComponentDidMount
-    getAllStation(currentPos,range,filter);
+    getAllStation(position,range,filter);
     //setStationList([{id:"station test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], address:"rue de mon cul"}])
   },[filter])
 
 
   const onMarkerClick = (stationId:string) =>{
     //getStationInfo(stationId)
-    setGasStationInfo({id:"station test", address:"Station de mon cul", 
-      prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], 
-      services:["Station de gonflage", "Location de véhicule"], 
+    setGasStationInfo({id:"station test", address:"Station de mon cul",
+      prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}],
+      services:["Station de gonflage", "Location de véhicule"],
       schedules:[{day:"Lundi", openned:true,hourSchedule:[{openHour:"8h00", closedHour:"22h00"}]},
         {day:"Mardi", openned:true,hourSchedule:[{openHour:"8h00", closedHour:"12h00"},{openHour:"14h00", closedHour:"22h00"}] },{day:"Samedi",openned:false}]})
   }
@@ -82,11 +83,15 @@ function App() {
     }
   }
 
+  const onPositionChange = (lat:number, lon:number) => {
+    setPosition({lat: lat, lon: lon});
+  }
+
   return (
     <div>
       <FilterBar onCheckBoxClick={onFilterCheckBoxClick} />
       <SideMenu gasStationInfo={gasStationInfo}/>
-      <GlobalMap markersList={stationList} position={currentPos} onMarkerClick={onMarkerClick}/>
+      <GlobalMap markersList={stationList} position={position} onMarkerClick={onMarkerClick}/>
     </div>
   );
 }
