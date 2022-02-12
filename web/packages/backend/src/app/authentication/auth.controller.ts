@@ -7,16 +7,22 @@ import {
   ValidationPipe,
   Body,
 } from '@nestjs/common';
-import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
-import { LocalAuthGuard } from './auth/guards/local-auth.guard';
-import { AuthService } from './auth/auth.service';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { LocalAuthGuard } from './guards/local-auth.guard';
 import { AuthCredentialsDto } from './dtos/auth-credentials.dto';
+import {AuthService} from "./auth.service";
+import {User} from "../schemas/user.schema";
 
 @Controller('auth')
-export class AppController {
+export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post('/signup')
+  @Get('hello')
+  getHello(){
+    return 'Hello';
+  }
+
+  @Post('signup')
   async signUp(
     @Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto,
   ): Promise<void> {
@@ -25,13 +31,13 @@ export class AppController {
 
   @UseGuards(LocalAuthGuard)
   @Post('/login')
-  async login(@Request() req:any) {
+  async login(@Request() req: Request&{user:User}) {
     return this.authService.login(req.user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('/profile')
-  getProfile(@Request() req:any) {
+  getProfile(@Request() req: Request&{user:User}) {
     return req.user;
   }
 }

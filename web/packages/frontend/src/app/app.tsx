@@ -19,9 +19,8 @@ const DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 const ALL_STATION_URL = "http://localhost:3333/api/station/near-station"
-const STATION_INFO = "http://localhost:3333/api/station/station-info"
+const STATION_INFO = "http://localhost:3333/api/station/stations"
 
-const currentPos:Position = {lat:43.675819, lon:7.289429}//replace by geolocalisation
 const range = 10000
 
 
@@ -29,43 +28,47 @@ function App() {
   const [stationList,setStationList] = useState<GasStationPosition[]>([]);
   const [gasStationInfo,setGasStationInfo] = useState<GasStationInfo>();
   const [filter, setFilter] = useState<Filter>({gas:['Gazole', 'SP95','E85', 'GPLc', 'E10', 'SP98'],schedules:[],services:[]});
+  const [position, setPosition] = useState<Position>({lat:43.675819, lon:7.289429});
+
+  //const testPos:Position = navigator.geolocation.getCurrentPosition(onPositionChange());
 
   function getAllStation(currentPos:Position, radius:number, filter:Filter) {
     console.log("CALL BACKEND FOR ALL STATION")
     axios.get(ALL_STATION_URL, { params: { latitude: currentPos.lat, longitude: currentPos.lon, maxDist: radius, filter:filter } })
        .then(res => {
+          console.log("Receive response "+JSON.stringify(res));
           const stations:GasStationPosition[] = res.data;
-          console.log("Receive response "+JSON.stringify(stations));
           setStationList(stations);
        });
   }
 
   function getStationInfo(stationId:string) {
-    axios.get(STATION_INFO, { params: { stationId:stationId } })
+    console.log("CALL BACKEND FOR STATION INFO "+stationId)
+    axios.get(STATION_INFO+"/"+stationId)
        .then(res => {
-           setGasStationInfo(res.data);
+          console.log("Receive response "+JSON.stringify(res))
+          setGasStationInfo(res.data);
        });
   }
 
-
   useEffect(()=>{//== ComponentDidMount
-    getAllStation(currentPos,range,filter);
+    getAllStation(position,range,filter);
     //setStationList([{id:"station test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], address:"rue de mon cul"}])
   },[])
 
   useEffect(()=>{//== ComponentDidMount
-    getAllStation(currentPos,range,filter);
+    getAllStation(position,range,filter);
     //setStationList([{id:"station test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], address:"rue de mon cul"}])
   },[filter])
 
 
   const onMarkerClick = (stationId:string) =>{
-    //getStationInfo(stationId)
-    setGasStationInfo({id:"station test", address:"Station de mon cul", 
-      prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], 
-      services:["Station de gonflage", "Location de véhicule"], 
-      schedules:[{day:"Lundi", openned:true,hourSchedule:[{openHour:"8h00", closedHour:"22h00"}]},
-        {day:"Mardi", openned:true,hourSchedule:[{openHour:"8h00", closedHour:"12h00"},{openHour:"14h00", closedHour:"22h00"}] },{day:"Samedi",openned:false}]})
+    getStationInfo(stationId)
+    // setGasStationInfo({id:"station test", address:"Station de mon cul",
+    //   prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}],
+    //   services:["Station de gonflage", "Location de véhicule"],
+    //   schedules:[{day:"Lundi", openned:true,hourSchedule:[{openHour:"8h00", closedHour:"22h00"}]},
+    //     {day:"Mardi", openned:true,hourSchedule:[{openHour:"8h00", closedHour:"12h00"},{openHour:"14h00", closedHour:"22h00"}] },{day:"Samedi",openned:false}]})
   }
 
   const onFilterCheckBoxClick = (type:string, gas:string, checked:boolean) =>{
@@ -84,11 +87,15 @@ function App() {
     }
   }
 
+  const onPositionChange = (lat:number, lon:number) => {
+    setPosition({lat: lat, lon: lon});
+  }
+
   return (
     <div>
       <FilterBar onCheckBoxClick={onFilterCheckBoxClick} />
       <SideMenu gasStationInfo={gasStationInfo}/>
-      <GlobalMap markersList={stationList} position={currentPos} onMarkerClick={onMarkerClick}/>
+      <GlobalMap markersList={stationList} position={position} onMarkerClick={onMarkerClick}/>
     </div>
   );
 }

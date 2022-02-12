@@ -10,8 +10,9 @@ import { HttpModule } from '@nestjs/axios';
 import { StationLoaderService } from './station/station-loader/station-loader.service';
 import { StationService } from './station/station-repository.service';
 import { StationController } from './station/station.controller';
-import { AuthModule } from '../services/authentication-service/src/auth/auth.module';
-import { UsersModule } from '../services/authentication-service/src/users/users.module';
+import {UserSchema} from "./schemas/user.schema";
+import {AuthModule} from "./authentication/auth.module";
+import {UsersModule} from "./users/users.module";
 
 @Module({
   imports: [
@@ -20,6 +21,9 @@ import { UsersModule } from '../services/authentication-service/src/users/users.
     MongooseModule.forRoot(environment.DATABASE,{authSource:"admin"}),
     MongooseModule.forFeature([
       { name:"STATION",schema: StationSchema },
+    ]),
+    MongooseModule.forFeature([
+      { name: 'USER', schema: UserSchema }
     ]),
     HttpModule,
     //AuthModule,

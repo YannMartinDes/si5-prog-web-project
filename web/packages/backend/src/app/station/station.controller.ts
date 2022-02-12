@@ -1,6 +1,8 @@
 import { Body, Controller, Get, Param, Query} from '@nestjs/common';
 import { StationService } from './station-repository.service';
-import {Filter} from '@web/common/dto';
+import {Filter, GasStationInfo} from '@web/common/dto';
+import { stat } from 'fs';
+import { Station } from '../schemas/station.schema';
 
 @Controller('station')
 export class StationController {
@@ -10,8 +12,8 @@ export class StationController {
 
   @Get('near-station')
   public async getAllNearStation(@Query('longitude') longitude:string,@Query('latitude') latitude:string,@Query('maxDist') maxDist:string,@Query('filter') filter:Filter) {
-    console.log("Receive call with "+longitude+" "+latitude+" "+maxDist+" "+JSON.stringify(filter));
-    const stations = await this.stationRepository.findSphere(+longitude,+latitude,+maxDist,filter);
+    //console.log("Receive call with "+longitude+" "+latitude+" "+maxDist+" "+JSON.stringify(filter));
+    const stations = await this.stationRepository.findSphere(+longitude,+latitude,+maxDist,JSON.parse(filter));
     return stations;
   }
 
@@ -19,7 +21,7 @@ export class StationController {
   @Get('stations/:id')
   async findById(@Param('id') id:string) {
       console.log("Stations Id : call with "+id);
-      const station = await this.stationRepository.readById(id);
+      const station:GasStationInfo|undefined = await this.stationRepository.readById(id);
       return station;
   }
 }

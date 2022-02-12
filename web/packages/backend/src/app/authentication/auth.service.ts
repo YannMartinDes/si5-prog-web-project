@@ -1,11 +1,11 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { AuthCredentialsDto } from '../dtos/auth-credentials.dto';
 import * as bcrypt from 'bcrypt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from '../schemas/user.schema';
+import {AuthCredentialsDto} from "./dtos/auth-credentials.dto";
 
 @Injectable()
 export class AuthService {
@@ -23,15 +23,19 @@ export class AuthService {
   }
 
   async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
-    const { username, password }:any = authCredentialsDto;
+    const { username, password } = authCredentialsDto;
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = new this.userModel({ username, password: hashedPassword });
 
     try {
       await user.save();
-    } catch (error:any) {
+    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       if (error.code === 11000) {
         throw new ConflictException('User already exists');
       }
@@ -40,12 +44,14 @@ export class AuthService {
   }
 
   async validateUser(username: string, pass: string): Promise<any> {
-    const user : any = await this.userModel.findOne({ username });
+    const user = await this.userModel.findOne({ username });
 
     if (!user) {
       return null;
     }
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const valid = await bcrypt.compare(pass, user.password);
 
     if (valid) {
@@ -54,15 +60,4 @@ export class AuthService {
 
     return null;
   }
-
-  /*
-    async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOne(username);
-    if (user && user.password === pass) {
-      const { password, ...result } = user;
-      return result;
-    }
-    return null;
-  }
-   */
 }
