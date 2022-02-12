@@ -1,8 +1,6 @@
-import { Body, Controller, Get, Param, Query} from '@nestjs/common';
+import { Controller, Get, Param, Query} from '@nestjs/common';
 import { StationService } from './station-repository.service';
 import {Filter, GasStationInfo} from '@web/common/dto';
-import { stat } from 'fs';
-import { Station } from '../schemas/station.schema';
 
 @Controller('station')
 export class StationController {
@@ -24,6 +22,21 @@ export class StationController {
       console.log("Stations Id : call with "+id);
       const station:GasStationInfo|undefined = await this.stationRepository.readById(id);
       return station;
+  }
+
+  @Get('fuel-type')
+  async getAllFuelType() {
+      const distinctFuel:string[] = await this.stationRepository.findDistinctFuelType();
+      console.log(JSON.stringify(distinctFuel))
+      return distinctFuel;
+  }
+
+
+  @Get('service-type')
+  async getAllServiceType() {
+      const distinctService:string[] = await this.stationRepository.findDistinctServices();
+      console.log(JSON.stringify(distinctService))
+      return distinctService;
   }
 }
 

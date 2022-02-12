@@ -197,4 +197,11 @@ export class StationService {
     return listGasStationInfo[0]
   }
 
+  findDistinctFuelType(){ //TODO store in separete schema (not optimise)
+    return this.stationModel.distinct("prix._attributes.nom").exec();
+  }
+
+  findDistinctServices(){ //TODO store in separete schema (not optimise)
+    return this.stationModel.distinct("services.service._text").exec();
+  }
 }
