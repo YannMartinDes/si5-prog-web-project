@@ -1,8 +1,6 @@
-import { Body, Controller, Get, Param, Query} from '@nestjs/common';
+import { Controller, Get, Param, Query} from '@nestjs/common';
 import { StationService } from './station-repository.service';
 import {Filter, GasStationInfo} from '@web/common/dto';
-import { stat } from 'fs';
-import { Station } from '../schemas/station.schema';
 
 @Controller('station')
 export class StationController {
@@ -13,7 +11,8 @@ export class StationController {
   @Get('near-station')
   public async getAllNearStation(@Query('longitude') longitude:string,@Query('latitude') latitude:string,@Query('maxDist') maxDist:string,@Query('filter') filter:Filter) {
     //console.log("Receive call with "+longitude+" "+latitude+" "+maxDist+" "+JSON.stringify(filter));
-    const stations = await this.stationRepository.findSphere(+longitude,+latitude,+maxDist,JSON.parse(filter));
+
+    const stations = await this.stationRepository.findSphere(+longitude,+latitude,+maxDist,filter);
     return stations;
   }
 
@@ -23,6 +22,21 @@ export class StationController {
       console.log("Stations Id : call with "+id);
       const station:GasStationInfo|undefined = await this.stationRepository.readById(id);
       return station;
+  }
+
+  @Get('fuel-type')
+  async getAllFuelType() {
+      const distinctFuel:string[] = await this.stationRepository.findDistinctFuelType();
+      console.log(JSON.stringify(distinctFuel))
+      return distinctFuel;
+  }
+
+
+  @Get('service-type')
+  async getAllServiceType() {
+      const distinctService:string[] = await this.stationRepository.findDistinctServices();
+      console.log(JSON.stringify(distinctService))
+      return distinctService;
   }
 }
 
