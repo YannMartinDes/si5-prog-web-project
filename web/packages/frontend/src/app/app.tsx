@@ -66,7 +66,7 @@ function App() {
     console.log("CALL BACKEND FOR ALL STATION " + JSON.stringify(currentPos));
     axios.get(ALL_STATION_URL, { params: { latitude: currentPos.lat, longitude: currentPos.lon, maxDist: radius, filter:filter } })
        .then(res => {
-          console.log("Receive response "+JSON.stringify(res));
+          //console.log("Receive response "+JSON.stringify(res));
           const stations:GasStationPosition[] = res.data;
           setStationList(stations);
        });
@@ -76,7 +76,7 @@ function App() {
     console.log("CALL BACKEND FOR STATION INFO "+stationId)
     axios.get(STATION_INFO+"/"+stationId)
        .then(res => {
-          console.log("Receive response "+JSON.stringify(res))
+          //console.log("Receive response "+JSON.stringify(res))
           setGasStationInfo(res.data);
        });
   }
@@ -84,7 +84,7 @@ function App() {
     console.log("CALL BACKEND FOR ALL STATION")
     axios.get(FIND_URL, { params: {text:text,caseSensitive:false} })
        .then(res => {
-          console.log("Receive response "+JSON.stringify(res));
+          //console.log("Receive response "+JSON.stringify(res));
           const stations:GasStationPosition[] = res.data;
           setStationList(stations);
        });
@@ -99,7 +99,7 @@ function App() {
         setPosition(pos);
       })
     } else {
-      console.log('position not updated ');
+      console.log('Impossible to use location');
     }
     getAllStation(pos,range,filter);
     //setStationList([{id:"station test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], address:"rue de mon cul"}])

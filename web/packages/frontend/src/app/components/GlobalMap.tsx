@@ -1,7 +1,7 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
 
 import { GasStationPosition, Position } from '@web/common/dto';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {MapContainer, TileLayer, useMap} from 'react-leaflet';
 import MapMarker from './MapMarker';
 
@@ -10,21 +10,22 @@ export default function GlobalMap({markersList,position,onMarkerClick}:
 position:Position,
 onMarkerClick:(Id:string)=>void})
 {
+
+  const [lastPos,setLastPos] = useState<Position>({lat:43.675819, lon:7.289429});
+
   function ChangeView({ center, zoom}:
-  {
-    center: any,
-    zoom: number,
-  }) {
+  {center:[number,number],zoom: number,}) {
+    //console.log("Pos "+JSON.stringify(position)+" -- last "+JSON.stringify(lastPos))
     const map = useMap();
+    setLastPos(position);
     map.setView(center, zoom);
     return null;
   }
 
-  console.log('Displaying current position IN MAP: ', JSON.stringify(position));
     return(
         <div id='map'>
             <MapContainer center={[position.lat,position.lon]} zoom={13} scrollWheelZoom={false}>
-              <ChangeView center={[position.lat,position.lon]} zoom={13} />
+              {lastPos !== position && <ChangeView center={[position.lat,position.lon]} zoom={13} />}
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
