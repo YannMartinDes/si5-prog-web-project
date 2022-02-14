@@ -7,11 +7,11 @@ export default function CustomerPosition({onButtonClick}:
   let lat  =  2;
 
   return (
-    <li>
+    <div>
       <button onChange={(e)=>{
-               onButtonClick(long, lat) }}/>
+             onButtonClick(long, lat) }} > LE BOUTON </button>
 
       Showing Position : {long} : {lat}
-    </li>
+    </div>
   )
 }

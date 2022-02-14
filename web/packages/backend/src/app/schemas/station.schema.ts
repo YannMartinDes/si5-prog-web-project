@@ -7,7 +7,7 @@ import { serviceSchema } from './service.schema';
 
 
 @Schema()
-export class Station extends Document {
+export class Station extends Document<string> {
 
   @Prop()
   _id?:string

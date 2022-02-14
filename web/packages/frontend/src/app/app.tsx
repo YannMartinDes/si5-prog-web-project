@@ -91,6 +91,14 @@ function App() {
   }
 
   useEffect(()=>{//== ComponentDidMount
+    if(navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        console.log('Position : updated');
+        setPosition({lat: position.coords.latitude, lon: position.coords.longitude});
+      })
+    } else {
+      console.log('position not updated ');
+    }
     getAllStation(position,range,filter);
     //setStationList([{id:"station test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], address:"rue de mon cul"}])
   },[])
@@ -134,8 +142,16 @@ function App() {
   }
 
   const onPositionChange = (lat:number, lon:number) => {
-    setPosition({lat: lat, lon: lon});
+    navigator.geolocation.getCurrentPosition((position) => {
+      console.log('Position : updated');
+      setPosition({lat: position.coords.latitude, lon: position.coords.longitude});
+    })
+    //setPosition({lat: lat, lon: lon});
   }
+
+
+
+
   function handleClick() {
     getAllStationByText(query)
    }
@@ -147,7 +163,9 @@ function App() {
       <FilterBar onCheckBoxClick={onFilterCheckBoxClick} />
       <SideMenu gasStationInfo={gasStationInfo}/>
       <GlobalMap markersList={stationList} position={position} onMarkerClick={onMarkerClick}/>
-      <CustomerPosition onButtonClick={onPositionChange} />
+      <div>
+        Position : {position.lat} , {position.lon}
+      </div>
     </div>
   );
 }

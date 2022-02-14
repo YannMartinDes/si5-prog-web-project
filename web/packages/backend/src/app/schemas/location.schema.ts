@@ -2,10 +2,10 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, SchemaTypeOptions} from 'mongoose';
 
 @Schema()
-export class locationSchema extends Document {
+export class locationSchema extends Document<string> {
 
   @Prop()
-  id?: string
+  _id?: string
 
   @Prop()
   latitude?:string
