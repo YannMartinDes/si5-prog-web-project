@@ -10,6 +10,7 @@ import { Filter, GasStationInfo, GasStationPosition, Position } from '@web/commo
 import SideMenu from './components/SideMenu';
 import FilterBar from './components/FilterBar';
 import { stringEssenceArray, stringServicesArray } from '../../../common/dto/src/lib/utils';
+import CustomerPosition from "./components/CustomerPosition";
 
 
 //Extend marker prototype to fix : https://stackoverflow.com/questions/49441600/react-leaflet-marker-files-not-found
@@ -121,6 +122,7 @@ function App() {
       <FilterBar onCheckBoxClick={onFilterCheckBoxClick} />
       <SideMenu gasStationInfo={gasStationInfo}/>
       <GlobalMap markersList={stationList} position={position} onMarkerClick={onMarkerClick}/>
+      <CustomerPosition onButtonClick={onPositionChange} />
     </div>
   );
 }
