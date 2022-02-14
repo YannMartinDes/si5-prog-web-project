@@ -44,6 +44,7 @@ export class StationLoaderService {
     console.log("CRON: start update from gouv api")
     await this.loadStation();
     await this.stationRepository.createIndex();
+    await this.stationRepository.createTextIndexWithWildCardForAll()
     console.log("CRON: successful update")
 
   }

@@ -19,12 +19,14 @@ const DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 const ALL_STATION_URL = "http://localhost:3333/api/station/near-station"
+const FIND_URL = "http://localhost:3333/api/station/find"
 const STATION_INFO = "http://localhost:3333/api/station/stations"
 
 const range = 20000
 
 
 function App() {
+  const [query, setQuery] = useState(" ")
   const [stationList,setStationList] = useState<GasStationPosition[]>([]);
   const [gasStationInfo,setGasStationInfo] = useState<GasStationInfo>();
   const servicesList:string[]=[
@@ -77,6 +79,15 @@ function App() {
           setGasStationInfo(res.data);
        });
   }
+  function getAllStationByText(text:string){
+    console.log("CALL BACKEND FOR ALL STATION")
+    axios.get(FIND_URL, { params: {text:text,caseSensitive:false} })
+       .then(res => {
+          console.log("Receive response "+JSON.stringify(res));
+          const stations:GasStationPosition[] = res.data;
+          setStationList(stations);
+       });
+  }
 
   useEffect(()=>{//== ComponentDidMount
     getAllStation(position,range,filter);
@@ -124,9 +135,14 @@ function App() {
   const onPositionChange = (lat:number, lon:number) => {
     setPosition({lat: lat, lon: lon});
   }
+  function handleClick() {
+    getAllStationByText(query)
+   }
 
   return (
     <div>
+      <input placeholder="Rechercher.." onChange={event => setQuery(event.target.value)} />
+      <button onClick={handleClick} name="button">Cliquer pour rechercher  </button>
       <FilterBar onCheckBoxClick={onFilterCheckBoxClick} />
       <SideMenu gasStationInfo={gasStationInfo}/>
       <GlobalMap markersList={stationList} position={position} onMarkerClick={onMarkerClick}/>

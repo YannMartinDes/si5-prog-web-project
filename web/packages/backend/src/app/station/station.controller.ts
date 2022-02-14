@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query} from '@nestjs/common';
+import { Body, Controller, Get, Param, Query} from '@nestjs/common';
 import { StationService } from './station-repository.service';
 import {Filter, GasStationInfo} from '@web/common/dto';
 
@@ -15,7 +15,19 @@ export class StationController {
     const stations = await this.stationRepository.findSphere(+longitude,+latitude,+maxDist,filter);
     return stations;
   }
+  @Get('find')
+  public async findAllQuery(@Query('text') text:string,@Query('caseSensitive') caseSensitive:boolean) {
+    console.log("Receive call for find : "+text);
 
+    const stations = await this.stationRepository.findAllText(
+      { "$text": { "$search": text,
+                              $caseSensitive: caseSensitive,
+                              $diacriticSensitive: false
+                  }
+      })
+      
+    return stations;
+  }
   
   @Get('stations/:id')
   async findById(@Param('id') id:string) {

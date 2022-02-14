@@ -8,6 +8,10 @@ import { GasStationHourSchedule } from 'packages/common/dto/src/lib/gas-station-
 @Injectable()
 export class StationService {
 
+  async createTextIndexWithWildCardForAll() {
+    return await this.stationModel.collection.createIndex( { "$**": "text" } )
+  }
+
   constructor(
     @InjectModel("STATION") private readonly stationModel: Model<Station>,
   ){
@@ -113,8 +117,39 @@ export class StationService {
   }
 
   async findAll(query:any): Promise<Station[]> {
-    //console.log(query)
-    return this.stationModel.find(query).exec();
+    let stations : Station[] = await this.stationModel.find(query).exec();
+    return stations
+  }
+  async findAllText(query:any): Promise<GasStationPosition[]> {
+    let listGasStationPosition : GasStationPosition[] =[]
+    let stations : Station[] = await this.stationModel.find(query).exec();
+    
+    for (let station of stations){
+      let address=""
+      let id=""
+      let pos:Position={lat:0,lon:0}
+      let gasInfoArray = []
+      if (station?.adresse?._text){
+        address=station.adresse._text}
+      if (station?.coordinates){
+        let latLongArray:number[]=station.coordinates
+        pos.lon=latLongArray[0]
+        pos.lat=latLongArray[1]
+      }
+      if (station?._attributes?.id){
+        id=station._attributes.id
+      }
+      if (station?.prix){
+        for (const gasInfo of station.prix){
+          gasInfoArray.push({gasType:gasInfo._attributes.nom,price:gasInfo._attributes.valeur})
+        }
+      }
+      let gasPrice :GasPrice[] = gasInfoArray
+      
+      let gasPos : GasStationPosition = {id:id,position:pos,address:address,prices:gasPrice}  
+      listGasStationPosition.push(gasPos)
+    }
+    return listGasStationPosition
   }
 
 
