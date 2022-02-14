@@ -14,10 +14,9 @@ export default function FilterBar({ onCheckBoxClick }:
   },[])
 
   const onCheckBoxChangeGaz = (value: string, checked: boolean) => {
-    onCheckBoxClick("gaz", value, checked)
+    onCheckBoxClick("gas", value, checked)
   }
   const onCheckBoxChangeService = (value: string, checked: boolean) => {
-    console.log("im call")
     onCheckBoxClick("services", value, checked)
   }
 
