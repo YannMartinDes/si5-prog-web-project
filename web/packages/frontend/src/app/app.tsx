@@ -63,7 +63,7 @@ function App() {
   //const testPos:Position = navigator.geolocation.getCurrentPosition(onPositionChange());
 
   function getAllStation(currentPos:Position, radius:number, filter:Filter) {
-    console.log("CALL BACKEND FOR ALL STATION")
+    console.log("CALL BACKEND FOR ALL STATION " + JSON.stringify(currentPos));
     axios.get(ALL_STATION_URL, { params: { latitude: currentPos.lat, longitude: currentPos.lon, maxDist: radius, filter:filter } })
        .then(res => {
           console.log("Receive response "+JSON.stringify(res));
@@ -91,22 +91,24 @@ function App() {
   }
 
   useEffect(()=>{//== ComponentDidMount
+    let pos = position;
     if(navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         console.log('Position : updated');
-        setPosition({lat: position.coords.latitude, lon: position.coords.longitude});
+        pos = {lat: position.coords.latitude, lon: position.coords.longitude};
+        setPosition(pos);
       })
     } else {
       console.log('position not updated ');
     }
-    getAllStation(position,range,filter);
+    getAllStation(pos,range,filter);
     //setStationList([{id:"station test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], address:"rue de mon cul"}])
   },[])
 
   useEffect(()=>{//== ComponentDidMount
     getAllStation(position,range,filter);
     //setStationList([{id:"station test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], address:"rue de mon cul"}])
-  },[filter])
+  },[filter, position])
 
 
   const onMarkerClick = (stationId:string) =>{

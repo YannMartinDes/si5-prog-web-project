@@ -10,6 +10,7 @@ export default function GlobalMap({markersList,position,onMarkerClick}:
 position:Position,
 onMarkerClick:(Id:string)=>void})
 {
+  console.log('Displaying current position IN MAP: ', JSON.stringify(position));
     return(
         <div id='map'>
             <MapContainer center={[position.lat,position.lon]} zoom={13} scrollWheelZoom={false}>
