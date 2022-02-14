@@ -8,6 +8,10 @@ import { GasStationHourSchedule } from 'packages/common/dto/src/lib/gas-station-
 @Injectable()
 export class StationService {
 
+  async createTextIndexWithWildCardForAll() {
+    return await this.stationModel.collection.createIndex( { "$**": "text" } )
+  }
+
   constructor(
     @InjectModel("STATION") private readonly stationModel: Model<Station>,
   ){
