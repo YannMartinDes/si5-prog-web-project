@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Station } from '../schemas/station.schema';
 import {Filter,GasStationPosition,Position,GasPrice, GasStationInfo, GasStationSchedule} from '@web/common/dto';
-import {getGasServicesArray, getID,getGasPrices,getAdresseText, getCoordinates, getGasStationSchedule, createQueryNearWithFilter } from 'packages/common/dto/src/lib/utils';
+import {getGasServicesArray, getID,getGasPrices,getAdresseText, getCoordinates, getGasStationSchedule, createQueryNearWithFilter } from 'packages/backend/src/app/station/utils/utils';
 
 @Injectable()
 export class StationService {
