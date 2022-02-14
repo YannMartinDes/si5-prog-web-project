@@ -106,7 +106,7 @@ export function getGasStationHourSchedule(scheduleInfo: any):GasStationHourSched
     }
   return gasHourInfo
 }
-export function getClosed(scheduleInfo :ScheduleInfo){
+export function getClosed(scheduleInfo: { _attributes: any; horaire?: { _attributes: { ouverture: string; fermeture: string; }; }; } ){
     let closed : boolean
     if (scheduleInfo?._attributes.ferme==''){
     closed=true
