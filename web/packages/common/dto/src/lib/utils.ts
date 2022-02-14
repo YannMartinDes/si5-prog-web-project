@@ -5,7 +5,7 @@ import { GasPrice } from './gas-price';
 import { GasStationHourSchedule } from './gas-station-hour-schedule';
 import { GasStationSchedule } from './gas-station-schedule';
 
-export const stringServicesArray :string[] = [
+export const stringServicesArray : string[] = [
     "Aire de camping-cars",
     "Bar",
     "Bornes électriques",
@@ -41,7 +41,7 @@ export const stringEssenceArray :string[] =   ["Gazole",
         "SP98"]
 export function getAdresseText(station: Station){
     if (station?.adresse?._text){
-        return station.adresse._text 
+        return station.adresse._text
     }
     else {
         return "undefined"
@@ -94,7 +94,7 @@ if (station?.services?.service){
     return gasServicesArray
     }
 
-export function getGasStationHourSchedule(scheduleInfo: any):GasStationHourSchedule[]{    
+export function getGasStationHourSchedule(scheduleInfo: any):GasStationHourSchedule[]{
     let gasHourInfo:GasStationHourSchedule[]= []
     if (scheduleInfo?.horaire?._attributes){
     let openString :string = (+scheduleInfo.horaire._attributes.ouverture.split(".")[0])+"h"+scheduleInfo.horaire._attributes.ouverture.split(".")[1]
@@ -124,7 +124,7 @@ export function getGasStationSchedule(station: Station):GasStationSchedule[]{
         for (const scheduleInfo of station?.horaires?.jour){
         let gasHourInfo:GasStationHourSchedule[]= getGasStationHourSchedule(scheduleInfo)
         let closed : boolean= getClosed(scheduleInfo)
-        
+
         if(scheduleInfo?._attributes){
         schedules.push({day:scheduleInfo._attributes.nom,openned:closed,
         hourSchedule:gasHourInfo})

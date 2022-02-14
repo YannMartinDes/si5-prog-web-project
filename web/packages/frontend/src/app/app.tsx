@@ -9,6 +9,7 @@ import GlobalMap from './components/GlobalMap';
 import { Filter, GasStationInfo, GasStationPosition, Position } from '@web/common/dto';
 import SideMenu from './components/SideMenu';
 import FilterBar from './components/FilterBar';
+import CustomerPosition from "./components/CustomerPosition";
 
 
 //Extend marker prototype to fix : https://stackoverflow.com/questions/49441600/react-leaflet-marker-files-not-found
