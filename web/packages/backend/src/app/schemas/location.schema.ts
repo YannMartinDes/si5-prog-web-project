@@ -5,7 +5,7 @@ import { Document, SchemaTypeOptions} from 'mongoose';
 export class locationSchema extends Document<string> {
 
   @Prop()
-  _id?: string
+  id?: string
 
   @Prop()
   latitude?:string
