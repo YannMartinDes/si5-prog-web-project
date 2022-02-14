@@ -21,8 +21,6 @@ import {UsersModule} from "./users/users.module";
     MongooseModule.forRoot(environment.DATABASE,{authSource:"admin"}),
     MongooseModule.forFeature([
       { name:"STATION",schema: StationSchema },
-    ]),
-    MongooseModule.forFeature([
       { name: 'USER', schema: UserSchema }
     ]),
     HttpModule,
