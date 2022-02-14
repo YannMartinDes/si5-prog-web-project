@@ -1,11 +1,10 @@
-import { Station } from '../../../../backend/src/app/schemas/station.schema';
 import { Position } from '../../../../common/dto/src/lib/position'
 import { Filter } from './filter';
 import { GasPrice } from './gas-price';
 import { GasStationHourSchedule } from './gas-station-hour-schedule';
 import { GasStationSchedule } from './gas-station-schedule';
 
-export const stringServicesArray : string[] = [
+const stringServicesArray : string[] = [
     "Aire de camping-cars",
     "Bar",
     "Bornes électriques",
@@ -33,13 +32,13 @@ export const stringServicesArray : string[] = [
     "Vente de pétrole lampant",
     "Wifi"]
 
-export const stringEssenceArray :string[] =   ["Gazole",
+const stringEssenceArray :string[] =   ["Gazole",
         "SP95",
         "E85",
         "GPLc",
         "E10",
         "SP98"]
-export function getAdresseText(station: Station){
+export function getAdresseText(station: any){
     if (station?.adresse?._text){
         return station.adresse._text
     }
@@ -48,7 +47,7 @@ export function getAdresseText(station: Station){
     }
 }
 
-export function getCoordinates(station: Station){
+export function getCoordinates(station: any){
     let pos:Position={lat:0,lon:0}
     if (station?.coordinates){
         let latLongArray:number[]=station.coordinates
@@ -59,7 +58,7 @@ export function getCoordinates(station: Station){
       return pos
 }
 
-export function getID(station: Station){
+export function getID(station: any){
 if (station?._attributes?.id){
     return station._attributes.id
   }
@@ -68,7 +67,7 @@ if (station?._attributes?.id){
     }
 }
 
-export function getGasPrices(station: Station):GasPrice[]{
+export function getGasPrices(station: any):GasPrice[]{
     let gasInfoArray :GasPrice[] = []
     if (station?.prix){
     for (const gasInfo of station.prix){
@@ -80,7 +79,7 @@ export function getGasPrices(station: Station):GasPrice[]{
     return gasInfoArray
 }
 
-export function getGasServicesArray(station: Station):string[]{
+export function getGasServicesArray(station: any):string[]{
 let gasServicesArray : string []= []
 if (station?.services?.service){
   if (station?.services?.service.length>0){
@@ -117,7 +116,7 @@ export function getClosed(scheduleInfo: { _attributes: any; horaire?: { _attribu
     return closed
 }
 
-export function getGasStationSchedule(station: Station):GasStationSchedule[]{
+export function getGasStationSchedule(station: any):GasStationSchedule[]{
     let schedules: GasStationSchedule[] = []
     if (station?.horaires?.jour){
 
