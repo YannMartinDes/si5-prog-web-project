@@ -146,6 +146,7 @@ function App() {
       <FilterBar onCheckBoxClick={onFilterCheckBoxClick} />
       <SideMenu gasStationInfo={gasStationInfo}/>
       <GlobalMap markersList={stationList} position={position} onMarkerClick={onMarkerClick}/>
+      <CustomerPosition onButtonClick={onPositionChange} />
     </div>
   );
 }
