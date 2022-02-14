@@ -9,7 +9,6 @@ import GlobalMap from './components/GlobalMap';
 import { Filter, GasStationInfo, GasStationPosition, Position } from '@web/common/dto';
 import SideMenu from './components/SideMenu';
 import FilterBar from './components/FilterBar';
-import { stringEssenceArray, stringServicesArray } from '../../../common/dto/src/lib/utils';
 
 
 //Extend marker prototype to fix : https://stackoverflow.com/questions/49441600/react-leaflet-marker-files-not-found
@@ -30,8 +29,34 @@ function App() {
   const [query, setQuery] = useState(" ")
   const [stationList,setStationList] = useState<GasStationPosition[]>([]);
   const [gasStationInfo,setGasStationInfo] = useState<GasStationInfo>();
-  const servicesList:string[]=stringServicesArray
-  const [filter, setFilter] = useState<Filter>({gas:stringEssenceArray,schedules:[],services:servicesList});
+  const servicesList:string[]=[
+  "Aire de camping-cars",
+  "Bar",
+  "Bornes électriques",
+  "Boutique alimentaire",
+  "Boutique non alimentaire",
+  "Carburant additivé",
+  "DAB (Distributeur automatique de billets)",
+  "Douches",
+  "Espace bébé",
+  "GNV",
+  "Lavage automatique",
+  "Lavage manuel",
+  "Laverie",
+  "Location de véhicule",
+  "Piste poids lourds",
+  "Relais colis",
+  "Restauration à emporter",
+  "Restauration sur place",
+  "Services réparation / entretien",
+  "Station de gonflage",
+  "Toilettes publiques",
+  "Vente d'additifs carburants",
+  "Vente de fioul domestique",
+  "Vente de gaz domestique (Butane, Propane)",
+  "Vente de pétrole lampant",
+  "Wifi"]
+  const [filter, setFilter] = useState<Filter>({gas:['Gazole', 'SP95','E85', 'GPLc', 'E10', 'SP98'],schedules:[],services:servicesList});
   const [position, setPosition] = useState<Position>({lat:43.675819, lon:7.289429});
 
   //const testPos:Position = navigator.geolocation.getCurrentPosition(onPositionChange());
