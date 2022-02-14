@@ -19,7 +19,7 @@ export class StationController {
   public async findAllQuery(@Query('text') text:string,@Query('caseSensitive') caseSensitive:boolean) {
     console.log("Receive call for find : "+text);
 
-    const stations = await this.stationRepository.findAll(
+    const stations = await this.stationRepository.findAllText(
       { "$text": { "$search": text,
                               $caseSensitive: caseSensitive,
                               $diacriticSensitive: false
