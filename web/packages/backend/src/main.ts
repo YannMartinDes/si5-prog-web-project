@@ -3,9 +3,9 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-
+import { environment } from './environments/environment'
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
@@ -14,7 +14,13 @@ async function bootstrap() {
     origin: '*',
     methods: 'GET, PUT, POST, DELETE',
     allowedHeaders: 'Content-Type, Authorization',
-});
+  });
+  app.useGlobalPipes(new ValidationPipe({
+      transform:true,
+      enableDebugMessages:!environment.production
+    }
+  ));
+
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3333;

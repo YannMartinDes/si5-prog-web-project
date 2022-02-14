@@ -1,55 +1,51 @@
-import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document, SchemaTypeOptions} from 'mongoose';
-import {locationSchema } from './location.schema'
-import { textSchema } from './text.schema';
-import { horaireSchema } from './horaire.schema';
-import { serviceSchema } from './service.schema';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Fuel } from "./fuel.schema";
+import { Schedule } from "./schedule.schema";
+import { Point } from "geojson";
+import { Document } from 'mongoose';
 
-
+export type StationDocument = Station & Document;
 @Schema()
-export class Station extends Document<string> {
+export class Station{
 
-  @Prop()
-  _id?:string
 
-  @Prop()
-  coordinates?:[number]
+    @Prop()
+    _id!:string;
 
-  @Prop()
-  horaires?: horaireSchema
+    @Prop({type: {
+      type: String,
+      enum: ['Point'],
+      default: 'Point',
+    },
+    coordinates: {
+      type: [Number],
+      default: [0, 0],
+    }})
+    position!:Point
 
-  @Prop()
-  _attributes?: locationSchema
+    @Prop()
+    fuels?:Fuel[]
 
-  @Prop()
-  adresse?:textSchema
+    @Prop()
+    services?:string[]
 
-  @Prop()
-  ville?: textSchema
+    @Prop()
+    address!:string
 
-  @Prop()
-  services?: serviceSchema
+    @Prop()
+    city?:string
 
-  @Prop()
-  prix?: [{
-        _attributes: {
-            nom: string,
-            id: string,
-            maj: string,
-            valeur: string
-        }
-    }]
+    @Prop()
+    schedules?:Schedule[]
 
-  @Prop()
-  rupture ?: [{
-    _attributes: {
-        id: string,
-        nom: string,
-        debut: string,
-        fin: string
-    }
-}]
+
+    @Prop({type:Boolean})
+    automate = false
+
 }
 
-export const StationSchema = SchemaFactory.createForClass(Station);
+const StationSchema = SchemaFactory.createForClass(Station);
+StationSchema.index( { "$**": "text" })
+StationSchema.index( { position: "2dsphere" })
 
+export {StationSchema};

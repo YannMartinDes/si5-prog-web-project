@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 
-import { StationSchema } from './schemas/station.schema';
 import { environment } from '../environments/environment';
 
 import { ScheduleModule } from '@nestjs/schedule';
@@ -13,6 +12,7 @@ import { StationController } from './station/station.controller';
 import {UserSchema} from "./schemas/user.schema";
 import {AuthModule} from "./authentication/auth.module";
 import {UsersModule} from "./users/users.module";
+import { StationSchema } from './schemas/station.schema';
 
 @Module({
   imports: [

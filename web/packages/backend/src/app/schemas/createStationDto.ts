@@ -3,22 +3,22 @@ import { MaxLength, IsNotEmpty, IsEmail, IsString, IsNumber } from 'class-valida
 export class CreateStationDto {
 
   @IsNotEmpty()
-  readonly _attributes?:string;
+  readonly _attributes!:string;
 
   @IsNotEmpty()
-  readonly adresse?:string;
+  readonly adresse!:string;
 
   @IsNotEmpty()
-  readonly ville?:string;
+  readonly ville!:string;
 
   @IsNotEmpty()
-  readonly services?:string;
+  readonly services!:string;
 
   @IsNotEmpty()
   @IsNumber()
-  readonly prix?:number;
+  readonly prix!:number;
 
   @IsNotEmpty()
-  readonly rupture?:string;
+  readonly rupture!:string;
 }
 

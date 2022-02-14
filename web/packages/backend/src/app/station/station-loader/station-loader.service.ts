@@ -6,8 +6,11 @@ import AdmZip = require('adm-zip');
 import { Model } from 'mongoose';
 import { firstValueFrom } from 'rxjs';
 import convert = require('xml-js');
-import { Station } from '../../schemas/station.schema';
 import { StationService } from '../station-repository.service';
+import { LoadStation } from './load-schema/load-station.class';
+import { Point } from 'geojson'
+import { transformLoadStationToModelStation } from './load-schema/station-transformer';
+import { Station } from '../../schemas/station.schema';
 
 @Injectable()
 export class StationLoaderService {
@@ -42,9 +45,15 @@ export class StationLoaderService {
     // else {
     //   url="https://donnees.roulez-eco.fr/opendata/jour/"+date.getFullYear()+ month +day}
     console.log("CRON: start update from gouv api")
-    await this.loadStation();
-    await this.stationRepository.createIndex();
-    await this.stationRepository.createTextIndexWithWildCardForAll()
+    const loadStationList = await this.loadStation();
+    const stationSchemaList = loadStationList.map(transformLoadStationToModelStation)
+    await this.stationModel.deleteMany()
+
+    // for( const station of stationSchemaList){ //FOR DEBUG ONLY
+    //   console.log(station.position)
+    //   await this.stationModel.create(new this.stationModel(station))
+    // }
+    const stationSchemaListSaved = await this.stationModel.insertMany(stationSchemaList)
     console.log("CRON: successful update")
 
   }
@@ -64,16 +73,21 @@ export class StationLoaderService {
     return convert.xml2json(xml, {compact: true});
   }
 
-  async loadStation() :Promise<Station[]>{
+  async loadStation() :Promise<LoadStation[]>{
       const resultJson=await this.getJsonFromUrl();
-      const dict=JSON.parse(resultJson)
-      const arrayLocal:Station[]=[]
+      const dict=JSON.parse(resultJson);
+      const arrayLocal:LoadStation[]=[];
       for (const element of dict["pdv_liste"]["pdv"]){
-          element["coordinates"]= [element["_attributes"]["longitude"]*0.00001 , element["_attributes"]["latitude"]*0.00001]
-          arrayLocal.push(element)
+        const geoJsonPoint:Point={
+          type: 'Point',
+          coordinates:[element["_attributes"]["longitude"]*0.00001 , element["_attributes"]["latitude"]*0.00001]
+        }
+        element.location=geoJsonPoint;
+        arrayLocal.push(element);
       }
-      await this.stationModel.deleteMany();
-      return await this.stationModel.insertMany(arrayLocal)
+      return arrayLocal;
+      // await this.stationModel.deleteMany();
+      // return await this.stationModel.insertMany(arrayLocal)
   }
 
   // deltaDate(input, days, months, years) {

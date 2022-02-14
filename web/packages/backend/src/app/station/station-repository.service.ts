@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
+import {Filter,GasStationPosition} from '@web/common/dto';
 import { Station } from '../schemas/station.schema';
-import {Filter,GasStationPosition,Position,GasPrice, GasStationInfo, GasStationSchedule} from '@web/common/dto';
-import {getGasServicesArray, getID,getGasPrices,getAdresseText, getCoordinates, getGasStationSchedule, createQueryNearWithFilter } from 'packages/backend/src/app/station/utils/utils';
 
 @Injectable()
 export class StationService {
@@ -30,69 +29,77 @@ export class StationService {
     return await this.stationModel.collection.createIndex({coordinates:"2dsphere"});
   }
 
-  async findSphere(longitudeCurrent:number,latitudeCurrent:number,maxDist:number,filter:Filter){
-    let query = createQueryNearWithFilter(longitudeCurrent,latitudeCurrent,maxDist,filter)
-
-    let listGasStationPosition : GasStationPosition[] =[]
-    let stations : Station[] = await this.stationModel.find(query).exec();
-    
-    for (let station of stations){
-
-      let id=getID(station)
-      let pos:Position=getCoordinates(station)
-      let address=getAdresseText(station)
-      let gasPrice :GasPrice[] = getGasPrices(station)
-      let gasPos : GasStationPosition = {id:id,position:pos,address:address,prices:gasPrice}  
-      listGasStationPosition.push(gasPos)
+  async findSphere(longitudeCurrent:number,latitudeCurrent:number,maxDist:number,filter:Filter):Promise<Station[]>{
+    const query:FilterQuery<Station> = {}
+    if(longitudeCurrent&&latitudeCurrent&&maxDist){
+      query.position={ 
+        $nearSphere:{
+          $geometry: {
+            type: "Point" ,
+            coordinates: [ longitudeCurrent , latitudeCurrent ]
+          },
+          $maxDistance:maxDist
+        }
+      }
     }
-    return listGasStationPosition
+    if(filter.services?.length>0){
+      query.services={$in:filter.services}
+    }
+    console.log("gas :"+filter.gas)
+    if(filter.gas?.length>0){
+      query["fuels.name"] = {$in:filter.gas}
+    }
+
+    const stations = await this.stationModel.find(query)
+    return stations
+    // let query = createQueryNearWithFilter(longitudeCurrent,latitudeCurrent,maxDist,filter)
+
+    // let listGasStationPosition : GasStationPosition[] =[]
+    // let stations : Station[] = await this.stationModel.find(query).exec();
+    
+    // for (let station of stations){
+
+    //   let id=getID(station)
+    //   let pos:Position=getCoordinates(station)
+    //   let address=getAdresseText(station)
+    //   let gasPrice :GasPrice[] = getGasPrices(station)
+    //   let gasPos : GasStationPosition = {id:id,position:pos,address:address,prices:gasPrice}  
+    //   listGasStationPosition.push(gasPos)
+    // }
+    // return listGasStationPosition
   }
 
   async findAll(query:any): Promise<Station[]> {
-    let stations : Station[] = await this.stationModel.find(query).exec();
+    const stations : Station[] = await this.stationModel.find(query).exec();
     return stations
   }
 
   async findAllText(query:any): Promise<GasStationPosition[]> {
-    let listGasStationPosition : GasStationPosition[] =[]
-    let stations : Station[] = await this.stationModel.find(query).exec();
+    const listGasStationPosition : GasStationPosition[] =[]
+    const stations : Station[] = await this.stationModel.find(query).exec();
   
-    for (let station of stations){
-      let id=getID(station)
-      let pos:Position=getCoordinates(station)
-      let address=getAdresseText(station)
-      let gasPrice :GasPrice[] =getGasPrices(station)
-      let gasPos : GasStationPosition = {id:id,position:pos,address:address,prices:gasPrice}  
-      listGasStationPosition.push(gasPos)
-    }
+    // for (const station of stations){
+    //   let id=getID(station)
+    //   let pos:Position=getCoordinates(station)
+    //   let address=getAdresseText(station)
+    //   let gasPrice :GasPrice[] =getGasPrices(station)
+    //   let gasPos : GasStationPosition = {id:id,position:pos,address:address,prices:gasPrice}  
+    //   listGasStationPosition.push(gasPos)
+    // }
     return listGasStationPosition
   }
 
 
-  async readById(id:string){
-    let stations : Station[] = await this.stationModel.find({"_attributes.id":id}).exec();
-    //console.log("\n\n\n"+JSON.stringify(stations)+"\n\n\n");
-
-    let listGasStationInfo : GasStationInfo[] =[]
-    for (let station of stations){
-      let address=getAdresseText(station)
-      let id=getID(station)
-      let gasServicesArray =getGasServicesArray(station)
-      let schedules: GasStationSchedule[] = getGasStationSchedule(station)
-      let gasPrice :GasPrice[] = getGasPrices(station)
-      let gasStationInfoToPush : GasStationInfo = {id:id,address:address,prices:gasPrice,services:gasServicesArray,schedules:schedules}  
-      listGasStationInfo.push(gasStationInfoToPush)
-    }
-    //console.log(JSON.stringify(listGasStationInfo[0]))
-    return listGasStationInfo[0]
+  async findStationById(id:string):Promise<Station|null>{
+    return await this.stationModel.findOne({_id:id})// TODO opti request
   }
 
   findDistinctFuelType(){ //TODO store in separete schema (not optimise)
-    return this.stationModel.distinct("prix._attributes.nom").exec();
+    return this.stationModel.distinct("fuels.name").exec();
   }
 
   findDistinctServices(){ //TODO store in separete schema (not optimise)
-    return this.stationModel.distinct("services.service._text").exec();
+    return this.stationModel.distinct("services").exec();
   }
 }
 

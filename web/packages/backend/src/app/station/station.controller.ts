@@ -1,6 +1,8 @@
-import { Body, Controller, Get, Param, Query} from '@nestjs/common';
+import { Controller, Get, Param, Query} from '@nestjs/common';
 import { StationService } from './station-repository.service';
-import {Filter, GasStationInfo} from '@web/common/dto';
+import {Filter, GasStationInfo, GasStationPosition} from '@web/common/dto';
+import { GasStationPositionDTO } from '../dto/GasStationPositionDTO';
+import { GasStationInfoDTO } from '../dto/GasStationInforDTO';
 
 @Controller('station')
 export class StationController {
@@ -9,31 +11,33 @@ export class StationController {
 
 
   @Get('near-station')
-  public async getAllNearStation(@Query('longitude') longitude:string,@Query('latitude') latitude:string,@Query('maxDist') maxDist:string,@Query('filter') filter:Filter) {
-    //console.log("Receive call with "+longitude+" "+latitude+" "+maxDist+" "+JSON.stringify(filter));
-
-    const stations = await this.stationRepository.findSphere(+longitude,+latitude,+maxDist,filter);
-    return stations;
+  public async getAllNearStation(@Query('longitude') longitude:number,@Query('latitude') latitude:number,@Query('maxDist') maxDist:number,@Query('filter') filter:string):Promise<GasStationPosition[]> {
+    console.log("Receive call with "+longitude+" "+latitude+" "+maxDist+" "+JSON.stringify(filter));
+    const stations = await this.stationRepository.findSphere(longitude,latitude,maxDist,JSON.parse(filter));
+    return stations.map((elt)=>GasStationPositionDTO.fromStation(elt));
   }
-  @Get('find')
-  public async findAllQuery(@Query('text') text:string,@Query('caseSensitive') caseSensitive:boolean) {
-    console.log("Receive call for find : "+text);
+  // @Get('find')
+  // public async findAllQuery(@Query('text') text:string,@Query('caseSensitive') caseSensitive:boolean) {
+  //   console.log("Receive call for find : "+text);
 
-    const stations = await this.stationRepository.findAllText(
-      { "$text": { "$search": text,
-                              $caseSensitive: caseSensitive,
-                              $diacriticSensitive: false
-                  }
-      })
+  //   const stations = await this.stationRepository.findAllText(
+  //     { "$text": { "$search": text,
+  //                             $caseSensitive: caseSensitive,
+  //                             $diacriticSensitive: false
+  //                 }
+  //     })
       
-    return stations;
-  }
+  //   return stations;
+  // }
   
   @Get('stations/:id')
-  async findById(@Param('id') id:string) {
+  async findById(@Param('id') id:string):Promise<GasStationInfo> {
       console.log("Stations Id : call with "+id);
-      const station:GasStationInfo|undefined = await this.stationRepository.readById(id);
-      return station;
+      const station = await this.stationRepository.findStationById(id)
+      if(station) {
+        return GasStationInfoDTO.fromStation(station);
+      }
+      throw "STATION '"+id+"' NOT FOUND";
   }
 
   @Get('fuel-type')

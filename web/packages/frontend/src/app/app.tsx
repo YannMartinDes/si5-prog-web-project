@@ -106,6 +106,7 @@ function App() {
   },[])
 
   useEffect(()=>{//== ComponentDidMount
+    console.log(filter)
     getAllStation(position,range,filter);
     //setStationList([{id:"station test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], address:"rue de mon cul"}])
   },[filter, position])
