@@ -10,11 +10,9 @@ import { FilterStationContextProvider } from './app/context/FilterStationContext
 ReactDOM.render(
   <StrictMode>
     <BrowserRouter>
-    <FilterStationContextProvider>
-
+      <FilterStationContextProvider>
         <App />
       </FilterStationContextProvider>
-
     </BrowserRouter>
   </StrictMode>,
   document.getElementById('root')
