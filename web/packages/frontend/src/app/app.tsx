@@ -88,15 +88,7 @@ function App() {
       <FilterBar />
       <GlobalMap markersList={stationList} position={position}/>
       <div>
-        <input placeholder="Rechercher.." onChange={event => setQuery(event.target.value)} />
-        <button onClick={handleClick} name="button">Cliquer pour rechercher  </button>
-        <FilterBar />
-        <StationDetailed gasStationInfo={gasStationInfo}/>
-        <GlobalMap markersList={stationList} position={position} onMarkerClick={onStationClick}/>
-        <div>
-          Position : {position.lat} , {position.lon}
-        </div>
-        <StationList stationList={stationList} onElementClick={onStationClick} />
+        Position : {position.lat} , {position.lon}
       </div>
       <Routes>
         <Route path="/" element={<StationList stationList={stationList}/>}/>
