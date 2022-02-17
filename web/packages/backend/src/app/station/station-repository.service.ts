@@ -101,5 +101,9 @@ export class StationService {
   findDistinctServices(){ //TODO store in separete schema (not optimise)
     return this.stationModel.distinct("services").exec();
   }
+
+  findDistinctCity(){ //TODO store in separete schema (not optimise)
+    return this.stationModel.distinct("city").exec().then((result)=>[... new Set(result.map((elt:string)=>elt.toLowerCase()))]);
+  }
 }
 

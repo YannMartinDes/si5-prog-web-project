@@ -54,6 +54,13 @@ export class StationController {
       console.log(JSON.stringify(distinctService))
       return distinctService;
   }
+
+  @Get('city')
+  async getAllCity() {
+      const distinctCity:string[] = await this.stationRepository.findDistinctCity();
+      console.log(JSON.stringify(distinctCity))
+      return distinctCity;
+  }
 }
 
 
