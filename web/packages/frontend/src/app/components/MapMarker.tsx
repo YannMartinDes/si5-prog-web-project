@@ -3,6 +3,7 @@ import { GasStationPosition } from '@web/common/dto';
 import { Marker, Tooltip } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
 import gasStationIcon from '../../assets/GasStationIcon';
+import { FRONT_STATION_ID } from '../const/url.const';
 
 
 export default function MapMarker({gasStation}
@@ -14,7 +15,7 @@ export default function MapMarker({gasStation}
         <Marker position={[gasStationPos.lat, gasStationPos.lon]} icon={gasStationIcon}
             eventHandlers={{
                 click: (e) => {
-                    navigate("/station/"+gasStation.id);
+                    navigate(FRONT_STATION_ID+gasStation.id);
                 },
             }}
           >

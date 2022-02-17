@@ -1,6 +1,7 @@
 import { GasStationPosition } from '@web/common/dto'
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
+import { FRONT_STATION_ID } from '../const/url.const';
 
 export default function StationListElement({gasStation}:
     {gasStation:GasStationPosition}) {
@@ -8,7 +9,7 @@ export default function StationListElement({gasStation}:
   const navigate = useNavigate();
 
   return (
-    <div onClick={(e)=>{navigate("/station/"+gasStation.id)}}>
+    <div onClick={(e)=>{navigate(FRONT_STATION_ID+gasStation.id)}}>
         <h1>{gasStation.address}</h1>
         {gasStation.prices.map((value) => {
             const priceText = value.gasType+" : "+value.price+"€";
