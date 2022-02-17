@@ -4,12 +4,17 @@ import { BrowserRouter } from 'react-router-dom';
 
 import App from './app/app';
 import 'leaflet/dist/leaflet.css';
+import { FilterStationContextProvider } from './app/context/FilterStationContext';
 
 
 ReactDOM.render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+    <FilterStationContextProvider>
+
+        <App />
+      </FilterStationContextProvider>
+
     </BrowserRouter>
   </StrictMode>,
   document.getElementById('root')

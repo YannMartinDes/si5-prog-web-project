@@ -5,7 +5,7 @@ export default function CheckBox({value, onCheckBoxClick}:
 
   return (
     <li>
-        <input type={"checkbox"} defaultChecked value={value}
+        <input type={"checkbox"} value={value}
             onChange={(e)=>{
                 onCheckBoxClick(value, e.target.checked)
         }}/>
