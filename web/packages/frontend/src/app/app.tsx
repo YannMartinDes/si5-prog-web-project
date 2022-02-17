@@ -7,12 +7,11 @@ import L from 'leaflet';
 import axios from 'axios';
 import GlobalMap from './components/GlobalMap';
 import { Filter, GasStationInfo, GasStationPosition, Position } from '@web/common/dto';
-import SideMenu from './components/StationDetailed';
 import FilterBar from './components/FilterBar';
-import StationListElement from './components/StationListElement';
 import StationDetailed from './components/StationDetailed';
 import StationList from './components/StationList';
-
+import { ALL_STATION_URL, BACKEND_BASE_URL, FIND_URL, STATION_INFO } from './const/url.const';
+import { Route, Routes, useNavigate} from 'react-router-dom';
 
 //Extend marker prototype to fix : https://stackoverflow.com/questions/49441600/react-leaflet-marker-files-not-found
 const DefaultIcon = L.icon({
@@ -20,18 +19,12 @@ const DefaultIcon = L.icon({
     shadowUrl: iconShadow
 });
 L.Marker.prototype.options.icon = DefaultIcon;
-
-const ALL_STATION_URL = "http://localhost:3333/api/station/near-station"
-const FIND_URL = "http://localhost:3333/api/station/find"
-const STATION_INFO = "http://localhost:3333/api/station/stations"
-
 const range = 20000
 
 
 function App() {
   const [query, setQuery] = useState(" ")
   const [stationList,setStationList] = useState<GasStationPosition[]>([]);
-  const [gasStationInfo,setGasStationInfo] = useState<GasStationInfo>();
   const servicesList:string[]=[
   "Aire de camping-cars",
   "Bar",
@@ -62,11 +55,9 @@ function App() {
   const [filter, setFilter] = useState<Filter>({gas:['Gazole', 'SP95','E85', 'GPLc', 'E10', 'SP98'],schedules:[],services:servicesList});
   const [position, setPosition] = useState<Position>({lat:43.675819, lon:7.289429});
 
-  //const testPos:Position = navigator.geolocation.getCurrentPosition(onPositionChange());
-
   function getAllStation(currentPos:Position, radius:number, filter:Filter) {
     console.log("CALL BACKEND FOR ALL STATION " + JSON.stringify(currentPos));
-    axios.get(ALL_STATION_URL, { params: { latitude: currentPos.lat, longitude: currentPos.lon, maxDist: radius, filter:filter } })
+    axios.get(BACKEND_BASE_URL+ALL_STATION_URL, { params: { latitude: currentPos.lat, longitude: currentPos.lon, maxDist: radius, filter:filter } })
        .then(res => {
           //console.log("Receive response "+JSON.stringify(res));
           const stations:GasStationPosition[] = res.data;
@@ -74,17 +65,9 @@ function App() {
        });
   }
 
-  function getStationInfo(stationId:string) {
-    console.log("CALL BACKEND FOR STATION INFO "+stationId)
-    axios.get(STATION_INFO+"/"+stationId)
-       .then(res => {
-          //console.log("Receive response "+JSON.stringify(res))
-          setGasStationInfo(res.data);
-       });
-  }
   function getAllStationByText(text:string){
     console.log("CALL BACKEND FOR ALL STATION")
-    axios.get(FIND_URL, { params: {text:text,caseSensitive:false} })
+    axios.get(BACKEND_BASE_URL+FIND_URL, { params: {text:text,caseSensitive:false} })
        .then(res => {
           //console.log("Receive response "+JSON.stringify(res));
           const stations:GasStationPosition[] = res.data;
@@ -113,16 +96,6 @@ function App() {
     //setStationList([{id:"station test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], address:"rue de mon cul"}])
   },[filter, position])
 
-
-  const onStationClick = (stationId:string) =>{
-    getStationInfo(stationId)
-    // setGasStationInfo({id:"station test", address:"Station de mon cul",
-    //   prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}],
-    //   services:["Station de gonflage", "Location de véhicule"],
-    //   schedules:[{day:"Lundi", openned:true,hourSchedule:[{openHour:"8h00", closedHour:"22h00"}]},
-    //     {day:"Mardi", openned:true,hourSchedule:[{openHour:"8h00", closedHour:"12h00"},{openHour:"14h00", closedHour:"22h00"}] },{day:"Samedi",openned:false}]})
-  }
-
   const onFilterCheckBoxClick = (type:string, gas:string, checked:boolean) =>{
     if(type === "gas"){
       let newGasFilter:string[]|undefined;
@@ -146,17 +119,6 @@ function App() {
     }
   }
 
-  const onPositionChange = (lat:number, lon:number) => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      console.log('Position : updated');
-      setPosition({lat: position.coords.latitude, lon: position.coords.longitude});
-    })
-    //setPosition({lat: lat, lon: lon});
-  }
-
-
-
-
   function handleClick() {
     getAllStationByText(query)
    }
@@ -166,12 +128,15 @@ function App() {
       <input placeholder="Rechercher.." onChange={event => setQuery(event.target.value)} />
       <button onClick={handleClick} name="button">Cliquer pour rechercher  </button>
       <FilterBar onCheckBoxClick={onFilterCheckBoxClick} />
-      <StationDetailed gasStationInfo={gasStationInfo}/>
-      <GlobalMap markersList={stationList} position={position} onMarkerClick={onStationClick}/>
+      <GlobalMap markersList={stationList} position={position}/>
       <div>
         Position : {position.lat} , {position.lon}
       </div>
-      <StationList stationList={stationList} onElementClick={onStationClick} />
+      <Routes>
+        <Route path="/" element={<StationList stationList={stationList}/>}/>
+        <Route path="/station/:id" element={<StationDetailed/>}/>
+      </Routes>
+      
     </div>
   );
 }

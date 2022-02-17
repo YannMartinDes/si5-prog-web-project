@@ -1,8 +1,30 @@
 import { GasStationInfo } from '@web/common/dto';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import { BACKEND_BASE_URL, STATION_INFO } from '../const/url.const';
 
-export default function SideMenu({gasStationInfo}:
-  {gasStationInfo:GasStationInfo | undefined}) {
+export default function SideMenu() {
+
+  const [gasStationInfo,setGasStationInfo] = useState<GasStationInfo>();
+  const {id} = useParams();
+
+  function getStationInfo(stationId:string) {
+    console.log("CALL BACKEND FOR STATION INFO "+stationId)
+
+    axios.get(BACKEND_BASE_URL+STATION_INFO+"/"+stationId)
+       .then(res => {
+          //console.log("Receive response "+JSON.stringify(res))
+          setGasStationInfo(res.data);
+       });
+  }
+
+  useEffect(()=>{
+    if(id)
+      getStationInfo(id);
+    else
+      console.error("NO ID FOUND");
+  },[id])
 
   if(gasStationInfo){
     return(

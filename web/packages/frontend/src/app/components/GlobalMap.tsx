@@ -1,14 +1,13 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
 
 import { GasStationPosition, Position } from '@web/common/dto';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {MapContainer, TileLayer, useMap} from 'react-leaflet';
 import MapMarker from './MapMarker';
 
-export default function GlobalMap({markersList,position,onMarkerClick}:
+export default function GlobalMap({markersList,position}:
 {markersList:GasStationPosition[],
-position:Position,
-onMarkerClick:(Id:string)=>void})
+position:Position})
 {
 
   const [lastPos,setLastPos] = useState<Position>({lat:43.675819, lon:7.289429});
@@ -30,7 +29,7 @@ onMarkerClick:(Id:string)=>void})
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {markersList.map((value,index) => {return (<MapMarker key={value.id} gasStation={value} onMarkerClick={onMarkerClick}/>)})}
+                {markersList.map((value,index) => {return (<MapMarker key={value.id} gasStation={value}/>)})}
             </MapContainer>
         </div>
     );
