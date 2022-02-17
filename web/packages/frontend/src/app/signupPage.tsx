@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './loginPage.scss'
+import './signupPage.scss'
 
-function LoginPage() {
+function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -19,7 +19,7 @@ function LoginPage() {
   }
 
   return(
-    <div className="Login">
+    <div className="Signup">
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
@@ -41,14 +41,13 @@ function LoginPage() {
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicCheckbox">
-          <Form.Check type="checkbox" label="Remember me" />
         </Form.Group>
         <Button variant="primary" type="submit" disabled={!validateForm()}>
-          Login
+          Sign Up
         </Button>
       </Form>
     </div>
   );
 }
 
-export default LoginPage;
+export default SignupPage;
