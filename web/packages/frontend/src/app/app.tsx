@@ -7,9 +7,11 @@ import L from 'leaflet';
 import axios from 'axios';
 import GlobalMap from './components/GlobalMap';
 import { Filter, GasStationInfo, GasStationPosition, Position } from '@web/common/dto';
-import SideMenu from './components/SideMenu';
+import SideMenu from './components/StationDetailed';
 import FilterBar from './components/FilterBar';
-import CustomerPosition from "./components/CustomerPosition";
+import StationListElement from './components/StationListElement';
+import StationDetailed from './components/StationDetailed';
+import StationList from './components/StationList';
 
 
 //Extend marker prototype to fix : https://stackoverflow.com/questions/49441600/react-leaflet-marker-files-not-found
@@ -112,7 +114,7 @@ function App() {
   },[filter, position])
 
 
-  const onMarkerClick = (stationId:string) =>{
+  const onStationClick = (stationId:string) =>{
     getStationInfo(stationId)
     // setGasStationInfo({id:"station test", address:"Station de mon cul",
     //   prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}],
@@ -164,11 +166,12 @@ function App() {
       <input placeholder="Rechercher.." onChange={event => setQuery(event.target.value)} />
       <button onClick={handleClick} name="button">Cliquer pour rechercher  </button>
       <FilterBar onCheckBoxClick={onFilterCheckBoxClick} />
-      <SideMenu gasStationInfo={gasStationInfo}/>
-      <GlobalMap markersList={stationList} position={position} onMarkerClick={onMarkerClick}/>
+      <StationDetailed gasStationInfo={gasStationInfo}/>
+      <GlobalMap markersList={stationList} position={position} onMarkerClick={onStationClick}/>
       <div>
         Position : {position.lat} , {position.lon}
       </div>
+      <StationList stationList={stationList} onElementClick={onStationClick} />
     </div>
   );
 }
