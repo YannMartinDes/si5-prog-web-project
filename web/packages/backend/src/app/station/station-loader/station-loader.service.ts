@@ -25,10 +25,10 @@ export class StationLoaderService {
   }
 
   onModuleInit(){
-    this.refreshStation();
+    // this.refreshStation();
   }
 
-  @Cron(CronExpression.EVERY_10_MINUTES)
+  // @Cron(CronExpression.EVERY_10_MINUTES)
   async refreshStation() {
     // const today = new Date()
     // const date = new Date(today)

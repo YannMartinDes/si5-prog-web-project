@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import CheckBoxList from './CheckBoxList'
 import axios from 'axios';
 import { BACKEND_BASE_URL } from '../const/url.const';
+import { ADD_GAS_FILTER, ADD_SERVICE_FILTER, FilterStationContext, REMOVE_GAS_FILTER, REMOVE_SERVICE_FILTER } from '../context/FilterStationContext';
 
-export default function FilterBar({ onCheckBoxClick }:
-  { onCheckBoxClick: (type: string, value: string, checked: boolean) => void }) {
+export default function FilterBar() {
+  const {dispatch} = useContext(FilterStationContext)
   const [serviceList,setServiceList]=useState([])
   const [fuelList,setFuelList]=useState([])
 
@@ -14,10 +15,20 @@ export default function FilterBar({ onCheckBoxClick }:
   },[])
 
   const onCheckBoxChangeGaz = (value: string, checked: boolean) => {
-    onCheckBoxClick("gas", value, checked)
+    if(checked){
+      dispatch({type:ADD_GAS_FILTER,payload:value});
+    }
+    else{
+      dispatch({type:REMOVE_GAS_FILTER,payload:value});
+    }
   }
   const onCheckBoxChangeService = (value: string, checked: boolean) => {
-    onCheckBoxClick("services", value, checked)
+    if(checked){
+      dispatch({type:ADD_SERVICE_FILTER,payload:value});
+    }
+    else{
+      dispatch({type:REMOVE_SERVICE_FILTER,payload:value});
+    }  
   }
 
 
