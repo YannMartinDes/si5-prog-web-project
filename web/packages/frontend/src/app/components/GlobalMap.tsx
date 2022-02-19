@@ -1,5 +1,4 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
-
+import "./GlobalMap.scss"
 import { GasStationPosition, Position } from '@web/common/dto';
 import React, { useState } from 'react';
 import {MapContainer, TileLayer, useMap} from 'react-leaflet';

@@ -77,11 +77,17 @@ function App() {
   return (
     <div>
       <FilterBar />
-      <GlobalMap markersList={stationList} position={position}/>
-      <div className='positionLegend'>
-        Position : {position.lat} , {position.lon}
+      <div className='grid-warpper'>
+        <div className='grid-side-menu'>
+          <LeftSideMenu gasStationList={stationList} />
+        </div>
+        <div className='grid-map'>
+          <GlobalMap markersList={stationList} position={position}/>
+          <div className='positionLegend'>
+            Position : {position.lat} , {position.lon}
+          </div>
+        </div>
       </div>
-      <LeftSideMenu gasStationList={stationList} />
     </div>
   );
   /*

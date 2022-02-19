@@ -1,3 +1,4 @@
+import "./LeftSideMenu.scss"
 import { GasStationPosition } from '@web/common/dto'
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'

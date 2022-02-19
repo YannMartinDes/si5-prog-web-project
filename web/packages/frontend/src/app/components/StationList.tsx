@@ -1,3 +1,4 @@
+import "./StationList.scss"
 import { GasStationPosition } from '@web/common/dto'
 import React from 'react'
 import StationListElement from './StationListElement'

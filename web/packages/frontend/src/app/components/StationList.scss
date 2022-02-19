@@ -1,0 +1,44 @@
+.stationList {
+    padding-left: 10px;
+  
+    h1{
+      color: #063d44;
+      margin-bottom: 0;
+      margin-top: 0;
+      text-decoration: underline;
+    }
+  }
+  
+  .stationListElement:hover{
+    background-color: #1B6D92;
+    transition: background-color 300ms;
+  
+    cursor: pointer;
+    h2{
+      transition: color 300ms;
+      color: white;
+    }
+  
+    p{
+      transition: color 300ms;
+      color: white;
+    }
+  }
+  
+  .stationListElement {
+    border-bottom: solid 2px #106b77;
+    padding: 5%;
+  
+    h2{
+      margin-top: 0;
+      margin-bottom: 2%;
+      color: #063d44;
+    }
+  
+    p{
+      margin: 0;
+      padding: 0;
+      color: #106b77;
+    }
+  }
+  

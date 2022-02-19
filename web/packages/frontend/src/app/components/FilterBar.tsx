@@ -1,3 +1,4 @@
+import "./FilterBar.scss"
 import { useContext, useEffect, useState } from 'react'
 import CheckBoxList from './CheckBoxList'
 import axios from 'axios';
