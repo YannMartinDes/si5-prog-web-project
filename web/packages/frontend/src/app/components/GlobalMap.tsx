@@ -4,6 +4,7 @@ import { GasStationPosition, Position } from '@web/common/dto';
 import React, { useState } from 'react';
 import {MapContainer, TileLayer, useMap} from 'react-leaflet';
 import MapMarker from './MapMarker';
+import MarkerClusterGroup from 'react-leaflet-markercluster';
 
 export default function GlobalMap({markersList,position}:
 {markersList:GasStationPosition[],
@@ -29,7 +30,9 @@ position:Position})
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {markersList.map((value,index) => {return (<MapMarker key={value.id} gasStation={value}/>)})}
+                <MarkerClusterGroup >
+                  {markersList.map((value,index) => {return (<MapMarker key={value.id} gasStation={value} />)})}
+                </MarkerClusterGroup>
             </MapContainer>
         </div>
     );
