@@ -1,8 +1,31 @@
 /* You can add global styles to this file, and also import other style files */
 .leaflet-container {
-  height: 700px;
-  width: 90%;
+  height: 620px;
+  width: 100%;
   margin: 0 auto;
 }
 
 
+.checkboxList li{
+  display: inline;
+}
+
+.mapDisplayer{
+  margin-top: 50px;
+  margin-left: 30%;
+}
+
+.positionLegend{
+  float: right;
+}
+
+.sideMenu{
+  height: 100%;
+  margin-top: 50px;
+  width: 30%;
+  position: fixed;
+  z-index: 2; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  overflow-x: hidden; /* Disable horizontal scroll */
+}

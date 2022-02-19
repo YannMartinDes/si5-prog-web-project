@@ -8,11 +8,9 @@ import axios from 'axios';
 import GlobalMap from './components/GlobalMap';
 import { Filter, GasStationPosition, Position } from '@web/common/dto';
 import FilterBar from './components/FilterBar';
-import StationDetailed from './components/StationDetailed';
-import StationList from './components/StationList';
 import { ALL_STATION_URL, BACKEND_BASE_URL, FIND_URL, FRONT_STATION_ID } from './const/url.const';
-import { Route, Routes} from 'react-router-dom';
 import { FilterStationContext } from './context/FilterStationContext';
+import LeftSideMenu from './components/LeftSideMenu';
 
 //Extend marker prototype to fix : https://stackoverflow.com/questions/49441600/react-leaflet-marker-files-not-found
 const DefaultIcon = L.icon({
@@ -24,7 +22,6 @@ const range = 20000
 
 
 function App() {
-  const [query, setQuery] = useState(" ")
   const [stationList,setStationList] = useState<GasStationPosition[]>([]);
   const [position, setPosition] = useState<Position>({lat:40.675819, lon:7.289429});
   const {state} = useContext(FilterStationContext)
@@ -77,25 +74,20 @@ function App() {
     //setStationList([{id:"station test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], address:"rue de mon cul"}])
   },[state, position])
 
-  function handleClick() {
-    getAllStationByText(query)
-  }
-
   return (
     <div>
-      <input placeholder="Rechercher.." onChange={event => setQuery(event.target.value)} />
-      <button onClick={handleClick} name="button">Cliquer pour rechercher  </button>
       <FilterBar />
       <GlobalMap markersList={stationList} position={position}/>
-      <div>
+      <div className='positionLegend'>
         Position : {position.lat} , {position.lon}
       </div>
-      <Routes>
-        <Route path="/" element={<StationList stationList={stationList}/>}/>
-        <Route path={FRONT_STATION_ID+":id"} element={<StationDetailed/>}/>
-      </Routes>
+      <LeftSideMenu gasStationList={stationList} />
     </div>
   );
+  /*
+
+
+  */
 }
 
 export default App;

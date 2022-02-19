@@ -23,7 +23,7 @@ position:Position})
   }
 
     return(
-        <div id='map'>
+        <div id='map' className='mapDisplayer'>
             <MapContainer center={[position.lat,position.lon]} zoom={13} scrollWheelZoom={false}>
               {lastPos !== position && <ChangeView center={[position.lat,position.lon]} zoom={13} />}
               <TileLayer

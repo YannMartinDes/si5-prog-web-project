@@ -5,6 +5,7 @@ import Select from 'react-select';
 import { BACKEND_BASE_URL } from '../const/url.const';
 import { ADD_GAS_FILTER, ADD_SERVICE_FILTER, FilterStationContext, REMOVE_GAS_FILTER, REMOVE_SERVICE_FILTER } from '../context/FilterStationContext';
 import { MenuList, OptionMenuList } from './MenuList';
+import Button from 'react-bootstrap/esm/Button';
 
 
 export default function FilterBar() {
@@ -12,7 +13,7 @@ export default function FilterBar() {
   const [serviceList,setServiceList]=useState([])
   const [fuelList,setFuelList]=useState([])
   const [cityList,setCityList]=useState([])
-
+  const [hide,setHide] = useState(true);
 
   useEffect(()=>{
     axios.get(BACKEND_BASE_URL+"/station/service-type").then((response)=>setServiceList(response.data))
@@ -42,25 +43,35 @@ export default function FilterBar() {
     console.log(citySelected)
   }
 
+  const onHideShowClick = () => {
+    setHide(!hide);
+  }
+
   const test :any = MenuList
-  return (
-    <div>
-      <h1>Filtre</h1>
-      <div>
-        <h2>Ville</h2>
-        <Select components={{MenuList:test,Option:OptionMenuList}} options={cityList.map((elt)=>{return {label:elt,value:elt}})} onChange={onCityChange} ></Select>
-      </div>
-      <div>
-        <h2>Essences</h2>
-        <CheckBoxList elementList={fuelList} onCheckBoxChange={onCheckBoxChangeGaz}></CheckBoxList>
-      </div>
-      <div>
-        <h2>Services</h2>
-        <CheckBoxList elementList={serviceList} onCheckBoxChange={onCheckBoxChangeService}></CheckBoxList>
-      </div>
 
-
-    </div>
-
-  )
+  if(hide){
+    return (
+      <Button onClick={(e)=> onHideShowClick()}>Show</Button>
+    )
+  }
+  else{
+    return (
+      <div className='filterBar'>
+        <h2>Filtre</h2>
+        <div className='subFilter'>
+          <h3>Ville</h3>
+          <Select components={{MenuList:test,Option:OptionMenuList}} options={cityList.map((elt)=>{return {label:elt,value:elt}})} onChange={onCityChange} ></Select>
+        </div>
+        <div className='subFilter'>
+          <h3>Essences</h3>
+          <CheckBoxList elementList={fuelList} onCheckBoxChange={onCheckBoxChangeGaz}></CheckBoxList>
+        </div>
+        <div className='subFilter'>
+          <h3>Services</h3>
+          <CheckBoxList elementList={serviceList} onCheckBoxChange={onCheckBoxChangeService}></CheckBoxList>
+        </div>
+        <button onClick={(e)=> onHideShowClick()}>Hide</button>
+      </div>
+    )
+  }
 }
