@@ -51,7 +51,9 @@ export default function FilterBar() {
 
   if(hide){
     return (
-      <Button onClick={(e)=> onHideShowClick()}>Show</Button>
+      <div className='filterBar'>
+        <Button onClick={(e)=> onHideShowClick()}>Show</Button>
+      </div>
     )
   }
   else{
