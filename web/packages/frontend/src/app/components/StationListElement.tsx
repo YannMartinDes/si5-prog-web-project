@@ -9,8 +9,8 @@ export default function StationListElement({gasStation}:
   const navigate = useNavigate();
 
   return (
-    <div onClick={(e)=>{navigate(FRONT_STATION_ID+gasStation.id)}}>
-        <h1>{gasStation.address}</h1>
+    <div className='stationListElement' onClick={(e)=>{navigate(FRONT_STATION_ID+gasStation.id)}}>
+        <h2>{gasStation.address}</h2>
         {gasStation.prices.map((value) => {
             const priceText = value.gasType+" : "+value.price+"€";
             return (<p key={value.gasType}>{priceText} <br/></p>)}   
