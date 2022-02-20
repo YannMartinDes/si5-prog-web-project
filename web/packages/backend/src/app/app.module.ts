@@ -14,6 +14,8 @@ import {AuthModule} from "./authentication/auth.module";
 import {UsersModule} from "./users/users.module";
 import { StationSchema } from './schemas/station.schema';
 import { StationFilterList } from './station/station-filter-list.service';
+import { ChartController } from './station/chart/chart.controller';
+import { ChartService } from './station/chart/chart.service';
 
 @Module({
   imports: [
@@ -30,11 +32,13 @@ import { StationFilterList } from './station/station-filter-list.service';
   ],
   controllers: [
     StationController,
+    ChartController
   ],
   providers: [
     StationLoaderService,
     StationService,
-    StationFilterList
+    StationFilterList,
+    ChartService
   ],
 })
 export class AppModule {

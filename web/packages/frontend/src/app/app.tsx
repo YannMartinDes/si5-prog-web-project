@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
-import MapPage from './components/pages/map.page';
-import ChartPage from './components/pages/chart.page';
+import MapPage from './components/pages/Map.page';
+import ChartPage from './components/pages/Chart.page';
 
 function App() {
 

@@ -1,12 +1,12 @@
 import { GasStationPosition } from '@web/common/dto'
 import React from 'react'
-import { useNavigate } from 'react-router-dom';
 import { FRONT_STATION_ID } from '../const/url.const';
+import { useNavigateNoUpdates } from '../context/RouterUtils';
 
 export default function StationListElement({gasStation}:
     {gasStation:GasStationPosition}) {
 
-  const navigate = useNavigate();
+  const navigate = useNavigateNoUpdates();
 
   return (
     <div className='stationListElement' onClick={(e)=>{navigate(FRONT_STATION_ID+gasStation.id)}}>

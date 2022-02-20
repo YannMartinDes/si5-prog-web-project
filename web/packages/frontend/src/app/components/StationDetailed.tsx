@@ -1,13 +1,14 @@
 import "./StationDetailed.scss"
 import { GasStationInfo } from '@web/common/dto';
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { BACKEND_BASE_URL, STATION_INFO } from '../const/url.const';
 import {TailSpin} from 'react-loader-spinner'
+import { useNavigateNoUpdates } from "../context/RouterUtils";
 
 export default function SideMenu() {
-  const navigate = useNavigate();
+  const navigate = useNavigateNoUpdates()
   const [gasStationInfo,setGasStationInfo] = useState<GasStationInfo>();
   const {id} = useParams();
 
