@@ -25,10 +25,10 @@ export class StationLoaderService {
   }
 
   onModuleInit(){
-    // this.refreshStation();
+    this.refreshStation();
   }
 
-  // @Cron(CronExpression.EVERY_10_MINUTES)
+  @Cron(CronExpression.EVERY_10_MINUTES)
   async refreshStation() {
     // const today = new Date()
     // const date = new Date(today)
@@ -47,13 +47,40 @@ export class StationLoaderService {
     console.log("CRON: start update from gouv api")
     const loadStationList = await this.loadStation();
     const stationSchemaList = loadStationList.map(transformLoadStationToModelStation)
-    await this.stationModel.deleteMany()
+    
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const writeOperation:any = stationSchemaList.map((station: Station) => {
+      return ({
+        updateOne: {
+          filter: { _id: station._id },
+          update: { $set: station },
+          upsert: true
+        }
+      });
+    })
+    writeOperation.push(
+      {
+        deleteMany:{
+          filter:{_id:{$not: {$in: stationSchemaList.map((station:Station)=>station._id)}}}
+        }
+      }
+    )
+    const result = await this.stationModel.bulkWrite(writeOperation)
+
+    // await this.stationModel.deleteMany()
 
     // for( const station of stationSchemaList){ //FOR DEBUG ONLY
     //   console.log(station.position)
     //   await this.stationModel.create(new this.stationModel(station))
     // }
-    const stationSchemaListSaved = await this.stationModel.insertMany(stationSchemaList)
+    // const stationSchemaListSaved = await this.stationModel.insertMany(stationSchemaList)
+    console.log(result)
+    console.log("nMatched :"+result.result.nMatched);
+    console.log("nInserted :"+result.result.nUpserted);
+    console.log("nModified :"+result.result.nModified);
+    console.log("nRemoved :"+result.result.nRemoved);
+
+
     console.log("CRON: successful update")
 
   }
