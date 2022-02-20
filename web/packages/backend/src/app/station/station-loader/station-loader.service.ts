@@ -19,7 +19,7 @@ export class StationLoaderService {
   constructor(private http:HttpService,
     private stationRepository:StationService,
     @InjectModel("STATION") private readonly stationModel: Model<Station>,
-
+    
     ){
 
   }

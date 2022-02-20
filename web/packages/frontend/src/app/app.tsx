@@ -23,7 +23,7 @@ const range = 20000
 
 function App() {
   const [stationList,setStationList] = useState<GasStationPosition[]>([]);
-  const [position, setPosition] = useState<Position>({lat:40.675819, lon:7.289429});
+  const [position, setPosition] = useState<Position>({lat:43.715819, lon:7.289429});
   const {state} = useContext(FilterStationContext)
 
   function getAllStation(currentPos:Position, radius:number, filter:Filter) {

@@ -13,6 +13,7 @@ import {UserSchema} from "./schemas/user.schema";
 import {AuthModule} from "./authentication/auth.module";
 import {UsersModule} from "./users/users.module";
 import { StationSchema } from './schemas/station.schema';
+import { StationFilterList } from './station/station-filter-list.service';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { StationSchema } from './schemas/station.schema';
   providers: [
     StationLoaderService,
     StationService,
+    StationFilterList
   ],
 })
 export class AppModule {
