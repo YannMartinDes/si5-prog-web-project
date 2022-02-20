@@ -16,10 +16,10 @@ export class StationFilterList {
 
     }
     onModuleInit(){
-        this.refreshList()
+        this.refreshAll()
     }
 
-    async refreshList(){
+    async refreshAll(){
         await Promise.all([this.refreshFuelsList(),
         this.refreshServicesList(),
         this.refreshCityList()])

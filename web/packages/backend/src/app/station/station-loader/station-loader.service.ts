@@ -11,6 +11,7 @@ import { LoadStation } from './load-schema/load-station.class';
 import { Point } from 'geojson'
 import { transformLoadStationToModelStation } from './load-schema/station-transformer';
 import { Station } from '../../schemas/station.schema';
+import { StationFilterList } from '../station-filter-list.service';
 
 @Injectable()
 export class StationLoaderService {
@@ -18,6 +19,7 @@ export class StationLoaderService {
 
   constructor(private http:HttpService,
     private stationRepository:StationService,
+    private stationFilter:StationFilterList,
     @InjectModel("STATION") private readonly stationModel: Model<Station>,
     
     ){
@@ -74,13 +76,12 @@ export class StationLoaderService {
     //   await this.stationModel.create(new this.stationModel(station))
     // }
     // const stationSchemaListSaved = await this.stationModel.insertMany(stationSchemaList)
-    console.log(result)
     console.log("nMatched :"+result.result.nMatched);
     console.log("nInserted :"+result.result.nUpserted);
     console.log("nModified :"+result.result.nModified);
     console.log("nRemoved :"+result.result.nRemoved);
 
-
+    this.stationFilter.refreshAll()
     console.log("CRON: successful update")
 
   }
