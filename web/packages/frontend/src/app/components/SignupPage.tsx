@@ -19,8 +19,10 @@ function SignupPage() {
     event.preventDefault();
     //faire requete vers le backend
     alert('Login form sent');
+    const signupUrl = `http://localhost:3333/api/auth/signup`;
+    console.log('printing signUp URL : ', signupUrl);
     try{
-      axios.post(`http://localhost:3333/api/auth/signup`, { username: email, password: password })
+      axios.post(signupUrl, { username: email, password: password })
         .then(res => {
           console.log('User created successfully: ');
         });
