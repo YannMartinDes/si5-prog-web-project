@@ -11,7 +11,7 @@ function SignupPage() {
   const [password, setPassword] = useState("");
 
   function validateForm() {
-    return email.length > 0 && password.length > 0;
+    return email.length > 0 && (password.length > 3 && password.length < 21);
   }
 
   function handleSubmit(event: { preventDefault: () => void; }) {
