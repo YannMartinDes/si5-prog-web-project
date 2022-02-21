@@ -15,10 +15,7 @@ export default function MapMarker({gasStation}
         <Marker position={[gasStationPos.lat, gasStationPos.lon]} icon={gasStationIcon}
             eventHandlers={{
                 click: async () => {
-                    console.log("detect click")
                     await navigate(FRONT_STATION_ID+gasStation.id);
-                    console.log("end click")
-
                 },
             }}
           >

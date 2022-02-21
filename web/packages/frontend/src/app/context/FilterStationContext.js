@@ -4,9 +4,8 @@ import React, {
 import PropTypes from 'prop-types';
 
 export const ADD_GAS_FILTER = 'ADD_GAS_FILTER';
-export const ADD_SERVICE_FILTER = 'ADD_SERVICE_FILTER';
+export const SET_SERVICE_FILTER = 'ADD_SERVICE_FILTER';
 export const REMOVE_GAS_FILTER = "REMOVE_GAS_FILTER"
-export const REMOVE_SERVICE_FILTER = "REMOVE_SERVICE_FILTER"
 
 
 export const RESET = 'RESET';
@@ -19,8 +18,6 @@ export const FilterStationContext = createContext();
 
 
 const reducer = (state, action) => {
-	console.log(state);
-	console.log(action)
 	let nextState = {};
 	switch (action.type) {
 	case ADD_GAS_FILTER:
@@ -29,10 +26,10 @@ const reducer = (state, action) => {
 			gasFilter: [...state.gasFilter, action.payload],
 		};
 		break;
-    case ADD_SERVICE_FILTER:
+    case SET_SERVICE_FILTER:
 		nextState = {
 			...state,
-			servicesFilter: [...state.servicesFilter, action.payload],
+			servicesFilter: action.payload,
 		};
 		break;
     case REMOVE_GAS_FILTER:
@@ -41,19 +38,13 @@ const reducer = (state, action) => {
         gasFilter: state.gasFilter.filter((elt)=>elt!==action.payload),
     };
     break;
-    case REMOVE_SERVICE_FILTER:
-        nextState = {
-            ...state,
-            servicesFilter: state.servicesFilter.filter((elt)=>elt!==action.payload),
-        };
-        break;
 	case RESET:
 		nextState = initialState;
 		break;
 	default:
 		throw new Error();
 	}
-
+	console.log(nextState);
 	return nextState;
 };
 

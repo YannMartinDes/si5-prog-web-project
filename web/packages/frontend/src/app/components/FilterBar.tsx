@@ -4,17 +4,19 @@ import CheckBoxList from './CheckBoxList'
 import axios from 'axios';
 import Select from 'react-select';
 import { BACKEND_BASE_URL } from '../const/url.const';
-import { ADD_GAS_FILTER, ADD_SERVICE_FILTER, FilterStationContext, REMOVE_GAS_FILTER, REMOVE_SERVICE_FILTER } from '../context/FilterStationContext';
+import { ADD_GAS_FILTER, SET_SERVICE_FILTER, FilterStationContext, REMOVE_GAS_FILTER } from '../context/FilterStationContext';
 import { MenuList, OptionMenuList } from './MenuList';
 import Button from 'react-bootstrap/esm/Button';
 
 
 export default function FilterBar() {
-  const { dispatch } = useContext(FilterStationContext)
   const [serviceList, setServiceList] = useState([])
   const [fuelList, setFuelList] = useState([])
   const [cityList, setCityList] = useState([])
-  const [hide, setHide] = useState(true);
+
+  const { dispatch } = useContext(FilterStationContext)
+  const [filteredServices, setFilteredServices] = useState<{label:string,value:string}[]>([]);
+  const [hideBar, setHideBar] = useState(true);
 
   useEffect(() => {
     axios.get(BACKEND_BASE_URL + "/station/service-type").then((response) => setServiceList(response.data))
@@ -31,21 +33,22 @@ export default function FilterBar() {
       dispatch({ type: REMOVE_GAS_FILTER, payload: value });
     }
   }
-  const onCheckBoxChangeService = (value: string, checked: boolean) => {
-    if (checked) {
-      dispatch({ type: ADD_SERVICE_FILTER, payload: value });
-    }
-    else {
-      dispatch({ type: REMOVE_SERVICE_FILTER, payload: value });
-    }
+  const onServiceFilterChange = (value:any)=>{
+    setFilteredServices(value);
+    const serviceFiltered:string[] = [];
+    value.map((elt:{label:string, value:string})=>{
+      serviceFiltered.push(elt.value);
+    })
+    dispatch({ type: SET_SERVICE_FILTER, payload: serviceFiltered });
   }
 
   const onCityChange = (citySelected: any) => {
     console.log(citySelected)
+    //TODO
   }
 
   const onHideShowClick = () => {
-    setHide(!hide);
+    setHideBar(!hideBar);
   }
 
   const test: any = MenuList
@@ -60,9 +63,10 @@ export default function FilterBar() {
         <h3>Essences</h3>
         <CheckBoxList elementList={fuelList} onCheckBoxChange={onCheckBoxChangeGaz}></CheckBoxList>
       </div>
-      <div className='subFilter'>
+      <div className='subFilter last'>
         <h3>Services</h3>
-        <CheckBoxList elementList={serviceList} onCheckBoxChange={onCheckBoxChangeService}></CheckBoxList>
+        <Select isMulti options={serviceList.map((elt) => { return { label: elt, value: elt } })} onChange={onServiceFilterChange} 
+          value = {filteredServices}></Select>
       </div>
       <button onClick={(e) => onHideShowClick()}>Hide</button>
     </div>
@@ -71,7 +75,7 @@ export default function FilterBar() {
 
   return (
     <div className='filterBar'>
-      {hide? <Button onClick={(e) => onHideShowClick()}>Show</Button> : filterBarContainer}
+      {hideBar? <Button onClick={(e) => onHideShowClick()}>Show</Button> : filterBarContainer}
     </div>
   )
 }

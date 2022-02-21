@@ -29,7 +29,6 @@ export default function MapPage() {
     console.log("CALL BACKEND FOR ALL STATION " + JSON.stringify(currentPos));
     axios.get(BACKEND_BASE_URL+ALL_STATION_URL, { params: { latitude: currentPos.lat, longitude: currentPos.lon, maxDist: radius, filter:filter } })
        .then(res => {
-          //console.log("Receive response "+JSON.stringify(res));
           const stations:GasStationPosition[] = res.data;
           setStationList(stations);
        });
@@ -60,17 +59,14 @@ export default function MapPage() {
       services: state.servicesFilter,
       schedules: []
     });
-    //setStationList([{id:"station test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], address:"rue de mon cul"}])
   },[])
 
   useEffect(()=>{//== ComponentDidMount
-    console.log(state)
     getAllStation(position,range,{
       gas: state.gasFilter, 
       services: state.servicesFilter,
       schedules: []
     });
-    //setStationList([{id:"station test",position:{lat:43.675819,lon:7.289429},prices:[{price:"50.5",gasType:"E10"},{price:"70.5",gasType:"SP98"}], address:"rue de mon cul"}])
   },[state, position])
 
   return (

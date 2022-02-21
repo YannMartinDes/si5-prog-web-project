@@ -3,12 +3,15 @@
   z-index: 1001;//map 400 et button 1000
   position: fixed;
   top: 0;
-
+  width: 100%;
 
   .filter-bar-container {
     overflow: hidden;
     border-bottom: solid #CCC 4px;
     box-shadow: inset 0px 0px 6px #CCC;
+  }
+  .last{
+    margin-bottom: 100px;
   }
 
 }
