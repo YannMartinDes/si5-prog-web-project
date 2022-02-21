@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './signupPage.scss'
-import axios from 'axios';
+import './LoginPage.scss'
+import axios from "axios";
 
-
-function SignupPage() {
+function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -15,22 +14,23 @@ function SignupPage() {
   }
 
   function handleSubmit(event: { preventDefault: () => void; }) {
-    console.log('Trying to submit signup');
+    console.log('Trying to submit login');
     event.preventDefault();
     //faire requete vers le backend
     alert('Login form sent');
     try{
-      axios.post(`http://localhost:3333/api/auth/signup`, { username: email, password: password })
+      axios.post(`http://localhost:3333/api/auth/login`, { username: email, password: password })
         .then(res => {
-          console.log('User created successfully: ');
+          const token = res.data;
+          console.log('User logged successfully: ');
         });
     } catch (e) {
-      console.log(e);
+      console.log('Login failed : ', e);
     }
   }
 
   return(
-    <div className="Signup">
+    <div className="Login">
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
@@ -52,13 +52,14 @@ function SignupPage() {
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicCheckbox">
+          <Form.Check type="checkbox" label="Remember me" />
         </Form.Group>
         <Button variant="primary" type="submit" disabled={!validateForm()}>
-          Sign Up
+          Login
         </Button>
       </Form>
     </div>
   );
 }
 
-export default SignupPage;
+export default LoginPage;

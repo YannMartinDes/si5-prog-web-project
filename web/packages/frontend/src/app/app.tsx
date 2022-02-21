@@ -3,8 +3,8 @@ import MapPage from './components/pages/Map.page';
 import ChartPage from './components/pages/Chart.page';
 import { FilterStationContextProvider } from './context/FilterStationContext';
 import { GeolocalisationContextProvider } from './context/GeolocalisationContext';
-import SignupPage from "./signupPage";
-import LoginPage from "./loginPage";
+import SignupPage from "./components/SignupPage";
+import LoginPage from "./components/LoginPage";
 
 function App() {
 
