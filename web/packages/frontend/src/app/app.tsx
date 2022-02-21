@@ -4,6 +4,8 @@ import ChartPage from './components/pages/Chart.page';
 import { FilterStationContextProvider } from './context/FilterStationContext';
 import { GeolocalisationContextProvider } from './context/GeolocalisationContext';
 import { MapContextProvider } from './context/MapContext';
+import SignupPage from "./components/SignupPage";
+import LoginPage from "./components/LoginPage";
 
 function App() {
 
@@ -14,6 +16,8 @@ function App() {
           <Routes >
             <Route path='/*' element={<MapPage/>}/>
             <Route path='/chart' element={<ChartPage/>}/>
+            <Route path='/signup' element={<SignupPage/>}/>
+            <Route path='/login' element={<LoginPage/>}/>
           </Routes>
         </FilterStationContextProvider>
       </GeolocalisationContextProvider>

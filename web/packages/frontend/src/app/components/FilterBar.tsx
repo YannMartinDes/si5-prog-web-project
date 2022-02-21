@@ -8,11 +8,13 @@ import { ADD_GAS_FILTER, SET_SERVICE_FILTER, FilterStationContext, REMOVE_GAS_FI
 import { MenuList, OptionMenuList } from './MenuList';
 import Button from 'react-bootstrap/esm/Button';
 import SliderReact from "./Slider";
+import {useNavigateNoUpdates} from "../context/RouterUtils";
 
 
 const range = 20000
 export default function FilterBar() {
 
+  const navigate = useNavigateNoUpdates();
   const [serviceList, setServiceList] = useState([])
   const [fuelList, setFuelList] = useState([])
   const [cityList, setCityList] = useState([])
@@ -73,7 +75,7 @@ export default function FilterBar() {
       </div>
       <div className='subFilter'>
         <h3>Services</h3>
-        <Select className="select" isMulti options={serviceList.map((elt) => { return { label: elt, value: elt } })} onChange={onServiceFilterChange} 
+        <Select className="select" isMulti options={serviceList.map((elt) => { return { label: elt, value: elt } })} onChange={onServiceFilterChange}
           value = {filteredServices}></Select>
       </div>
       <div className="subFilter">
@@ -88,6 +90,7 @@ export default function FilterBar() {
   return (
     <div className='filterBar'>
       {hideBar? <button className="buttonStyle" onClick={(e) => onHideShowClick()}>Show</button> : filterBarContainer}
+      <button className="loginButton buttonStyle" onClick={(e) => navigate(`signup`)}>Profil Utilisateur</button>
     </div>
   )
 }
