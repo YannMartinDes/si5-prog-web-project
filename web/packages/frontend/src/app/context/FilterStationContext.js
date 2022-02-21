@@ -59,7 +59,7 @@ export const FilterStationContextProvider = ({ children }) => {
 	const { NODE_ENV } = process.env;
 	const [state, dispatch] = useReducer(reducer,initialState);
 	return (
-		<FilterStationContext.Provider value={{ state, dispatch }} >
+		<FilterStationContext.Provider value={{ filterState:state, dispatch }} >
 			{children}
 		</FilterStationContext.Provider>
 	);

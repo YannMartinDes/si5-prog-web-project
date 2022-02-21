@@ -61,5 +61,6 @@ export class StationFilterList {
         }
         return [...this.fuelsList]
     }
+    
 }
 
