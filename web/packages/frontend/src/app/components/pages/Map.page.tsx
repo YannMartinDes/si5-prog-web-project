@@ -10,6 +10,8 @@ import { FilterStationContext } from '../../context/FilterStationContext';
 import { ALL_STATION_URL, BACKEND_BASE_URL, FIND_URL } from '../../const/url.const';
 import GlobalMap from '../GlobalMap';
 import { GeolocalisationContext } from '../../context/GeolocalisationContext';
+import MapTool from '../MapTool';
+import Slider from '../Slider';
 
 //Extend marker prototype to fix : https://stackoverflow.com/questions/49441600/react-leaflet-marker-files-not-found
 const DefaultIcon = L.icon({
@@ -24,6 +26,7 @@ export default function MapPage() {
   const [stationList,setStationList] = useState<GasStationPosition[]>([]);
   const {filterState} = useContext(FilterStationContext)
   const {position} = useContext(GeolocalisationContext)
+
 
   function getAllStation(currentPos:Position, radius:number, filter:Filter) {
     console.log("CALL BACKEND FOR ALL STATION " + JSON.stringify(currentPos));
@@ -60,9 +63,7 @@ export default function MapPage() {
         </div>
         <div className='grid-map'>
           <GlobalMap markersList={stationList}/>
-          <div className='positionLegend'>
-            Position : {position.lat} , {position.lon}
-          </div>
+          <MapTool />
         </div>
       </div>
     </div>

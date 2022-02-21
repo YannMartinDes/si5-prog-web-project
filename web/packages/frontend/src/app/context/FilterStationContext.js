@@ -6,13 +6,14 @@ import PropTypes from 'prop-types';
 export const ADD_GAS_FILTER = 'ADD_GAS_FILTER';
 export const SET_SERVICE_FILTER = 'ADD_SERVICE_FILTER';
 export const REMOVE_GAS_FILTER = "REMOVE_GAS_FILTER"
-
+export const UPDATE_RANGE_FILTER = "UPDATE_RANGE_FILTER"
 
 export const RESET = 'RESET';
 
 const initialState = {
 	gasFilter: [],
-    servicesFilter: []
+    servicesFilter: [],
+	rangeSlider:20000
 };
 export const FilterStationContext = createContext();
 
@@ -20,6 +21,12 @@ export const FilterStationContext = createContext();
 const reducer = (state, action) => {
 	let nextState = {};
 	switch (action.type) {
+	case UPDATE_RANGE_FILTER:
+	nextState = {
+		...state,
+		rangeSlider:action.payload,
+	};
+	break;
 	case ADD_GAS_FILTER:
 		nextState = {
 			...state,
