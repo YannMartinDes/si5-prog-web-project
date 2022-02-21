@@ -4,8 +4,10 @@ import Button from "react-bootstrap/Button";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './LoginPage.scss'
 import axios from "axios";
+import {useNavigateNoUpdates} from "../context/RouterUtils";
 
 function LoginPage() {
+  const navigate = useNavigateNoUpdates();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -56,6 +58,9 @@ function LoginPage() {
         </Form.Group>
         <Button variant="primary" type="submit" disabled={!validateForm()}>
           Login
+        </Button>
+        <Button variant="primary" onClick={(e) => navigate(`signup`)}>
+          I don't have an account
         </Button>
       </Form>
     </div>
