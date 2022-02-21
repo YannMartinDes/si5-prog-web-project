@@ -57,7 +57,7 @@ export default function MapPage() {
 
   return (
     <div>
-      <div className='grid-warpper'>
+      <div className='grid-wrapper'>
         <div className='grid-side-menu'>
           <LeftSideMenu gasStationList={stationList} />
         </div>

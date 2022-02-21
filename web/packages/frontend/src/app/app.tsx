@@ -14,10 +14,15 @@ function App() {
     <MapContextProvider>
       <GeolocalisationContextProvider>
         <FilterStationContextProvider>
-          <FilterBar />
-          <Routes >
-            <Route path='/*' element={<MapPage/>}/>
-            <Route path='/chart' element={<ChartPage/>}/>
+          <Routes>
+            <Route path="/*" element={<>
+              <FilterBar />
+              <Routes>
+                <Route path='/*' element={<MapPage/>}/>
+                <Route path='/chart' element={<ChartPage/>}/>
+              </Routes>
+            </>}>
+            </Route>
             <Route path='/signup' element={<SignupPage/>}/>
             <Route path='/login' element={<LoginPage/>}/>
           </Routes>
