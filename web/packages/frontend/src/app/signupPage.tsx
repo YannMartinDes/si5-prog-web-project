@@ -3,6 +3,8 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './signupPage.scss'
+import axios from 'axios';
+
 
 function SignupPage() {
   const [email, setEmail] = useState("");
@@ -13,9 +15,18 @@ function SignupPage() {
   }
 
   function handleSubmit(event: { preventDefault: () => void; }) {
+    console.log('Trying to submit signup');
     event.preventDefault();
     //faire requete vers le backend
     alert('Login form sent');
+    try{
+      axios.post(`http://localhost:3333/api/auth/signup`, { username: email, password: password })
+        .then(res => {
+          console.log('User created successfully: ');
+        });
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   return(

@@ -3,6 +3,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './loginPage.scss'
+import axios from "axios";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -13,9 +14,19 @@ function LoginPage() {
   }
 
   function handleSubmit(event: { preventDefault: () => void; }) {
+    console.log('Trying to submit login');
     event.preventDefault();
     //faire requete vers le backend
     alert('Login form sent');
+    try{
+      axios.post(`http://localhost:3333/api/auth/login`, { username: email, password: password })
+        .then(res => {
+          const token = res.data;
+          console.log('User logged successfully: ');
+        });
+    } catch (e) {
+      console.log('Login failed : ', e);
+    }
   }
 
   return(
