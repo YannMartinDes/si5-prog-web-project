@@ -10,6 +10,7 @@ import { FilterStationContext } from '../../context/FilterStationContext';
 import { ALL_STATION_URL, BACKEND_BASE_URL, FIND_URL } from '../../const/url.const';
 import FilterBar from '../FilterBar';
 import GlobalMap from '../GlobalMap';
+import Slider from '../Slider';
 
 //Extend marker prototype to fix : https://stackoverflow.com/questions/49441600/react-leaflet-marker-files-not-found
 const DefaultIcon = L.icon({
@@ -24,6 +25,7 @@ export default function MapPage() {
   const [stationList,setStationList] = useState<GasStationPosition[]>([]);
   const [position, setPosition] = useState<Position>({lat:43.715819, lon:7.289429});
   const {state} = useContext(FilterStationContext)
+
 
   function getAllStation(currentPos:Position, radius:number, filter:Filter) {
     console.log("CALL BACKEND FOR ALL STATION " + JSON.stringify(currentPos));
@@ -54,7 +56,7 @@ export default function MapPage() {
     } else {
       console.log('Impossible to use location');
     }
-    getAllStation(pos,range,{
+    getAllStation(pos,state.rangeSlider,{
       gas: state.gasFilter, 
       services: state.servicesFilter,
       schedules: []
@@ -62,7 +64,7 @@ export default function MapPage() {
   },[])
 
   useEffect(()=>{//== ComponentDidMount
-    getAllStation(position,range,{
+    getAllStation(position,state.rangeSlider,{
       gas: state.gasFilter, 
       services: state.servicesFilter,
       schedules: []

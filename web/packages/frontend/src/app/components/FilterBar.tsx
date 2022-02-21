@@ -4,16 +4,19 @@ import CheckBoxList from './CheckBoxList'
 import axios from 'axios';
 import Select from 'react-select';
 import { BACKEND_BASE_URL } from '../const/url.const';
-import { ADD_GAS_FILTER, SET_SERVICE_FILTER, FilterStationContext, REMOVE_GAS_FILTER } from '../context/FilterStationContext';
+import { ADD_GAS_FILTER, SET_SERVICE_FILTER, FilterStationContext, REMOVE_GAS_FILTER, UPDATE_RANGE_FILTER } from '../context/FilterStationContext';
 import { MenuList, OptionMenuList } from './MenuList';
 import Button from 'react-bootstrap/esm/Button';
+import SliderReact from "./Slider";
 
 
+const range = 20000
 export default function FilterBar() {
+
   const [serviceList, setServiceList] = useState([])
   const [fuelList, setFuelList] = useState([])
   const [cityList, setCityList] = useState([])
-
+  const [value,setValue] = useState<number>(range)
   const { dispatch } = useContext(FilterStationContext)
   const [filteredServices, setFilteredServices] = useState<{label:string,value:string}[]>([]);
   const [hideBar, setHideBar] = useState(true);
@@ -41,6 +44,11 @@ export default function FilterBar() {
     })
     dispatch({ type: SET_SERVICE_FILTER, payload: serviceFiltered });
   }
+  const onRangeFilterChange = (value:any)=>{
+    setFilteredServices(value);
+    const rangeFiltred :number = value;
+    dispatch({ type: UPDATE_RANGE_FILTER, payload: rangeFiltred });
+  }
 
   const onCityChange = (citySelected: any) => {
     console.log(citySelected)
@@ -67,6 +75,10 @@ export default function FilterBar() {
         <h3>Services</h3>
         <Select className="select" isMulti options={serviceList.map((elt) => { return { label: elt, value: elt } })} onChange={onServiceFilterChange} 
           value = {filteredServices}></Select>
+      </div>
+      <div className="subFilter">
+      <h3>Rayon</h3>
+        <SliderReact value={value} onSliderChange={onRangeFilterChange} ></SliderReact>
       </div>
       <button className="buttonStyle" onClick={(e) => onHideShowClick()}>Hide</button>
     </div>
