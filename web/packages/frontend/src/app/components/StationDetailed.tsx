@@ -21,12 +21,21 @@ export default function SideMenu() {
           setGasStationInfo(res.data);
        });
   }
+  function reportStation(stationId:string|undefined,reportMSG:string|null){
+    console.log("CALL BACKEND FOR STATION INFO "+stationId)
+
+    axios.post(BACKEND_BASE_URL+STATION_INFO+"/report/",{stationId:stationId,msg:reportMSG})
+       .then(res => {
+          //console.log("Receive response "+JSON.stringify(res))
+       });
+  }
 
   function onBackClick(){
     navigate("/");
   }
-  function popUp(){
-    prompt("Please enter your issue");
+  function popUp(id : string | undefined){
+    const msg = prompt("Please enter your issue");
+    reportStation(id,msg)
   }
 
   useEffect(()=>{
@@ -73,7 +82,7 @@ export default function SideMenu() {
           </ul>
         </div>
         <button className='buttonStyle' onClick={(e)=>{onBackClick()}} >Go back to stations list</button>
-        <button className='buttonStyleRed' onClick={(e)=>{popUp()}} >Report issue</button>
+        <button className='buttonStyleRed' onClick={(e)=>{popUp(gasStationInfo?.id)}} >Report issue</button>
     </div>
     );
 

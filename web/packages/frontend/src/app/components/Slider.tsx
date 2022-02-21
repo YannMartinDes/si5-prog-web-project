@@ -9,6 +9,7 @@ const Range = createSliderWithTooltip(Slider.Range);
 
 export default function SliderReact({value, onSliderChange}:
   {value:number, onSliderChange: (value:number)=>void}) {
+    
   return (
       <Range
 
@@ -18,8 +19,9 @@ export default function SliderReact({value, onSliderChange}:
       onAfterChange={(value) => {
         onSliderChange(value[0]);
       } }
-      defaultValue={[20000]} 
+      defaultValue={[value]} 
       marks={{0:"0KM",250000:"250KM",500000:"500KM"}}
-      tipFormatter={value => <span className="tooltip">{(value)/1000}KM</span>}/>
+      tipFormatter={value => (value/1000)+"KM"}
+      />
   )
 }

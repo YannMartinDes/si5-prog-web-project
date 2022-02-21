@@ -47,7 +47,7 @@ export default function FilterBar() {
     dispatch({ type: SET_SERVICE_FILTER, payload: serviceFiltered });
   }
   const onRangeFilterChange = (value:any)=>{
-    setFilteredServices(value);
+    setValue(value);
     const rangeFiltred :number = value;
     dispatch({ type: UPDATE_RANGE_FILTER, payload: rangeFiltred });
   }
