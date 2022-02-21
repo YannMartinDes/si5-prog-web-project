@@ -6,8 +6,6 @@ import Select from 'react-select';
 import { BACKEND_BASE_URL } from '../const/url.const';
 import { ADD_GAS_FILTER, SET_SERVICE_FILTER, FilterStationContext, REMOVE_GAS_FILTER } from '../context/FilterStationContext';
 import { MenuList, OptionMenuList } from './MenuList';
-import Button from 'react-bootstrap/esm/Button';
-
 
 export default function FilterBar() {
   const [serviceList, setServiceList] = useState([])
@@ -75,7 +73,7 @@ export default function FilterBar() {
 
   return (
     <div className='filterBar'>
-      {hideBar? <Button className="buttonStyle" onClick={(e) => onHideShowClick()}>Show</Button> : filterBarContainer}
+      {hideBar? <button className="buttonStyle" onClick={(e) => onHideShowClick()}>Show</button> : filterBarContainer}
     </div>
   )
 }
