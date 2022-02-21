@@ -57,25 +57,25 @@ export default function FilterBar() {
       <h2>Filtre</h2>
       <div className='subFilter'>
         <h3>Ville</h3>
-        <Select components={{ MenuList: test, Option: OptionMenuList }} options={cityList.map((elt) => { return { label: elt, value: elt } })} onChange={onCityChange} ></Select>
+        <Select className="select" components={{ MenuList: test, Option: OptionMenuList }} options={cityList.map((elt) => { return { label: elt, value: elt } })} onChange={onCityChange} ></Select>
       </div>
       <div className='subFilter'>
         <h3>Essences</h3>
         <CheckBoxList elementList={fuelList} onCheckBoxChange={onCheckBoxChangeGaz}></CheckBoxList>
       </div>
-      <div className='subFilter last'>
+      <div className='subFilter'>
         <h3>Services</h3>
-        <Select isMulti options={serviceList.map((elt) => { return { label: elt, value: elt } })} onChange={onServiceFilterChange} 
+        <Select className="select" isMulti options={serviceList.map((elt) => { return { label: elt, value: elt } })} onChange={onServiceFilterChange} 
           value = {filteredServices}></Select>
       </div>
-      <button onClick={(e) => onHideShowClick()}>Hide</button>
+      <button className="buttonStyle" onClick={(e) => onHideShowClick()}>Hide</button>
     </div>
   )
 
 
   return (
     <div className='filterBar'>
-      {hideBar? <Button onClick={(e) => onHideShowClick()}>Show</Button> : filterBarContainer}
+      {hideBar? <Button className="buttonStyle" onClick={(e) => onHideShowClick()}>Show</Button> : filterBarContainer}
     </div>
   )
 }

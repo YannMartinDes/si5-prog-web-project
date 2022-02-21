@@ -4,14 +4,24 @@
   position: fixed;
   top: 0;
   width: 100%;
+  color: #063d44;
+  background-color: #ddf2f3;
+
 
   .filter-bar-container {
-    overflow: hidden;
-    border-bottom: solid #CCC 4px;
-    box-shadow: inset 0px 0px 6px #CCC;
+    border-bottom: solid #063d44 3px;
+    padding-left: 20px;
+
   }
-  .last{
-    margin-bottom: 100px;
+
+  .subFilter{
+    display: inline-block;
+    width: 30%;
+
+      li {
+        margin-right: 10px;
+        font-size: 13pt;
+      }
   }
 
 }
