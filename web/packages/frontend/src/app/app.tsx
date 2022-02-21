@@ -3,6 +3,8 @@ import MapPage from './components/pages/Map.page';
 import ChartPage from './components/pages/Chart.page';
 import { FilterStationContextProvider } from './context/FilterStationContext';
 import { GeolocalisationContextProvider } from './context/GeolocalisationContext';
+import SignupPage from "./signupPage";
+import LoginPage from "./loginPage";
 
 function App() {
 
@@ -11,7 +13,9 @@ function App() {
       <FilterStationContextProvider>
         <Routes >
           <Route path='/*' element={<MapPage/>}/>
-          <Route path='/chart' element={<ChartPage/>}/>
+          <Route path='/chart'  element={<ChartPage/>}/>
+          <Route path='/signup' element={<SignupPage/>}/>
+          <Route path='/login' element={<LoginPage/>}/>
         </Routes>
       </FilterStationContextProvider>
     </GeolocalisationContextProvider>
