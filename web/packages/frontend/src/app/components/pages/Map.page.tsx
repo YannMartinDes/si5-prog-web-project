@@ -11,6 +11,7 @@ import { ALL_STATION_URL, BACKEND_BASE_URL, FIND_URL } from '../../const/url.con
 import FilterBar from '../FilterBar';
 import GlobalMap from '../GlobalMap';
 import { GeolocalisationContext } from '../../context/GeolocalisationContext';
+import MapTool from '../MapTool';
 
 //Extend marker prototype to fix : https://stackoverflow.com/questions/49441600/react-leaflet-marker-files-not-found
 const DefaultIcon = L.icon({
@@ -62,9 +63,7 @@ export default function MapPage() {
         </div>
         <div className='grid-map'>
           <GlobalMap markersList={stationList}/>
-          <div className='positionLegend'>
-            Position : {position.lat} , {position.lon}
-          </div>
+          <MapTool />
         </div>
       </div>
     </div>
