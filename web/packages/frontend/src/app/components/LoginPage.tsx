@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './LoginPage.scss'
 import axios from "axios";
 import {useNavigateNoUpdates} from "../context/RouterUtils";
+import {Breadcrumb} from "react-bootstrap";
 
 function LoginPage() {
   const navigate = useNavigateNoUpdates();
@@ -32,37 +33,43 @@ function LoginPage() {
   }
 
   return(
-    <div className="Login">
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </Form.Group>
+    <div>
+      <Breadcrumb>
+        <Breadcrumb.Item href="http://localhost:4200">Home</Breadcrumb.Item>
+        <Breadcrumb.Item active>Login</Breadcrumb.Item>
+      </Breadcrumb>
+      <div className="Login">
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicCheckbox">
-          <Form.Check type="checkbox" label="Remember me" />
-        </Form.Group>
-        <Button variant="primary" type="submit" disabled={!validateForm()}>
-          Login
-        </Button>
-        <Button variant="primary" onClick={(e) => navigate(`signup`)}>
-          I don't have an account
-        </Button>
-      </Form>
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicCheckbox">
+            <Form.Check type="checkbox" label="Remember me" />
+          </Form.Group>
+          <Button variant="primary" type="submit" disabled={!validateForm()}>
+            Login
+          </Button>
+          <Button variant="primary" onClick={(e) => navigate(`signup`)}>
+            I don't have an account
+          </Button>
+        </Form>
+      </div>
     </div>
   );
 }
