@@ -1,8 +1,41 @@
 /* You can add global styles to this file, and also import other style files */
-.leaflet-container {
-  height: 700px;
-  width: 90%;
-  margin: 0 auto;
+
+
+.checkboxList li{
+  display: inline;
+}
+
+.positionLegend{
+  float: right;
+}
+
+body{
+  margin: 0;
+  padding: 0; 
+  height: 100vh;
 }
 
 
+
+.buttonStyle{
+  background-color: #1A6C92;
+  border: none;
+  color: white;
+  padding: 10px 25px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  transition: background-color 300ms;
+
+  &:hover{
+    background-color: #29C0D5;
+    cursor: pointer;
+  }
+}
+
+
+.grid-warpper{
+  display: grid;
+  grid-template-columns:30% 70%;  
+  padding-top: 30px;
+}

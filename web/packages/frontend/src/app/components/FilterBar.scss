@@ -1,0 +1,28 @@
+.filterBar{
+  background-color: white;
+  z-index: 1001;//map 400 et button 1000
+  position: fixed;
+  top: 0;
+  width: 100%;
+  color: #063d44;
+  background-color: #eaecec;
+
+
+  .filter-bar-container {
+    border-bottom: solid #063d44 3px;
+    padding-left: 20px;
+
+  }
+
+  .subFilter{
+    display: inline-block;
+    width: 30%;
+
+      li {
+        margin-right: 10px;
+        font-size: 13pt;
+      }
+  }
+
+}
+

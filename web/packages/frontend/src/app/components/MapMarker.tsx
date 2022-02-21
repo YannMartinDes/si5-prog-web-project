@@ -2,19 +2,20 @@
 import { GasStationPosition } from '@web/common/dto';
 import { Marker, Tooltip } from 'react-leaflet';
 import gasStationIcon from '../../assets/GasStationIcon';
+import { FRONT_STATION_ID } from '../const/url.const';
+import { useNavigateNoUpdates } from '../context/RouterUtils';
 
 
-export default function MapMarker({gasStation, onMarkerClick}
-:{gasStation:GasStationPosition,
-onMarkerClick:(Id:string)=>void}) {
-
+export default function MapMarker({gasStation}
+:{gasStation:GasStationPosition}) {
+    const navigate = useNavigateNoUpdates();
     const gasStationPos = gasStation.position;
 
     return (
         <Marker position={[gasStationPos.lat, gasStationPos.lon]} icon={gasStationIcon}
             eventHandlers={{
-                click: (e) => {
-                    onMarkerClick(gasStation.id);
+                click: async () => {
+                    await navigate(FRONT_STATION_ID+gasStation.id);
                 },
             }}
           >

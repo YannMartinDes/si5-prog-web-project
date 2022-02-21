@@ -3,11 +3,13 @@ import { StationService } from './station-repository.service';
 import {Filter, GasStationInfo, GasStationPosition} from '@web/common/dto';
 import { GasStationPositionDTO } from '../dto/GasStationPositionDTO';
 import { GasStationInfoDTO } from '../dto/GasStationInforDTO';
+import { StationFilterList } from './station-filter-list.service';
 
 @Controller('station')
 export class StationController {
 
-  constructor(private stationRepository:StationService){}
+  constructor(private stationRepository:StationService,
+    private stationFilterService:StationFilterList){}
 
 
   @Get('near-station')
@@ -42,7 +44,7 @@ export class StationController {
 
   @Get('fuel-type')
   async getAllFuelType() {
-      const distinctFuel:string[] = await this.stationRepository.findDistinctFuelType();
+      const distinctFuel:string[] = await this.stationFilterService.getFuelsList();
       console.log(JSON.stringify(distinctFuel))
       return distinctFuel;
   }
@@ -50,9 +52,16 @@ export class StationController {
 
   @Get('service-type')
   async getAllServiceType() {
-      const distinctService:string[] = await this.stationRepository.findDistinctServices();
+      const distinctService:string[] = await this.stationFilterService.getServicesList();
       console.log(JSON.stringify(distinctService))
       return distinctService;
+  }
+
+  @Get('city')
+  async getAllCity() {
+      const distinctCity:string[] = await this.stationFilterService.getCityList();
+      console.log(JSON.stringify(distinctCity))
+      return distinctCity;
   }
 }
 

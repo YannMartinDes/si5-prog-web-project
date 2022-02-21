@@ -1,0 +1,5 @@
+.sideMenu{
+    max-height: calc(100vh - 30px);
+    z-index: 1; /* Stay on top */
+    overflow-x: hidden; /* Disable horizontal scroll */
+  }

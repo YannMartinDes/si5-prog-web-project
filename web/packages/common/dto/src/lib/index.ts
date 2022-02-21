@@ -4,3 +4,4 @@ export * from "./position"
 export * from "./gas-station-schedule"
 export * from "./gas-station-info"
 export * from "./filter"
+export * from './chart'

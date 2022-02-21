@@ -94,12 +94,5 @@ export class StationService {
     return await this.stationModel.findOne({_id:id})// TODO opti request
   }
 
-  findDistinctFuelType(){ //TODO store in separete schema (not optimise)
-    return this.stationModel.distinct("fuels.name").exec();
-  }
-
-  findDistinctServices(){ //TODO store in separete schema (not optimise)
-    return this.stationModel.distinct("services").exec();
-  }
 }
 
