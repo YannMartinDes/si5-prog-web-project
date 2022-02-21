@@ -12,6 +12,7 @@ import FilterBar from '../FilterBar';
 import GlobalMap from '../GlobalMap';
 import { GeolocalisationContext } from '../../context/GeolocalisationContext';
 import MapTool from '../MapTool';
+import Slider from '../Slider';
 
 //Extend marker prototype to fix : https://stackoverflow.com/questions/49441600/react-leaflet-marker-files-not-found
 const DefaultIcon = L.icon({
@@ -26,6 +27,7 @@ export default function MapPage() {
   const [stationList,setStationList] = useState<GasStationPosition[]>([]);
   const {state} = useContext(FilterStationContext)
   const {position} = useContext(GeolocalisationContext)
+
 
   function getAllStation(currentPos:Position, radius:number, filter:Filter) {
     console.log("CALL BACKEND FOR ALL STATION " + JSON.stringify(currentPos));
@@ -47,7 +49,7 @@ export default function MapPage() {
 
 
   useEffect(()=>{//== ComponentDidMount
-    getAllStation(position,range,{
+    getAllStation(position,state.rangeSlider,{
       gas: state.gasFilter, 
       services: state.servicesFilter,
       schedules: []

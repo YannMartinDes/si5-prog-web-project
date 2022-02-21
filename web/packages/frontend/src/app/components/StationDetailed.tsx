@@ -25,6 +25,9 @@ export default function SideMenu() {
   function onBackClick(){
     navigate("/");
   }
+  function popUp(){
+    prompt("Please enter your issue");
+  }
 
   useEffect(()=>{
     if(id)
@@ -70,6 +73,7 @@ export default function SideMenu() {
           </ul>
         </div>
         <button className='buttonStyle' onClick={(e)=>{onBackClick()}} >Go back to stations list</button>
+        <button className='buttonStyleRed' onClick={(e)=>{popUp()}} >Report issue</button>
     </div>
     );
 
