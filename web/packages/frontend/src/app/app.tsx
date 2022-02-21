@@ -3,22 +3,21 @@ import MapPage from './components/pages/Map.page';
 import ChartPage from './components/pages/Chart.page';
 import { FilterStationContextProvider } from './context/FilterStationContext';
 import { GeolocalisationContextProvider } from './context/GeolocalisationContext';
-import SignupPage from "./components/SignupPage";
-import LoginPage from "./components/LoginPage";
+import { MapContextProvider } from './context/MapContext';
 
 function App() {
 
   return (
-    <GeolocalisationContextProvider>
-      <FilterStationContextProvider>
-        <Routes >
-          <Route path='/*' element={<MapPage/>}/>
-          <Route path='/chart'  element={<ChartPage/>}/>
-          <Route path='/signup' element={<SignupPage/>}/>
-          <Route path='/login' element={<LoginPage/>}/>
-        </Routes>
-      </FilterStationContextProvider>
-    </GeolocalisationContextProvider>
+    <MapContextProvider>
+      <GeolocalisationContextProvider>
+        <FilterStationContextProvider>
+          <Routes >
+            <Route path='/*' element={<MapPage/>}/>
+            <Route path='/chart' element={<ChartPage/>}/>
+          </Routes>
+        </FilterStationContextProvider>
+      </GeolocalisationContextProvider>
+    </MapContextProvider>
   );
 
 }

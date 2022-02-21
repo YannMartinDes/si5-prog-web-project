@@ -6,15 +6,18 @@ import MapMarker from './MapMarker';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import { GeolocalisationContext } from "../context/GeolocalisationContext";
 import PositionUpdater from "./PositionUpdater";
+import { MapContext } from "../context/MapContext";
+import { Map } from "leaflet";
 
 export default function GlobalMap({markersList}:
 {markersList:GasStationPosition[]})
 {
   const {position} = useContext(GeolocalisationContext)
+  const [map,setMap]:[Map,any] = useContext(MapContext);
   
     return(
         <div id='map' className='mapDisplayer'>
-            <MapContainer center={[position.lat,position.lon]} zoom={13} scrollWheelZoom={false}>
+            <MapContainer center={[position.lat,position.lon]} zoom={13} scrollWheelZoom={false} whenCreated={setMap}>
               <PositionUpdater />
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
