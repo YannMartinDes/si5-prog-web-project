@@ -1,16 +1,17 @@
 import "./GlobalMap.scss"
 import { GasStationPosition, Position } from '@web/common/dto';
-import React, { useState } from 'react';
+import { useContext, useState } from 'react';
 import {MapContainer, TileLayer, useMap} from 'react-leaflet';
 import MapMarker from './MapMarker';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
+import { GeolocalisationContext } from "../context/GeolocalisationContext";
 
-export default function GlobalMap({markersList,position}:
-{markersList:GasStationPosition[],
-position:Position})
+export default function GlobalMap({markersList}:
+{markersList:GasStationPosition[]})
 {
 
   const [lastPos,setLastPos] = useState<Position>({lat:43.675819, lon:7.289429});
+  const {position} = useContext(GeolocalisationContext)
 
   function ChangeView({ center, zoom}:
   {center:[number,number],zoom: number,}) {

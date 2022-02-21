@@ -10,6 +10,7 @@ import { FilterStationContext } from '../../context/FilterStationContext';
 import { ALL_STATION_URL, BACKEND_BASE_URL, FIND_URL } from '../../const/url.const';
 import FilterBar from '../FilterBar';
 import GlobalMap from '../GlobalMap';
+import { GeolocalisationContext } from '../../context/GeolocalisationContext';
 
 //Extend marker prototype to fix : https://stackoverflow.com/questions/49441600/react-leaflet-marker-files-not-found
 const DefaultIcon = L.icon({
@@ -22,8 +23,8 @@ const range = 20000
 
 export default function MapPage() {
   const [stationList,setStationList] = useState<GasStationPosition[]>([]);
-  const [position, setPosition] = useState<Position>({lat:43.715819, lon:7.289429});
   const {state} = useContext(FilterStationContext)
+  const {position} = useContext(GeolocalisationContext)
 
   function getAllStation(currentPos:Position, radius:number, filter:Filter) {
     console.log("CALL BACKEND FOR ALL STATION " + JSON.stringify(currentPos));
@@ -43,23 +44,6 @@ export default function MapPage() {
        });
   }
 
-  useEffect(()=>{//== ComponentDidMount
-    let pos = position;
-    if(navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        console.log('Position : updated');
-        pos = {lat: position.coords.latitude, lon: position.coords.longitude};
-        setPosition(pos);
-      })
-    } else {
-      console.log('Impossible to use location');
-    }
-    getAllStation(pos,range,{
-      gas: state.gasFilter, 
-      services: state.servicesFilter,
-      schedules: []
-    });
-  },[])
 
   useEffect(()=>{//== ComponentDidMount
     getAllStation(position,range,{
@@ -77,7 +61,7 @@ export default function MapPage() {
           <LeftSideMenu gasStationList={stationList} />
         </div>
         <div className='grid-map'>
-          <GlobalMap markersList={stationList} position={position}/>
+          <GlobalMap markersList={stationList}/>
           <div className='positionLegend'>
             Position : {position.lat} , {position.lon}
           </div>
