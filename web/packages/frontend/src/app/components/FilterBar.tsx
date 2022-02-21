@@ -87,7 +87,7 @@ export default function FilterBar() {
 
   return (
     <div className='filterBar'>
-      {hideBar? <Button className="buttonStyle" onClick={(e) => onHideShowClick()}>Show</Button> : filterBarContainer}
+      {hideBar? <button className="buttonStyle" onClick={(e) => onHideShowClick()}>Show</button> : filterBarContainer}
     </div>
   )
 }
