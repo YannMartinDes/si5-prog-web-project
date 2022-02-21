@@ -11,14 +11,13 @@ import SliderReact from "./Slider";
 import {useNavigateNoUpdates} from "../context/RouterUtils";
 
 
-const range = 20000
 export default function FilterBar() {
 
   const navigate = useNavigateNoUpdates();
   const [serviceList, setServiceList] = useState([])
   const [fuelList, setFuelList] = useState([])
   const [cityList, setCityList] = useState([])
-  const [value,setValue] = useState<number>(range)
+  const [value,setValue] = useState<number>(2000)
   const { dispatch } = useContext(FilterStationContext)
   const [filteredServices, setFilteredServices] = useState<{label:string,value:string}[]>([]);
   const [hideBar, setHideBar] = useState(true);

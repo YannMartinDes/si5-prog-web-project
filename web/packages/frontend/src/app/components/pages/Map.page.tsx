@@ -48,7 +48,7 @@ export default function MapPage() {
 
 
   useEffect(()=>{//== ComponentDidMount
-    getAllStation(position,range,{
+    getAllStation(position,filterState.rangeSlider,{
       gas: filterState.gasFilter, 
       services: filterState.servicesFilter,
       schedules: []
