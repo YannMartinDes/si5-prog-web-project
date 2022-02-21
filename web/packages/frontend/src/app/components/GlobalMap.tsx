@@ -1,6 +1,6 @@
 import "./GlobalMap.scss"
 import { GasStationPosition, Position } from '@web/common/dto';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {MapContainer, TileLayer, useMap} from 'react-leaflet';
 import MapMarker from './MapMarker';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
