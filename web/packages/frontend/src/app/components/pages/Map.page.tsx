@@ -61,7 +61,7 @@ export default function MapPage() {
           <LeftSideMenu gasStationList={stationList} />
         </div>
         <div className='grid-map'>
-          <GlobalMap markersList={stationList} position={position}/>
+          <GlobalMap markersList={stationList}/>
           <div className='positionLegend'>
             Position : {position.lat} , {position.lon}
           </div>
