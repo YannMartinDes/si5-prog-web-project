@@ -89,7 +89,7 @@ export default function FilterBar() {
   return (
     <div className='filterBar'>
       {hideBar? <button className="buttonStyle" onClick={(e) => onHideShowClick()}>Show</button> : filterBarContainer}
-      <button className="loginButton buttonStyle" onClick={(e) => navigate(`signup`)}>Profil Utilisateur</button>
+      <button className="loginButton buttonStyle" onClick={(e) => navigate(`login`)}>Profil Utilisateur</button>
     </div>
   )
 }
