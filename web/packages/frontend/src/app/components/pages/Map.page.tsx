@@ -8,7 +8,6 @@ import { Filter, GasStationPosition, Position } from '@web/common/dto';
 import LeftSideMenu from '../LeftSideMenu';
 import { FilterStationContext } from '../../context/FilterStationContext';
 import { ALL_STATION_URL, BACKEND_BASE_URL, FIND_URL } from '../../const/url.const';
-import FilterBar from '../FilterBar';
 import GlobalMap from '../GlobalMap';
 import { GeolocalisationContext } from '../../context/GeolocalisationContext';
 
@@ -23,7 +22,7 @@ const range = 20000
 
 export default function MapPage() {
   const [stationList,setStationList] = useState<GasStationPosition[]>([]);
-  const {state} = useContext(FilterStationContext)
+  const {filterState} = useContext(FilterStationContext)
   const {position} = useContext(GeolocalisationContext)
 
   function getAllStation(currentPos:Position, radius:number, filter:Filter) {
@@ -47,15 +46,14 @@ export default function MapPage() {
 
   useEffect(()=>{//== ComponentDidMount
     getAllStation(position,range,{
-      gas: state.gasFilter, 
-      services: state.servicesFilter,
+      gas: filterState.gasFilter, 
+      services: filterState.servicesFilter,
       schedules: []
     });
-  },[state, position])
+  },[filterState, position])
 
   return (
     <div>
-      <FilterBar />
       <div className='grid-warpper'>
         <div className='grid-side-menu'>
           <LeftSideMenu gasStationList={stationList} />

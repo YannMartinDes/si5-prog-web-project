@@ -29,8 +29,9 @@ export class StationService {
     return await this.stationModel.collection.createIndex({coordinates:"2dsphere"});
   }
 
-  async findSphere(longitudeCurrent:number,latitudeCurrent:number,maxDist:number,filter:Filter):Promise<Station[]>{
+  public createFilterQuery(longitudeCurrent:number,latitudeCurrent:number,maxDist:number,filter:Filter):FilterQuery<Station>{
     const query:FilterQuery<Station> = {}
+
     if(longitudeCurrent&&latitudeCurrent&&maxDist){
       query.position={ 
         $nearSphere:{
@@ -42,12 +43,20 @@ export class StationService {
         }
       }
     }
-    if(filter.services?.length>0){
-      query.services={$in:filter.services}
+    if(filter){
+      if(filter.services?.length>0){
+        query.services={$in:filter.services}
+      }
+      if(filter.gas?.length>0){
+        query["fuels.name"] = {$in:filter.gas}
+      }
     }
-    console.log("gas :"+filter.gas)
-    if(filter.gas?.length>0){
-      query["fuels.name"] = {$in:filter.gas}
+    return query;
+  }
+
+  async findSphere(query:FilterQuery<Station>):Promise<Station[]>{
+    if(query==undefined){
+      query={}
     }
 
     const stations = await this.stationModel.find(query)

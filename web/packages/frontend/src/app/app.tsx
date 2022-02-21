@@ -4,6 +4,7 @@ import ChartPage from './components/pages/Chart.page';
 import { FilterStationContextProvider } from './context/FilterStationContext';
 import { GeolocalisationContextProvider } from './context/GeolocalisationContext';
 import { MapContextProvider } from './context/MapContext';
+import FilterBar from './components/FilterBar';
 
 function App() {
 
@@ -11,6 +12,7 @@ function App() {
     <MapContextProvider>
       <GeolocalisationContextProvider>
         <FilterStationContextProvider>
+          <FilterBar />
           <Routes >
             <Route path='/*' element={<MapPage/>}/>
             <Route path='/chart' element={<ChartPage/>}/>

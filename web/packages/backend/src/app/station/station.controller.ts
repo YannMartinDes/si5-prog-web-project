@@ -15,7 +15,8 @@ export class StationController {
   @Get('near-station')
   public async getAllNearStation(@Query('longitude') longitude:number,@Query('latitude') latitude:number,@Query('maxDist') maxDist:number,@Query('filter') filter:string):Promise<GasStationPosition[]> {
     console.log("Receive call with "+longitude+" "+latitude+" "+maxDist+" "+JSON.stringify(filter));
-    const stations = await this.stationRepository.findSphere(longitude,latitude,maxDist,JSON.parse(filter));
+    const query = this.stationRepository.createFilterQuery(longitude,latitude,maxDist,JSON.parse(filter))
+    const stations = await this.stationRepository.findSphere(query);
     return stations.map((elt)=>GasStationPositionDTO.fromStation(elt));
   }
   // @Get('find')
@@ -45,7 +46,7 @@ export class StationController {
   @Get('fuel-type')
   async getAllFuelType() {
       const distinctFuel:string[] = await this.stationFilterService.getFuelsList();
-      console.log(JSON.stringify(distinctFuel))
+      // console.log(JSON.stringify(distinctFuel))
       return distinctFuel;
   }
 
@@ -53,14 +54,14 @@ export class StationController {
   @Get('service-type')
   async getAllServiceType() {
       const distinctService:string[] = await this.stationFilterService.getServicesList();
-      console.log(JSON.stringify(distinctService))
+      // console.log(JSON.stringify(distinctService))
       return distinctService;
   }
 
   @Get('city')
   async getAllCity() {
       const distinctCity:string[] = await this.stationFilterService.getCityList();
-      console.log(JSON.stringify(distinctCity))
+      // console.log(JSON.stringify(distinctCity))
       return distinctCity;
   }
 }

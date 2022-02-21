@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const initialState = {
 	position: {
-        lat:10.7,
+        lat:43.7,
         lon:7.289429    
     },
 };

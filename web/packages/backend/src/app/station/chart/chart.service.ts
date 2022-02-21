@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Filter } from '@web/common/dto';
+import { FilterQuery, Model, PipelineStage } from 'mongoose';
 import { Station } from '../../schemas/station.schema';
 
 @Injectable()
@@ -9,26 +10,88 @@ export class ChartService {
         @InjectModel("STATION") private readonly stationModel: Model<Station>,
     ) {}
 
-    async averagePriceByFuelType(){
+
+    async averagePriceByFuelType(longitudeCurrent:number,latitudeCurrent:number,maxDist:number,filter:Filter){
+      
+      const aggregateQuery:PipelineStage[] = []
+      const query:FilterQuery<Station> = {}
+
+      if(filter){
+        if(filter.services?.length>0){
+          query.services={$all:filter.services}
+        }
+        if(filter.gas?.length>0){
+          query["fuels.name"] = {$in:filter.gas}
+        }
+      }
+
+      if(longitudeCurrent&&latitudeCurrent&&maxDist){
+        console.log(maxDist)
+        aggregateQuery.push({
+          $geoNear: {
+            near: { type: "Point", coordinates: [ longitudeCurrent, latitudeCurrent  ] },
+            distanceField: "dist.calculated",
+            maxDistance: maxDist,
+            includeLocs: "dist.location",
+            spherical: true
+          }
+        })
+      }
+
+      aggregateQuery.push(
+        {
+          $unwind:"$fuels"
+        },
+        {$match:query},
+        {
+          $group:
+            {
+              _id: "$fuels.name",
+              avgPrice: { $avg: '$fuels.price'} ,
+              maxPrice: { $max: '$fuels.price'} ,
+              minPrice: { $min: '$fuels.price'} ,
+            }
+        },
+        {
+          $sort:{
+            _id:1
+          }
+        }
+      );
+
         const metric:{
             _id:string,
             avgPrice:number,
             maxPrice:number,
             minPrice:number
-        }[] = await this.stationModel.aggregate([
-            {
-              $unwind:"$fuels"
-            },
-            {
-              $group:
-                {
-                  _id: "$fuels.name",
-                  avgPrice: { $avg: '$fuels.price'} ,
-                  maxPrice: { $max: '$fuels.price'} ,
-                  minPrice: { $min: '$fuels.price'} ,
-                }
-            }
-          ])
+        }[] = await this.stationModel.aggregate(aggregateQuery)
         return metric
     }
 }
+
+// const aggregateQuery:PipelineStage[] = []
+
+// const filterQuery:any = {}
+// if(filter){
+//     if(filter.services?.length>0){
+//       filterQuery.services={$in:filter.services}
+//     }
+//     if(filter.gas?.length>0){
+//       filterQuery["fuels.name"] = {$in:filter.gas}
+//     }
+//   }
+
+// if(longitudeCurrent&&latitudeCurrent&&maxDist){
+//   aggregateQuery.push(
+//     {
+//       $geoNear: {
+//          near: { type: "Point", coordinates: [ longitudeCurrent, latitudeCurrent  ] },
+//          distanceField: "dist.calculated",
+//          maxDistance: maxDist,
+//          includeLocs: "dist.location",
+//          spherical: true
+//       }
+//     }
+//  )
+
+// }

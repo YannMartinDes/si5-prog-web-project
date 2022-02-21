@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,6 +12,8 @@ import { Bar } from 'react-chartjs-2';
 import { BACKEND_BASE_URL } from '../../const/url.const';
 import axios from 'axios';
 import { FuelTypePrice } from '@web/common/dto';
+import { FilterStationContext } from '../../context/FilterStationContext';
+import { GeolocalisationContext } from '../../context/GeolocalisationContext';
 
 ChartJS.register(
   CategoryScale,
@@ -34,14 +36,28 @@ const options = {
     },
   },
 };
+const range = 20000
 
 export function ChartPriceFuelType() {
 
     const [generalFuelPrice, setGeneralFuelPrice] = useState<FuelTypePrice[]>([])
+    const {filterState} = useContext(FilterStationContext)
+    const {position} = useContext(GeolocalisationContext)
 
     useEffect(() => {
-        axios.get(BACKEND_BASE_URL + "/chart/general-fuels-price").then((response) => setGeneralFuelPrice(response.data))
-      }, [])
+        axios.get(BACKEND_BASE_URL + "/chart/general-fuels-price",
+        { params: 
+          { latitude: position.lat, 
+            longitude: position.lon, 
+            maxDist: range, 
+            filter:{
+              gas: filterState.gasFilter, 
+              services: filterState.servicesFilter,
+              schedules: []
+            } 
+          } 
+        }).then((response) => setGeneralFuelPrice(response.data))
+        }, [filterState,position])
 
     const data = useMemo(()=>{
       const labels = generalFuelPrice.map((elt)=>elt.fuelType)
