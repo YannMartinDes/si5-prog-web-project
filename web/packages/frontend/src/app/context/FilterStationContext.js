@@ -13,7 +13,7 @@ export const RESET = 'RESET';
 const initialState = {
 	gasFilter: [],
     servicesFilter: [],
-	rangeSlider:20000
+	range:20000
 };
 export const FilterStationContext = createContext();
 
@@ -24,7 +24,7 @@ const reducer = (state, action) => {
 	case UPDATE_RANGE_FILTER:
 	nextState = {
 		...state,
-		rangeSlider:action.payload,
+		range:action.payload,
 	};
 	break;
 	case ADD_GAS_FILTER:
