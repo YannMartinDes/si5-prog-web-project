@@ -54,7 +54,7 @@ export default function SideMenu() {
           <h2>Essences</h2>
           {gasStationInfo? gasStationInfo.prices.map((value) => {
             const priceText = value.gasType+" : "+value.price+"€";
-            return (<p key={value.gasType}>{priceText} <br/></p>)
+            return (<p key={value.gasType}>{priceText}</p>)
           }):
           <TailSpin color="#063d44" width={60} height={60}/>}
         </div>
@@ -69,20 +69,23 @@ export default function SideMenu() {
 
         <div className='subInfo'>
           <h2>Horaire</h2>
-          <ul>
+          
             {gasStationInfo? 
-              ((gasStationInfo.schedules.length !== 0) ? (gasStationInfo.schedules.map((schedule) => {
-                const scheduleText = schedule.day + (schedule.openned? " ouvert ":" fermé ");
-                return (
-                  <li key={schedule.day}>
-                    <p>{scheduleText}</p>
-                    {schedule.hourSchedule && schedule.hourSchedule.map((hour)=>{
-                      return (<p key={hour.openHour}>de {hour.openHour} à {hour.closedHour}</p>);
-                    })}
-                  </li>)}))
+              ((gasStationInfo.schedules.length !== 0) ? 
+                (<ul>
+                  {gasStationInfo.schedules.map((schedule) => {
+                    const scheduleText = schedule.day + (schedule.openned? " ouvert ":" fermé ");
+                    return (
+                      <li key={schedule.day}>
+                        <p>{scheduleText}</p>
+                        {schedule.hourSchedule && schedule.hourSchedule.map((hour)=>{
+                          return (<p key={hour.openHour}>de {hour.openHour} à {hour.closedHour}</p>);
+                        })}
+                      </li>)}
+                  )}
+                </ul>)
                 : (<p>Pas d'informations disponibles</p>))
             :<TailSpin color="#063d44" width={60} height={60}/>}
-          </ul>
         </div>
         <button className='buttonStyle' onClick={(e)=>{onBackClick()}} >Go back to stations list</button>
         <button className='buttonStyleRed' onClick={(e)=>{popUp(gasStationInfo?.id)}} >Report issue</button>

@@ -1,3 +1,4 @@
+import "./MapTool.scss"
 import { Map } from 'leaflet';
 import React, { useContext, useEffect, useState } from 'react'
 import { GeolocalisationContext } from '../context/GeolocalisationContext'

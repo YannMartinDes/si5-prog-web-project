@@ -77,7 +77,7 @@ export default function FilterBar() {
         <Select className="select" isMulti options={serviceList.map((elt) => { return { label: elt, value: elt } })} onChange={onServiceFilterChange}
           value = {filteredServices}></Select>
       </div>
-      <div className="subFilter">
+      <div className="subFilter slider">
       <h3>Rayon</h3>
         <SliderReact value={value} onSliderChange={onRangeFilterChange} ></SliderReact>
       </div>

@@ -12,15 +12,29 @@
     border-bottom: solid #063d44 3px;
     padding-left: 20px;
 
+    h2{
+      font-size: 20pt;
+      font-weight: bolder;
+    }
   }
 
   .subFilter{
     display: inline-block;
     width: 25%;
-      li {
-        margin-right: 10px;
-        font-size: 13pt;
-      }
+    padding: 0 10px;
+
+    h3{
+      font-size: 14pt;
+    }
+
+    li {
+      margin-right: 10px;
+      font-size: 13pt;
+    }
+  }
+
+  .slider{
+    padding: 0 35px;
   }
 
 

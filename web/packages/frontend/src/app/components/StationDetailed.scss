@@ -3,23 +3,32 @@
   
     h1{
       color: #063d44;
+      font-size: 23pt;
       margin: 0;
     }
   
     h3{
-      color: #063d44;
-      margin: 0;
+      color: #0b6f7c;
+      font-size: 14pt;
+      margin: 10px 0px;
     }
 
     .subInfo{
-        border-top: solid 2px #106b77;
-      
+        border-top: solid 2px #0b6f7c;
+        color: #0b6f7c;
+        font-size: 13pt;
+        margin-bottom: 20px;
+
+        p {
+          margin: 5px 0;
+          padding-left: 20px;
+        }
+
         h2{
           color: #063d44;
+          font-size: 21pt;
           margin-top: 3%;
           margin-bottom: 1%;
         }
-      
       }
-    
   }
