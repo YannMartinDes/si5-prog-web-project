@@ -53,38 +53,39 @@ export default function SideMenu() {
         <div className='subInfo'>
           <h2>Essences</h2>
           {gasStationInfo? gasStationInfo.prices.map((value) => {
-          const priceText = value.gasType+" : "+value.price+"€";
-          return (<p key={value.gasType}>{priceText} <br/></p>)}):
-          <TailSpin color="#063d44" width={80} height={80}/>}
+            const priceText = value.gasType+" : "+value.price+"€";
+            return (<p key={value.gasType}>{priceText} <br/></p>)
+          }):
+          <TailSpin color="#063d44" width={60} height={60}/>}
         </div>
       
         <div className='subInfo'>
           <h2>Services disponibles</h2>
           <ul>
             {gasStationInfo? gasStationInfo.services.map((service) => {return (<li key={service}>{service}</li>)})
-            :<TailSpin color="#063d44" width={80} height={80}/>}
+            :<TailSpin color="#063d44" width={60} height={60}/>}
           </ul>
         </div>
 
         <div className='subInfo'>
           <h2>Horaire</h2>
           <ul>
-            {gasStationInfo? gasStationInfo.schedules.map((schedule) => {
-              const scheduleText = schedule.day + (schedule.openned? " ouvert ":" fermé ");
-
-              return (<li key={schedule.day}>
-                  <p>{scheduleText}</p>
-                  {schedule.hourSchedule && schedule.hourSchedule.map((hour)=>{
-                    return (<p key={hour.openHour}>de {hour.openHour} à {hour.closedHour}</p>);
-                  })}
-                </li>)}):
-                <TailSpin color="#063d44" width={80} height={80}/>}
+            {gasStationInfo? 
+              ((gasStationInfo.schedules.length !== 0) ? (gasStationInfo.schedules.map((schedule) => {
+                const scheduleText = schedule.day + (schedule.openned? " ouvert ":" fermé ");
+                return (
+                  <li key={schedule.day}>
+                    <p>{scheduleText}</p>
+                    {schedule.hourSchedule && schedule.hourSchedule.map((hour)=>{
+                      return (<p key={hour.openHour}>de {hour.openHour} à {hour.closedHour}</p>);
+                    })}
+                  </li>)}))
+                : (<p>Pas d'informations disponibles</p>))
+            :<TailSpin color="#063d44" width={60} height={60}/>}
           </ul>
         </div>
         <button className='buttonStyle' onClick={(e)=>{onBackClick()}} >Go back to stations list</button>
         <button className='buttonStyleRed' onClick={(e)=>{popUp(gasStationInfo?.id)}} >Report issue</button>
     </div>
     );
-
-  
 }
