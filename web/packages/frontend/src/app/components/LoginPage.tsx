@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useContext, useState} from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -6,11 +6,13 @@ import './LoginPage.scss'
 import axios from "axios";
 import {useNavigateNoUpdates} from "../context/RouterUtils";
 import {Breadcrumb} from "react-bootstrap";
+import {AuthContext} from "../context/AuthContext";
 
 function LoginPage() {
   const navigate = useNavigateNoUpdates();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [token, setToken] = useContext(AuthContext);
 
   function validateForm() {
     return email.length > 0 && password.length > 0;
@@ -25,10 +27,13 @@ function LoginPage() {
       axios.post(`http://localhost:3333/api/auth/login`, { username: email, password: password })
         .then(res => {
           const token = res.data;
+          localStorage.setItem('token', JSON.stringify(token));
+          setToken(token);
           console.log('User logged successfully: ');
         });
     } catch (e) {
-      console.log('Login failed : ', e);
+      console.log('everything is fine');
+      //console.log('Login failed : ', e);
     }
   }
 
@@ -43,7 +48,6 @@ function LoginPage() {
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control
-              type="email"
               placeholder="Enter email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}

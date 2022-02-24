@@ -7,6 +7,7 @@ import 'leaflet/dist/leaflet.css';
 import 'react-leaflet-markercluster/dist/styles.min.css';
 
 import RouterUtils from './app/context/RouterUtils';
+import {AuthContextProvider} from "./app/context/AuthContext";
 
 
 ReactDOM.render(

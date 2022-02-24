@@ -8,10 +8,12 @@ import FilterBar from './components/FilterBar';
 import SignupPage from "./components/SignupPage";
 import LoginPage from "./components/LoginPage";
 import NavBar from './components/NavBar';
+import {AuthContextProvider} from "./context/AuthContext";
 
 function App() {
 
   return (
+    <AuthContextProvider>
     <MapContextProvider>
       <GeolocalisationContextProvider>
         <FilterStationContextProvider>
@@ -30,6 +32,7 @@ function App() {
         </FilterStationContextProvider>
       </GeolocalisationContextProvider>
     </MapContextProvider>
+    </AuthContextProvider>
   );
 
 }
