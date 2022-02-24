@@ -49,7 +49,7 @@ export default function MapTool() {
             <div className='positionLegend'>
                 Position : {position.lat} , {position.lon}
             </div>
-            {userMove && <button className='buttonStyle' onClick={clickButton}>Recupere les stations proche de ma position</button>}
+            {userMove && <button className='buttonStyle' onClick={clickButton}>Afficher les stations de la zone</button>}
         </div>
     )
 }
