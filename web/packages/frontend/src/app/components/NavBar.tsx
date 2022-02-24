@@ -15,8 +15,10 @@ export default function NavBar() {
     return (
         <div className=''>
            <div className='navBar'>
-               <button className="buttonStyle" onClick={(e) => onHideShowClick()}>{hideBar? "Afficher" : "Masquer"}</button>
-               <button className="loginButton buttonStyle" onClick={(e) => navigate(`login`)}>Profil Utilisateur</button>
+                <button className="buttonStyle" onClick={(e) => navigate(`/`)}>Accueil</button>
+                <button className="buttonStyle" onClick={(e) => navigate(`chart`)}>Graphiques</button>
+                <button className="buttonStyle filterButton" onClick={(e) => onHideShowClick()}>{hideBar? "Afficher Filtre" : "Masquer Filtre"}</button>
+                <button className="loginButton buttonStyle" onClick={(e) => navigate(`login`)}>Profil Utilisateur</button>
           </div>
           {!hideBar && <FilterBar />}
         </div> 
