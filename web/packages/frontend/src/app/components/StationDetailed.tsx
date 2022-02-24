@@ -27,6 +27,8 @@ export default function SideMenu() {
     axios.post(BACKEND_BASE_URL+REPORT_ISSUE,{issue:message})
        .then(res => {
         window.alert("Votre problème a bien été envoyé")
+      }).catch((error)=>{
+        window.alert("Impossible d'envoyer votre problème, Veuillez réessayer")
       });
   }
 
