@@ -9,6 +9,7 @@ import PositionUpdater from "./PositionUpdater";
 import { MapContext } from "../../context/MapContext";
 import { Map } from "leaflet";
 import { ThemeContext } from "../../context/ThemeContext";
+import PositionMarker from "./PositionMarker";
 
 export default function GlobalMap({markersList}:
 {markersList:GasStationPosition[]})
@@ -27,7 +28,7 @@ export default function GlobalMap({markersList}:
     }
   },[isDarkTheme])
   const [position,setPosition] = useContext(GeolocalisationContext)
-  
+
   const [map,setMap]:[Map,any] = useContext(MapContext);
     return(
         <div id='map' className='mapDisplayer'>
@@ -41,6 +42,7 @@ export default function GlobalMap({markersList}:
                 <MarkerClusterGroup >
                   {markersList.map((value,index) => {return (<MapMarker key={value.id} gasStation={value} />)})}
                 </MarkerClusterGroup>
+                <PositionMarker position={position}/>
             </MapContainer>
         </div>
     );
