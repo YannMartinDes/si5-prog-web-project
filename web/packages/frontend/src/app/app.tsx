@@ -21,13 +21,12 @@ function App() {
             <Route path="/*" element={<>
               <NavBar />
               <Routes>
-                <Route path="/*" element={<>
-                  <FilterBar />
+                <Route path="/*" element={
                   <Routes>
                     <Route path='/*' element={<MapPage />} />
                     <Route path='/chart' element={<ChartPage />} />
                   </Routes>
-                </>}>
+                }>
                 </Route>
                 <Route path='/signup' element={<SignupPage />} />
                 <Route path='/login' element={<LoginPage />} />

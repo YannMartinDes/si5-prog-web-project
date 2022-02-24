@@ -10,6 +10,7 @@ export default function NavBar() {
 
     const onHideShowClick = () => {
         setHideBar(!hideBar);
+        console.log("hello")
     }
 
     return (
