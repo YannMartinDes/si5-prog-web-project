@@ -7,6 +7,7 @@ import { MapContextProvider } from './context/MapContext';
 import FilterBar from './components/FilterBar';
 import SignupPage from "./components/SignupPage";
 import LoginPage from "./components/LoginPage";
+import NavBar from './components/NavBar';
 
 function App() {
 
@@ -16,7 +17,7 @@ function App() {
         <FilterStationContextProvider>
           <Routes>
             <Route path="/*" element={<>
-              <FilterBar />
+              <NavBar />
               <Routes>
                 <Route path='/*' element={<MapPage/>}/>
                 <Route path='/chart' element={<ChartPage/>}/>

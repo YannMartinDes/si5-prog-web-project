@@ -6,27 +6,22 @@ import Select from 'react-select';
 import { BACKEND_BASE_URL } from '../const/url.const';
 import { ADD_GAS_FILTER, SET_SERVICE_FILTER, FilterStationContext, REMOVE_GAS_FILTER, UPDATE_RANGE_FILTER } from '../context/FilterStationContext';
 import { MenuList, OptionMenuList } from './MenuList';
-import Button from 'react-bootstrap/esm/Button';
 import SliderReact from "./Slider";
-import {useNavigateNoUpdates} from "../context/RouterUtils";
 
 
 export default function FilterBar() {
 
-  const navigate = useNavigateNoUpdates();
   const [serviceList, setServiceList] = useState([])
   const [fuelList, setFuelList] = useState([])
   const [cityList, setCityList] = useState([])
   const [value,setValue] = useState<number>(2000)
   const { dispatch } = useContext(FilterStationContext)
   const [filteredServices, setFilteredServices] = useState<{label:string,value:string}[]>([]);
-  const [hideBar, setHideBar] = useState(true);
 
   useEffect(() => {
     axios.get(BACKEND_BASE_URL + "/station/service-type").then((response) => setServiceList(response.data))
     axios.get(BACKEND_BASE_URL + "/station/fuel-type").then((response) => setFuelList(response.data))
     axios.get(BACKEND_BASE_URL + "/station/city").then((response) => setCityList(response.data))
-
   }, [])
 
   const onCheckBoxChangeGaz = (value: string, checked: boolean) => {
@@ -56,12 +51,8 @@ export default function FilterBar() {
     //TODO
   }
 
-  const onHideShowClick = () => {
-    setHideBar(!hideBar);
-  }
-
   const test: any = MenuList
-  const filterBarContainer = (
+  return (
     <div className="filter-bar-container">
       <h2>Filtre</h2>
       <div className='subFilter'>
@@ -81,15 +72,6 @@ export default function FilterBar() {
       <h3>Rayon</h3>
         <SliderReact value={value} onSliderChange={onRangeFilterChange} ></SliderReact>
       </div>
-      <button className="buttonStyle" onClick={(e) => onHideShowClick()}>Hide</button>
-    </div>
-  )
-
-
-  return (
-    <div className='filterBar'>
-      {hideBar? <button className="buttonStyle" onClick={(e) => onHideShowClick()}>Show</button> : filterBarContainer}
-      <button className="loginButton buttonStyle" onClick={(e) => navigate(`login`)}>Profil Utilisateur</button>
     </div>
   )
 }
