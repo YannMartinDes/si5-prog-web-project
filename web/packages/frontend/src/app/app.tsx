@@ -7,16 +7,19 @@ import { MapContextProvider } from './context/MapContext';
 import FilterBar from './components/FilterBar';
 import SignupPage from "./components/SignupPage";
 import LoginPage from "./components/LoginPage";
-import { ThemeContext } from './context/ThemeContext';
-import { useContext } from 'react';
+import NavBar from './components/NavBar';
+import {AuthContextProvider} from "./context/AuthContext";
 
 function App() {
-  const {isDarkTheme} = useContext(ThemeContext)
 
   return (
-      <MapContextProvider>
-        <GeolocalisationContextProvider>
-          <FilterStationContextProvider>
+    <AuthContextProvider>
+    <MapContextProvider>
+      <GeolocalisationContextProvider>
+        <FilterStationContextProvider>
+          <Routes>
+            <Route path="/*" element={<>
+              <NavBar />
               <Routes>
                 <Route path="/*" element={<>
                   <FilterBar />
@@ -29,9 +32,15 @@ function App() {
                 <Route path='/signup' element={<SignupPage />} />
                 <Route path='/login' element={<LoginPage />} />
               </Routes>
-          </FilterStationContextProvider>
-        </GeolocalisationContextProvider>
-      </MapContextProvider>
+            </>}>
+            </Route>
+            <Route path='/signup' element={<SignupPage/>}/>
+            <Route path='/login' element={<LoginPage/>}/>
+          </Routes>
+        </FilterStationContextProvider>
+      </GeolocalisationContextProvider>
+    </MapContextProvider>
+    </AuthContextProvider>
   );
 
 }

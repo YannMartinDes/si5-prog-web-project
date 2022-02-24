@@ -1,9 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-
 import { environment } from '../environments/environment';
-
 import { ScheduleModule } from '@nestjs/schedule';
 import { HttpModule } from '@nestjs/axios';
 import { StationLoaderService } from './station/station-loader/station-loader.service';
@@ -11,7 +9,6 @@ import { StationService } from './station/station-repository.service';
 import { StationController } from './station/station.controller';
 import {UserSchema} from "./schemas/user.schema";
 import {AuthModule} from "./authentication/auth.module";
-import {UsersModule} from "./users/users.module";
 import { StationSchema } from './schemas/station.schema';
 import { StationFilterList } from './station/station-filter-list.service';
 import { ChartController } from './station/chart/chart.controller';
@@ -28,7 +25,6 @@ import { ChartService } from './station/chart/chart.service';
     ]),
     HttpModule,
     AuthModule,
-    UsersModule,
   ],
   controllers: [
     StationController,

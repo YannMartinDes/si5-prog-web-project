@@ -1,52 +1,53 @@
-.filterBar{
+.filter-bar-container {
   .theme--dark &{
     background-color:#333;
     color:#ccc;
+    border-bottom: solid #ccc 3px;
   }
   z-index: 1001;//map 400 et button 1000
   position: fixed;
-  top: 0;
   width: 100%;
-  color: #063d44;
+  border-bottom: solid #063d44 3px;
+  padding-left: 20px;
   background-color: #eaecec;
 
 
-  .filter-bar-container {
+  h2{
     .theme--dark &{
-      border-bottom:solid #ccc 3px;
+      color: #ccc;
     }
-    border-bottom: solid #063d44 3px;
-    padding-left: 20px;
-
-    h2{
-      font-size: 20pt;
-      font-weight: bolder;
-    }
+    font-size: 20pt;
+    color: #063d44;
+    font-weight: bolder;
   }
 
   .subFilter{
     display: inline-block;
     width: 25%;
     padding: 0 10px;
-
+  
     h3{
+      .theme--dark &{
+        color: #ccc;
+      }
+      color: #063d44;
       font-size: 14pt;
     }
-
+  
     li {
+      .theme--dark &{
+        color: #bbb;
+      }
+      color: #063d44;
       margin-right: 10px;
       font-size: 13pt;
     }
   }
-
+  
   .slider{
     padding: 0 35px;
   }
-
-
-  .loginButton{
-    float: right;
-  }
-
 }
+
+
 

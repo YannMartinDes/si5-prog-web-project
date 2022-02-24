@@ -1,9 +1,9 @@
 import "./StationDetailed.scss"
-import { GasStationInfo } from '@web/common/dto';
+import { GasStationInfo, UserIssue } from '@web/common/dto';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { BACKEND_BASE_URL, STATION_INFO } from '../const/url.const';
+import { BACKEND_BASE_URL, REPORT_ISSUE, STATION_INFO } from '../const/url.const';
 import {TailSpin} from 'react-loader-spinner'
 import { useNavigateNoUpdates } from "../context/RouterUtils";
 
@@ -13,29 +13,34 @@ export default function SideMenu() {
   const {id} = useParams();
 
   function getStationInfo(stationId:string) {
-    console.log("CALL BACKEND FOR STATION INFO "+stationId)
+    console.log("GET STATION INFO FOR "+stationId)
 
     axios.get(BACKEND_BASE_URL+STATION_INFO+"/"+stationId)
        .then(res => {
-          //console.log("Receive response "+JSON.stringify(res))
           setGasStationInfo(res.data);
        });
   }
-  function reportStation(stationId:string|undefined,reportMSG:string|null){
-    console.log("CALL BACKEND FOR STATION INFO "+stationId)
+  function reportStationIssue(stationId:string,reportMSG:string){
+    console.log("REPORT ISSUE FOR STATION "+stationId)
+    const message:UserIssue = {stationId:stationId, userMsg:reportMSG}
 
-    axios.post(BACKEND_BASE_URL+STATION_INFO+"/report/",{stationId:stationId,msg:reportMSG})
+    axios.post(BACKEND_BASE_URL+REPORT_ISSUE,{issue:message})
        .then(res => {
-          //console.log("Receive response "+JSON.stringify(res))
-       });
+        window.alert("Votre problème a bien été envoyé")
+      }).catch((error)=>{
+        window.alert("Impossible d'envoyer votre problème, Veuillez réessayer")
+      });
   }
 
   function onBackClick(){
     navigate("/");
   }
-  function popUp(id : string | undefined){
-    const msg = prompt("Please enter your issue");
-    reportStation(id,msg)
+
+  function onUserReportClick(id : string){
+    const msg = prompt("Quel est votre problème ?");
+    if(msg){
+      reportStationIssue(id,msg)
+    }
   }
 
   useEffect(()=>{
@@ -87,8 +92,8 @@ export default function SideMenu() {
                 : (<p>Pas d'informations disponibles</p>))
             :<TailSpin color="#063d44" width={60} height={60}/>}
         </div>
-        <button className='buttonStyle' onClick={(e)=>{onBackClick()}} >Go back to stations list</button>
-        <button className='buttonStyleRed' onClick={(e)=>{popUp(gasStationInfo?.id)}} >Report issue</button>
+        <button className='buttonStyle' onClick={(e)=>{onBackClick()}} >{"<< Liste des stations"}</button>
+        <button className='buttonStyleRed' onClick={(e)=>{onUserReportClick(gasStationInfo?.id!)}} >Signaler un problème</button>
     </div>
     );
 }
