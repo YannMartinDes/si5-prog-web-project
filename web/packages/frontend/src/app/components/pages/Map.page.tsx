@@ -10,7 +10,7 @@ import { FilterStationContext } from '../../context/FilterStationContext';
 import { ALL_STATION_URL, BACKEND_BASE_URL, FIND_URL } from '../../const/url.const';
 import GlobalMap from '../GlobalMap';
 import MapTool from '../MapTool';
-import Slider from '../Slider';
+import Slider from '../nav-bar/Slider';
 import { GeolocalisationContext } from '../../context/GeolocalisationContext';
 
 //Extend marker prototype to fix : https://stackoverflow.com/questions/49441600/react-leaflet-marker-files-not-found

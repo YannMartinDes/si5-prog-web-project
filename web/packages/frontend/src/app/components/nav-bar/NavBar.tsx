@@ -1,10 +1,9 @@
 import React, {useContext, useState} from 'react'
-import { useNavigateNoUpdates } from '../context/RouterUtils';
-import { ThemeContext } from '../context/ThemeContext';
 import "./NavBar.scss"
-import {AuthContext} from "../context/AuthContext";
 import { Form } from 'react-bootstrap';
 import FilterBar from './FilterBar';
+import { useNavigateNoUpdates } from '../../context/RouterUtils';
+import { AuthContext } from '../../context/AuthContext';
 
 
 export default function NavBar() {

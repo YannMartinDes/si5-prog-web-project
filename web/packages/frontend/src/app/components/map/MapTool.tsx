@@ -1,25 +1,16 @@
 import { Map } from 'leaflet';
 import React, { useContext, useEffect, useState } from 'react'
-import { GeolocalisationContext } from '../context/GeolocalisationContext'
-import { MapContext } from '../context/MapContext';
-import MarkerClusterGroup from 'react-leaflet-markercluster';
-import StationListElement from './StationListElement';
-import { MapContextProvider } from '../context/MapContext';
-import { MarkerListContext } from '../context/MarkListContext';
+import { GeolocalisationContext } from '../../context/GeolocalisationContext';
+import { MapContext } from '../../context/MapContext';
 export default function MapTool() {
 
     const [position,setPosition]= useContext(GeolocalisationContext);
     const [map,setMap]:[Map, any] = useContext(MapContext);
     const [userMove, setUserMove] = useState(false);
-    const [posDraged,setPosDraged,clicked,setClicked] = useContext(MarkerListContext)
 
     const onDragEnd = ()=>{
         setUserMove(true);
     };
-    const updateCenter = () => {
-        const posUpdate=map.getCenter()
-        setPosition({lat:posUpdate.lat,lon:posUpdate.lng})
-    }
 
     const onRecenterClick = ()=>{
         setUserMove(false);
@@ -30,11 +21,10 @@ export default function MapTool() {
         },(error)=>{console.log(error)}))
 
     }
-    const clickButton = ()=>{
-        updateCenter()
-        setClicked(true);
+    const onRecenterInfo = ()=>{
+        const posUpdate=map.getCenter()
+        setPosition({lat:posUpdate.lat,lon:posUpdate.lng})
     }
-
 
     useEffect(()=>{//map est null à l'instanciation
         if(map) {
@@ -45,11 +35,11 @@ export default function MapTool() {
 
     return (
         <div>
-            {userMove && <button className='buttonStyle' onClick={onRecenterClick}>Recentrer sur ma position</button>}
             <div className='positionLegend'>
                 Position : {position.lat} , {position.lon}
             </div>
-            {userMove && <button className='buttonStyle' onClick={clickButton}>Afficher les stations de la zone</button>}
+            <button className='buttonStyle' onClick={onRecenterInfo}>Afficher les stations de la zone</button>
+            {userMove && <button className='buttonStyle' onClick={onRecenterClick}>Recentrer sur ma position</button>}
         </div>
     )
 }

@@ -1,7 +1,5 @@
 import React, { createContext, useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import { MarkerListContext } from './MarkListContext';
-
 
 const initialState = {
 	position: {
