@@ -13,7 +13,6 @@ export default function NavBar() {
     const navigate = useNavigateNoUpdates();
     const {token, user} = useContext(AuthContext);
     const buttonValue = (token==='') ? 'Se connecter' : user;
-    const {isDarkTheme,setDarkTheme} = useContext(ThemeContext)
 
     const onHideShowClick = () => {
         setHideBar(!hideBar);
@@ -30,12 +29,7 @@ export default function NavBar() {
                 <button className="loginButton buttonStyle" onClick={(e) => navigate(`login`)}>{buttonValue}</button>
                 {!hideBar && <FilterBar />}
                 <button className="loginButton buttonStyle" onClick={(e) => navigate(`login`)}>Profil Utilisateur</button>
-                <Form.Check 
-                    type="switch"
-                    className='custom-theme-swtich'
-                    checked={isDarkTheme}
-                    onChange={event=>setDarkTheme(event.target.checked)}
-                />
+
             </div>
         </div> 
     )
