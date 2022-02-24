@@ -18,6 +18,9 @@ body{
 
 
 .buttonStyle{
+  .theme--dark &{
+    background-color: #555;
+  }
   background-color: #1A6C92;
   border: none;
   color: white;
@@ -28,12 +31,18 @@ body{
   transition: background-color 300ms;
 
   &:hover{
+    .theme--dark &{
+      background-color: #111;
+    }
     background-color: #29C0D5;
     cursor: pointer;
   }
 }
 
 .buttonStyleRed{
+  .theme--dark &{
+    background-color: #720a0a;
+  }
   background-color: #921a1a;
   border: none;
   color: white;
@@ -44,6 +53,9 @@ body{
   transition: background-color 300ms;
 
   &:hover{
+    .theme--dark &{
+      background-color: #111;
+    }
     background-color: #29C0D5;
     cursor: pointer;
   }

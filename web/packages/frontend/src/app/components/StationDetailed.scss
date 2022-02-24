@@ -2,18 +2,29 @@
     padding: 5%;
   
     h1{
+      .theme--dark &{
+        color:#ddd
+      }
       color: #063d44;
       font-size: 23pt;
       margin: 0;
     }
   
     h3{
+      .theme--dark &{
+        color:#ccc
+      }
       color: #0b6f7c;
       font-size: 14pt;
       margin: 10px 0px;
     }
 
     .subInfo{
+        .theme--dark &{
+          color:#ccc;
+          border-top:solid #ccc 2px;
+          
+        }
         border-top: solid 2px #0b6f7c;
         color: #0b6f7c;
         font-size: 13pt;
@@ -25,6 +36,9 @@
         }
 
         h2{
+          .theme--dark &{
+            color:#ddd
+          }
           color: #063d44;
           font-size: 21pt;
           margin-top: 3%;

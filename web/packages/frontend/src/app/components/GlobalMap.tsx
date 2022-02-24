@@ -1,17 +1,31 @@
 import "./GlobalMap.scss"
-import { GasStationPosition, Position } from '@web/common/dto';
-import { useContext, useState } from 'react';
-import {MapContainer, TileLayer, useMap, ZoomControl} from 'react-leaflet';
+import { GasStationPosition } from '@web/common/dto';
+import { useContext, useMemo } from 'react';
+import {MapContainer, TileLayer, ZoomControl} from 'react-leaflet';
 import MapMarker from './MapMarker';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import { GeolocalisationContext } from "../context/GeolocalisationContext";
 import PositionUpdater from "./PositionUpdater";
 import { MapContext } from "../context/MapContext";
-import { control, Map } from "leaflet";
+import { Map } from "leaflet";
+import { ThemeContext } from "../context/ThemeContext";
 
 export default function GlobalMap({markersList}:
 {markersList:GasStationPosition[]})
 {
+  const {isDarkTheme} = useContext(ThemeContext)
+  const mapTheme = useMemo(()=>{
+    if(isDarkTheme){
+      return  {
+          attribution:'&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+          url:"https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+      }
+    }
+    return{
+      attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      url:"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    }
+  },[isDarkTheme])
   const {position} = useContext(GeolocalisationContext)
   
   const [map,setMap]:[Map,any] = useContext(MapContext);
@@ -20,8 +34,8 @@ export default function GlobalMap({markersList}:
             <MapContainer center={[position.lat,position.lon]} zoom={13} zoomControl = {false} scrollWheelZoom={false} whenCreated={setMap}>
               <PositionUpdater />
               <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution={mapTheme.attribution}
+                url={mapTheme.url}
                 />
                 <ZoomControl position = "bottomright"/>
                 <MarkerClusterGroup >

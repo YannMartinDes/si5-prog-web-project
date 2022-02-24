@@ -1,19 +1,22 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { GasStationPosition } from '@web/common/dto';
+import { useContext } from 'react';
 import { Marker, Tooltip, useMap } from 'react-leaflet';
-import gasStationIcon from '../../assets/GasStationIcon';
+import {gasStationIcon,gasStationIconDark} from '../../assets/GasStationIcon';
 import { FRONT_STATION_ID } from '../const/url.const';
 import { useNavigateNoUpdates } from '../context/RouterUtils';
+import { ThemeContext } from '../context/ThemeContext';
 
 
 export default function MapMarker({gasStation}
 :{gasStation:GasStationPosition}) {
+    const {isDarkTheme} = useContext(ThemeContext)
     const navigate = useNavigateNoUpdates();
     const gasStationPos = gasStation.position;
     const map = useMap();
 
     return (
-        <Marker position={[gasStationPos.lat, gasStationPos.lon]} icon={gasStationIcon}
+        <Marker position={[gasStationPos.lat, gasStationPos.lon]} icon={gasStationIcon?gasStationIcon:gasStationIconDark}
             eventHandlers={{
                 click: async () => {
                     map.setView([gasStationPos.lat, gasStationPos.lon],17, {animate:true})
