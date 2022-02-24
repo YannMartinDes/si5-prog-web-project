@@ -1,7 +1,13 @@
+.theme--dark {
+  background-color:#333;
+}
 .stationList {
     padding-left: 10px;
   
     h1{
+      .theme--dark &{
+        color:#ccc
+      }
       color: #063d44;
       margin-bottom: 0;
       margin-top: 0;
@@ -11,26 +17,41 @@
   }
   
   .stationListElement:hover{
+    .theme--dark &{
+      background-color:#111
+    }
     background-color: #1B6D92;
     transition: background-color 300ms;
   
     cursor: pointer;
     h2{
+      .theme--dark &{
+        color:#ccc
+      }
       transition: color 300ms;
       color: white;
     }
   
     p{
+      .theme--dark &{
+        color:#ccc
+      }
       transition: color 300ms;
       color: white;
     }
   }
   
   .stationListElement {
+    .theme--dark &{
+      border-bottom:solid #ccc 2px;
+    }
     border-bottom: solid 2px #106b77;
     padding: 5%;
   
     h2{
+      .theme--dark &{
+        color:#ccc
+      }
       margin-top: 0;
       margin-bottom: 2%;
       color: #063d44;
@@ -38,6 +59,9 @@
     }
   
     p{
+      .theme--dark &{
+        color:#ccc
+      }
       margin: 0;
       padding: 0;
       color: #106b77;

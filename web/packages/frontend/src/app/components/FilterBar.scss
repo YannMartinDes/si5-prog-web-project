@@ -1,5 +1,9 @@
-
 .filter-bar-container {
+  .theme--dark &{
+    background-color:#333;
+    color:#ccc;
+    border-bottom: solid #ccc 3px;
+  }
   z-index: 1001;//map 400 et button 1000
   position: fixed;
   width: 100%;
@@ -7,7 +11,11 @@
   padding-left: 20px;
   background-color: #eaecec;
 
+
   h2{
+    .theme--dark &{
+      color: #ccc;
+    }
     font-size: 20pt;
     color: #063d44;
     font-weight: bolder;
@@ -19,11 +27,17 @@
     padding: 0 10px;
   
     h3{
+      .theme--dark &{
+        color: #ccc;
+      }
       color: #063d44;
       font-size: 14pt;
     }
   
     li {
+      .theme--dark &{
+        color: #bbb;
+      }
       color: #063d44;
       margin-right: 10px;
       font-size: 13pt;
