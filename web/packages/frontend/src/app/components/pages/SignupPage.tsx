@@ -5,27 +5,27 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './SignupPage.scss'
 import axios from 'axios';
 import {Breadcrumb} from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 
 function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   function validateForm() {
     return email.length > 0 && (password.length > 3 && password.length < 21);
   }
 
   function handleSubmit(event: { preventDefault: () => void; }) {
-    console.log('Trying to submit signup');
     event.preventDefault();
     //faire requete vers le backend
-    alert('Login form sent');
     const signupUrl = `http://localhost:3333/api/auth/signup`;
-    console.log('printing signUp URL : ', signupUrl);
     try{
       axios.post(signupUrl, { username: email, password: password })
         .then(res => {
-          console.log('User created successfully: ');
+          alert('Votre compte a bien été créé');
+          navigate("/login")
         });
     } catch (e) {
       console.log(e);
@@ -35,14 +35,14 @@ function SignupPage() {
   return(
     <div>
       <Breadcrumb>
-        <Breadcrumb.Item href="http://localhost:4200">Home</Breadcrumb.Item>
+        <Breadcrumb.Item href="http://localhost:4200">Accueil</Breadcrumb.Item>
         <Breadcrumb.Item href="http://localhost:4200/login">Login</Breadcrumb.Item>
         <Breadcrumb.Item active>Signup</Breadcrumb.Item>
       </Breadcrumb>
       <div className="Signup">
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
+            <Form.Label>Adresse mail</Form.Label>
             <Form.Control
               type="email"
               placeholder="Enter email"
@@ -52,7 +52,7 @@ function SignupPage() {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
+            <Form.Label>Mot de passe</Form.Label>
             <Form.Control
               type="password"
               placeholder="Password"
@@ -63,7 +63,7 @@ function SignupPage() {
           <Form.Group className="mb-3" controlId="formBasicCheckbox">
           </Form.Group>
           <Button variant="primary" type="submit" disabled={!validateForm()}>
-            Sign Up
+            S'enregistrer
           </Button>
         </Form>
       </div>
