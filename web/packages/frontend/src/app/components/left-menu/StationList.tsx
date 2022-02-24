@@ -39,7 +39,7 @@ export default function StationList({stationList}:
         (<div>
           <button className="buttonStyle" onClick={sortListClick}>Trier A-Z</button>
           {stationList.map((station)=>{
-            return <StationListElement gasStation={station}/>
+            return <StationListElement key={station.id} gasStation={station}/>
           })}
         </div>)
       :(

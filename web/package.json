@@ -41,6 +41,7 @@
     "react-loader-spinner": "^5.1.4",
     "react-router-dom": "^6.2.1",
     "react-select": "^5.2.2",
+    "react-switch": "^6.0.0",
     "react-window": "^1.8.6",
     "reflect-metadata": "^0.1.13",
     "regenerator-runtime": "0.13.7",
