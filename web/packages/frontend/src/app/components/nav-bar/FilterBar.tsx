@@ -13,7 +13,7 @@ export default function FilterBar() {
   const [serviceList, setServiceList] = useState([])
   const [fuelList, setFuelList] = useState([])
   const [cityList, setCityList] = useState([])
-  const [value,setValue] = useState<number>(2000)
+  const [range,setRange] = useState(2000)
   const { dispatch } = useContext(FilterStationContext)
   const [filteredServices, setFilteredServices] = useState<{label:string,value:string}[]>([]);
 
@@ -40,7 +40,7 @@ export default function FilterBar() {
     dispatch({ type: SET_SERVICE_FILTER, payload: serviceFiltered });
   }
   const onRangeFilterChange = (value:any)=>{
-    setValue(value);
+    setRange(value);
     const rangeFiltred :number = value;
     dispatch({ type: UPDATE_RANGE_FILTER, payload: rangeFiltred });
   }
@@ -69,7 +69,7 @@ export default function FilterBar() {
       </div>
       <div className="subFilter slider">
       <h3>Rayon</h3>
-        <SliderReact value={value} onSliderChange={onRangeFilterChange} ></SliderReact>
+        <SliderReact value={range} onSliderChange={onRangeFilterChange} ></SliderReact>
       </div>
     </div>
   )

@@ -12,15 +12,14 @@ export default function SliderReact({value, onSliderChange}:
     
   return (
       <Range
-
       min={0}
-      max={500000}
+      max={300000}
       step={10000}
       onAfterChange={(value) => {
         onSliderChange(value[0]);
       } }
       defaultValue={[value]} 
-      marks={{0:"0KM",250000:"250KM",500000:"500KM"}}
+      marks={{0:"0KM",150000:"150KM",300000:"300KM"}}
       tipFormatter={value => (value/1000)+"KM"}
       />
   )
