@@ -1,9 +1,9 @@
 import { GasStationPosition } from '@web/common/dto'
 import { Map } from 'leaflet';
 import React, { useContext } from 'react'
-import { FRONT_STATION_ID } from '../const/url.const';
-import { MapContext } from '../context/MapContext';
-import { useNavigateNoUpdates } from '../context/RouterUtils';
+import { FRONT_STATION_ID } from '../../const/url.const';
+import { MapContext } from '../../context/MapContext';
+import { useNavigateNoUpdates } from '../../context/RouterUtils';
 
 export default function StationListElement({gasStation}:
     {gasStation:GasStationPosition}) {

@@ -3,9 +3,9 @@ import { GasStationInfo, UserIssue } from '@web/common/dto';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { BACKEND_BASE_URL, REPORT_ISSUE, STATION_INFO } from '../const/url.const';
+import { BACKEND_BASE_URL, REPORT_ISSUE, STATION_INFO } from '../../const/url.const';
 import {TailSpin} from 'react-loader-spinner'
-import { useNavigateNoUpdates } from "../context/RouterUtils";
+import { useNavigateNoUpdates } from "../../context/RouterUtils";
 
 export default function SideMenu() {
   const navigate = useNavigateNoUpdates()

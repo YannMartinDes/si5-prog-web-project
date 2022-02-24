@@ -3,9 +3,9 @@ import { useContext, useEffect, useState } from 'react'
 import CheckBoxList from './CheckBoxList'
 import axios from 'axios';
 import Select from 'react-select';
-import { BACKEND_BASE_URL } from '../const/url.const';
-import { ADD_GAS_FILTER, SET_SERVICE_FILTER, FilterStationContext, REMOVE_GAS_FILTER, UPDATE_RANGE_FILTER } from '../context/FilterStationContext';
-import { MenuList, OptionMenuList } from './MenuList';
+import { BACKEND_BASE_URL } from '../../const/url.const';
+import { ADD_GAS_FILTER, SET_SERVICE_FILTER, FilterStationContext, REMOVE_GAS_FILTER, UPDATE_RANGE_FILTER } from '../../context/FilterStationContext';
+import { MenuList, OptionMenuList } from '../MenuList';
 import SliderReact from "./Slider";
 
 

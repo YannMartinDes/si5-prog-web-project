@@ -5,13 +5,12 @@ import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import L from 'leaflet';
 import axios from 'axios';
 import { Filter, GasStationPosition, Position } from '@web/common/dto';
-import LeftSideMenu from '../LeftSideMenu';
 import { FilterStationContext } from '../../context/FilterStationContext';
 import { ALL_STATION_URL, BACKEND_BASE_URL, FIND_URL } from '../../const/url.const';
-import GlobalMap from '../GlobalMap';
-import MapTool from '../MapTool';
-import Slider from '../nav-bar/Slider';
 import { GeolocalisationContext } from '../../context/GeolocalisationContext';
+import LeftSideMenu from '../left-menu/LeftSideMenu';
+import GlobalMap from '../map/GlobalMap';
+import MapTool from '../map/MapTool';
 
 //Extend marker prototype to fix : https://stackoverflow.com/questions/49441600/react-leaflet-marker-files-not-found
 const DefaultIcon = L.icon({

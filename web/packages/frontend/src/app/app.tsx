@@ -3,12 +3,11 @@ import MapPage from './components/pages/Map.page';
 import ChartPage from './components/pages/Chart.page';
 import { FilterStationContextProvider } from './context/FilterStationContext';
 import { MapContextProvider } from './context/MapContext';
-import FilterBar from './components/FilterBar';
-import SignupPage from "./components/SignupPage";
-import LoginPage from "./components/LoginPage";
-import NavBar from './components/NavBar';
 import {AuthContextProvider} from "./context/AuthContext";
 import { GeolocalisationContextProvider } from './context/GeolocalisationContext';
+import NavBar from './components/nav-bar/NavBar';
+import SignupPage from './components/pages/SignupPage';
+import LoginPage from './components/pages/LoginPage';
 function App() {
 
   return (

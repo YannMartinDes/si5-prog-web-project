@@ -4,9 +4,9 @@ import Button from "react-bootstrap/Button";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './LoginPage.scss'
 import axios from "axios";
-import {useNavigateNoUpdates} from "../context/RouterUtils";
 import {Breadcrumb} from "react-bootstrap";
-import {AuthContext} from "../context/AuthContext";
+import { useNavigateNoUpdates } from "../../context/RouterUtils";
+import { AuthContext } from "../../context/AuthContext";
 
 function LoginPage() {
   const navigate = useNavigateNoUpdates();
