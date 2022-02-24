@@ -10,25 +10,25 @@ import {AuthContext} from "../context/AuthContext";
 
 function LoginPage() {
   const navigate = useNavigateNoUpdates();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [token, setToken] = useContext(AuthContext);
+  const { token, setToken, user, setUser} = useContext(AuthContext);
 
   function validateForm() {
-    return email.length > 0 && password.length > 0;
+    return username.length > 0 && password.length > 0;
   }
 
-  function handleSubmit(event: { preventDefault: () => void; }) {
-    console.log('Trying to submit login');
+  async function handleSubmit(event: { preventDefault: () => void; }) {
     event.preventDefault();
-    //faire requete vers le backend
-    alert('Login form sent');
+    console.log('login form sent');
     try{
-      axios.post(`http://localhost:3333/api/auth/login`, { username: email, password: password })
+      await axios.post(`http://localhost:3333/api/auth/login`, { username: username, password: password })
         .then(res => {
           const token = res.data;
           localStorage.setItem('token', JSON.stringify(token));
           setToken(token);
+          localStorage.setItem('user', username);
+          setUser(username);
           console.log('User logged successfully: ');
         });
     } catch (e) {
@@ -48,9 +48,9 @@ function LoginPage() {
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control
-              placeholder="Enter email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              placeholder="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
           </Form.Group>
 
@@ -58,7 +58,7 @@ function LoginPage() {
             <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
-              placeholder="Password"
+              placeholder="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
