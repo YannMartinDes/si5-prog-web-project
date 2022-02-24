@@ -8,10 +8,12 @@ import FilterBar from './components/FilterBar';
 import SignupPage from "./components/SignupPage";
 import LoginPage from "./components/LoginPage";
 import NavBar from './components/NavBar';
+import {AuthContextProvider} from "./context/AuthContext";
 
 function App() {
 
   return (
+    <AuthContextProvider>
     <MapContextProvider>
       <GeolocalisationContextProvider>
         <FilterStationContextProvider>
@@ -19,8 +21,15 @@ function App() {
             <Route path="/*" element={<>
               <NavBar />
               <Routes>
-                <Route path='/*' element={<MapPage/>}/>
-                <Route path='/chart' element={<ChartPage/>}/>
+                <Route path="/*" element={
+                  <Routes>
+                    <Route path='/*' element={<MapPage />} />
+                    <Route path='/chart' element={<ChartPage />} />
+                  </Routes>
+                }>
+                </Route>
+                <Route path='/signup' element={<SignupPage />} />
+                <Route path='/login' element={<LoginPage />} />
               </Routes>
             </>}>
             </Route>
@@ -30,6 +39,7 @@ function App() {
         </FilterStationContextProvider>
       </GeolocalisationContextProvider>
     </MapContextProvider>
+    </AuthContextProvider>
   );
 
 }
