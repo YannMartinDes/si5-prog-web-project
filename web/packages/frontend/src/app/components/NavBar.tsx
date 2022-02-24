@@ -29,14 +29,13 @@ export default function NavBar() {
                 <button className="buttonStyle filterButton" onClick={(e) => onHideShowClick()}>{hideBar? "Afficher Filtre" : "Masquer Filtre"}</button>
                 <button className="loginButton buttonStyle" onClick={(e) => navigate(`login`)}>{buttonValue}</button>
                 {!hideBar && <FilterBar />}
-                <button className="loginButton buttonStyle" onClick={(e) => navigate(`login`)}>Profil Utilisateur</button>
-                <Form.Check 
+                <Form.Check
                     type="switch"
                     className='custom-theme-swtich'
                     checked={isDarkTheme}
                     onChange={event=>setDarkTheme(event.target.checked)}
                 />
             </div>
-        </div> 
+        </div>
     )
 }
