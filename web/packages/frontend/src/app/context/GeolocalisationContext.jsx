@@ -9,18 +9,11 @@ const initialState = {
         lon:7.289429    
     },
 };
-export const GeolocalisationContext = createContext({ position:initialState.position });
+export const GeolocalisationContext = createContext();
 
 
-export const GeolocalisationContextProvider = ({ children }:any) => {
-    const [posDraged,setPosDraged,clicked,setClicked] = useContext(MarkerListContext)
-    let [position,setPosition] = useState(initialState.position)
-    if (clicked){
-        position={
-            lat:posDraged.lat,
-            lon:posDraged.lng   
-        }
-    }
+export const GeolocalisationContextProvider = ({ children }) => {
+    const [position,setPosition] = useState(initialState.position)
     useEffect(()=>{
         if(navigator.geolocation) {
             //Init position
@@ -43,7 +36,7 @@ export const GeolocalisationContextProvider = ({ children }:any) => {
 
     
 	return (
-		<GeolocalisationContext.Provider value={{ position }} >
+		<GeolocalisationContext.Provider value={[position,setPosition]} >
 			{children}
 		</GeolocalisationContext.Provider>
 	);

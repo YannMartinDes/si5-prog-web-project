@@ -26,7 +26,7 @@ export default function GlobalMap({markersList}:
       url:"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
     }
   },[isDarkTheme])
-  const {position} = useContext(GeolocalisationContext)
+  const [position,setPosition] = useContext(GeolocalisationContext)
   
   const [map,setMap]:[Map,any] = useContext(MapContext);
     return(

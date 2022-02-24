@@ -13,8 +13,8 @@ import { BACKEND_BASE_URL } from '../../const/url.const';
 import axios from 'axios';
 import { FuelStationPriceOrder } from '@web/common/dto';
 import { FilterStationContext } from '../../context/FilterStationContext';
-import { GeolocalisationContext } from '../../context/GeolocalisationContext';
 import "./StationPriceOrder.scss"
+import { GeolocalisationContext } from '../../context/GeolocalisationContext';
 ChartJS.register(
   CategoryScale,
   LinearScale,

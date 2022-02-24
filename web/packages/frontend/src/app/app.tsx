@@ -2,7 +2,6 @@ import { Route, Routes } from 'react-router-dom';
 import MapPage from './components/pages/Map.page';
 import ChartPage from './components/pages/Chart.page';
 import { FilterStationContextProvider } from './context/FilterStationContext';
-import { GeolocalisationContextProvider } from './context/GeolocalisationContext';
 import { MapContextProvider } from './context/MapContext';
 import FilterBar from './components/FilterBar';
 import SignupPage from "./components/SignupPage";
@@ -11,6 +10,7 @@ import NavBar from './components/NavBar';
 import {AuthContextProvider} from "./context/AuthContext";
 
 import { MarkerListContextProvider } from './context/MarkListContext';
+import { GeolocalisationContextProvider } from './context/GeolocalisationContext';
 function App() {
 
   return (

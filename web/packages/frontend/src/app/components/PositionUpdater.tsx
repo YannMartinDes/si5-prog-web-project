@@ -4,7 +4,7 @@ import { useMap } from 'react-leaflet';
 import { GeolocalisationContext } from '../context/GeolocalisationContext';
 
 export default function PositionUpdater() {
-    const {position} = useContext(GeolocalisationContext)
+    const [position,setPosition] = useContext(GeolocalisationContext)
     const [lastPos,setLastPos] = useState<Position>({lat:43.675819, lon:7.289429});
     const map = useMap();
 

@@ -8,7 +8,7 @@ import { MapContextProvider } from '../context/MapContext';
 import { MarkerListContext } from '../context/MarkListContext';
 export default function MapTool() {
 
-    const {position}= useContext(GeolocalisationContext);
+    const [position,setPosition]= useContext(GeolocalisationContext);
     const [map,setMap]:[Map, any] = useContext(MapContext);
     const [userMove, setUserMove] = useState(false);
     const [posDraged,setPosDraged,clicked,setClicked] = useContext(MarkerListContext)
@@ -17,13 +17,18 @@ export default function MapTool() {
         setUserMove(true);
     };
     const updateCenter = () => {
-        setPosDraged(map.getCenter())
-        console.log(map.getCenter())
+        const posUpdate=map.getCenter()
+        setPosition({lat:posUpdate.lat,lon:posUpdate.lng})
     }
 
     const onRecenterClick = ()=>{
         setUserMove(false);
-        map.setView([position.lat, position.lon],13);
+        Promise.resolve(navigator.geolocation.getCurrentPosition((position) => {
+            const pos = {lat: position.coords.latitude, lon: position.coords.longitude};
+            setPosition(pos)
+            map.setView([pos.lat, pos.lon],13);
+        },(error)=>{console.log(error)}))
+
     }
     const clickButton = ()=>{
         updateCenter()
