@@ -10,7 +10,6 @@ import SliderReact from "./Slider";
 
 
 export default function FilterBar() {
-
   const [serviceList, setServiceList] = useState([])
   const [fuelList, setFuelList] = useState([])
   const [cityList, setCityList] = useState([])

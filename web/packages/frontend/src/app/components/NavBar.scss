@@ -11,5 +11,20 @@
   .loginButton{
     float: right;
   }
+  .theme--dark & {
+
+    .form-check-input:checked{
+      background-color: #555;
+      border-color: #555;
+    }
+    .form-check-input:focus{
+      box-shadow: 0 0 0 0.25rem rgba(100, 100, 100,0.25);
+    }
+  }
 }
 
+.custom-theme-swtich{
+  display: inline-block;
+  margin: 10px;
+  float: right;
+}
