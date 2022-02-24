@@ -1,5 +1,6 @@
-import React, { createContext, useEffect, useState} from 'react';
+import React, { createContext, useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import { MarkerListContext } from './MarkListContext';
 
 
 const initialState = {
@@ -12,7 +13,14 @@ export const GeolocalisationContext = createContext({ position:initialState.posi
 
 
 export const GeolocalisationContextProvider = ({ children }:any) => {
-    const [position,setPosition] = useState(initialState.position)
+    const [posDraged,setPosDraged,clicked,setClicked] = useContext(MarkerListContext)
+    let [position,setPosition] = useState(initialState.position)
+    if (clicked){
+        position={
+            lat:posDraged.lat,
+            lon:posDraged.lng   
+        }
+    }
     useEffect(()=>{
         if(navigator.geolocation) {
             //Init position
