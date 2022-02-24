@@ -13,9 +13,7 @@ export class StationService {
 
   constructor(
     @InjectModel("STATION") private readonly stationModel: Model<Station>,
-  ){
-
-  }
+  ){}
 
   async update(id:string, station: Station){
     return await this.stationModel.findByIdAndUpdate(id, station, { new: true })
@@ -61,21 +59,6 @@ export class StationService {
 
     const stations = await this.stationModel.find(query)
     return stations
-    // let query = createQueryNearWithFilter(longitudeCurrent,latitudeCurrent,maxDist,filter)
-
-    // let listGasStationPosition : GasStationPosition[] =[]
-    // let stations : Station[] = await this.stationModel.find(query).exec();
-    
-    // for (let station of stations){
-
-    //   let id=getID(station)
-    //   let pos:Position=getCoordinates(station)
-    //   let address=getAdresseText(station)
-    //   let gasPrice :GasPrice[] = getGasPrices(station)
-    //   let gasPos : GasStationPosition = {id:id,position:pos,address:address,prices:gasPrice}  
-    //   listGasStationPosition.push(gasPos)
-    // }
-    // return listGasStationPosition
   }
 
   async findAll(query:any): Promise<Station[]> {
@@ -86,15 +69,7 @@ export class StationService {
   async findAllText(query:any): Promise<GasStationPosition[]> {
     const listGasStationPosition : GasStationPosition[] =[]
     const stations : Station[] = await this.stationModel.find(query).exec();
-  
-    // for (const station of stations){
-    //   let id=getID(station)
-    //   let pos:Position=getCoordinates(station)
-    //   let address=getAdresseText(station)
-    //   let gasPrice :GasPrice[] =getGasPrices(station)
-    //   let gasPos : GasStationPosition = {id:id,position:pos,address:address,prices:gasPrice}  
-    //   listGasStationPosition.push(gasPos)
-    // }
+
     return listGasStationPosition
   }
 
