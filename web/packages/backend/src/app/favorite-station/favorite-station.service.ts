@@ -8,7 +8,7 @@ import { User } from '../schemas/user.schema';
 export class FavoriteStationService {
 
     constructor(
-        @InjectModel("STATION") private readonly favoriteStationModel: Model<FavoriteStation>,
+        @InjectModel("FAVORITE_STATION") private readonly favoriteStationModel: Model<FavoriteStation>,
     ){}
 
     async getUserFavoriteStations(user:User){
