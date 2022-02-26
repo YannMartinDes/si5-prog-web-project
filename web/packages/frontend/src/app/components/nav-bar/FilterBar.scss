@@ -4,12 +4,30 @@
     color:#ccc;
     border-bottom: solid #ccc 3px;
   }
+
   z-index: 1001;//map 400 et button 1000
   position: fixed;
   width: 100%;
   border-bottom: solid #063d44 3px;
   padding-left: 20px;
   background-color: #eaecec;
+
+  .filter-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(300px, 1fr));
+    grid-gap: 50px;
+    padding-bottom: 10px;
+    padding-left: 45px;
+    padding-right: 45px;
+
+  }
+  .slider-container{
+   overflow: hidden;
+   padding: 0 20px 20px 20px;
+  }
+  .rc-slider{
+    width: 100%;
+  }
 
 
   h2{
@@ -22,9 +40,8 @@
   }
 
   .subFilter{
-    display: inline-block;
-    width: 25%;
-    padding: 0 10px;
+    // display: inline-block;
+    width: 100%;
   
     h3{
       .theme--dark &{
@@ -42,11 +59,9 @@
       margin-right: 10px;
       font-size: 13pt;
     }
+
   }
   
-  .slider{
-    padding: 0 35px;
-  }
 }
 
 
