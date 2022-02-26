@@ -28,7 +28,7 @@ ChartJS.register(
 export default function StationPriceOrder() {
   const [stationFuelPrice, setStationFuelPrice] = useState<FuelStationPriceOrder[]>([])
   const { filterState } = useContext(FilterStationContext)
-  const [position,setPosition] = useContext(GeolocalisationContext)
+  const {searchPosition} = useContext(GeolocalisationContext)
   const range = 20000
 
   useEffect(() => {
@@ -36,8 +36,8 @@ export default function StationPriceOrder() {
       {
         params:
         {
-          latitude: position.lat,
-          longitude: position.lon,
+          latitude: searchPosition.lat,
+          longitude: searchPosition.lon,
           maxDist: range,
           filter: {
             gas: filterState.gasFilter,
@@ -47,7 +47,7 @@ export default function StationPriceOrder() {
           maxStation: 10
         }
       }).then((response) => setStationFuelPrice(response.data))
-  }, [filterState, position]
+  }, [filterState, searchPosition]
   )
 
 

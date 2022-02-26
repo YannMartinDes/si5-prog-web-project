@@ -24,7 +24,7 @@ const range = 20000
 export default function MapPage() {
   const [stationList,setStationList] = useState<GasStationPosition[]>([]);
   const {filterState} = useContext(FilterStationContext)
-  const [position,setPosition] = useContext(GeolocalisationContext)
+  const {searchPosition} = useContext(GeolocalisationContext)
 
 
   function getAllStation(currentPos:Position, radius:number, filter:Filter) {
@@ -47,12 +47,12 @@ export default function MapPage() {
 
 
   useEffect(()=>{//== ComponentDidMount
-    getAllStation(position,filterState.range,{
+    getAllStation(searchPosition,filterState.range,{
       gas: filterState.gasFilter, 
       services: filterState.servicesFilter,
       schedules: []
     });
-  },[filterState, position])
+  },[filterState, searchPosition])
 
   return (
     <div>
