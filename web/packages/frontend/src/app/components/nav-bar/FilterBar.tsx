@@ -54,22 +54,26 @@ export default function FilterBar() {
   return (
     <div className="filter-bar-container">
       <h2>Filtre</h2>
-      <div className='subFilter'>
-        <h3>Ville</h3>
-        <Select className="select" components={{ MenuList: test, Option: OptionMenuList }} options={cityList.map((elt) => { return { label: elt, value: elt } })} onChange={onCityChange} ></Select>
-      </div>
-      <div className='subFilter'>
-        <h3>Essences</h3>
-        <CheckBoxList elementList={fuelList} onCheckBoxChange={onCheckBoxChangeGaz}></CheckBoxList>
-      </div>
-      <div className='subFilter'>
-        <h3>Services</h3>
-        <Select className="select" isMulti options={serviceList.map((elt) => { return { label: elt, value: elt } })} onChange={onServiceFilterChange}
-          value = {filteredServices}></Select>
-      </div>
-      <div className="subFilter slider">
-      <h3>Rayon</h3>
-        <SliderReact value={range} onSliderChange={onRangeFilterChange} ></SliderReact>
+      <div className="filter-grid">
+        <div className='subFilter'>
+          <h3>Ville</h3>
+          <Select className="select" components={{ MenuList: test, Option: OptionMenuList }} options={cityList.map((elt) => { return { label: elt, value: elt } })} onChange={onCityChange} ></Select>
+        </div>
+        <div className='subFilter'>
+          <h3>Essences</h3>
+          <CheckBoxList elementList={fuelList} onCheckBoxChange={onCheckBoxChangeGaz}></CheckBoxList>
+        </div>
+        <div className='subFilter'>
+          <h3>Services</h3>
+          <Select className="select" isMulti options={serviceList.map((elt) => { return { label: elt, value: elt } })} onChange={onServiceFilterChange}
+            value = {filteredServices}></Select>
+        </div>
+        <div className="subFilter slider">
+          <h3>Rayon</h3>
+          <div className="slider-container">
+            <SliderReact value={range} onSliderChange={onRangeFilterChange} ></SliderReact>
+          </div>
+        </div>
       </div>
     </div>
   )
