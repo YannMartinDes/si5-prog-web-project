@@ -2,6 +2,11 @@
 
 ProgWeb Project : Client and Server Side
 
+## Project URL 
+
+[ProgWebProject](https://github.com/SI5-QTYY-Web/si5-prog-web-project) : link to our
+github repository
+
 ## Subject
 
 ## Structure
@@ -78,7 +83,11 @@ docker ps -a
 
 ## Authors
 
-- [Quentin Larose](https://github.com/QuentinLarose)
-- [Martin D'Escrienne Yann](https://github.com/Mentra20)
-- [Nersissian Tigran](https://github.com/TIGRAN06)
-- [Tognetti Yohann](https://github.com/Idrash)
+This follows the following format : 
+
+[NomEtudiant PrenomEtudiant](link to github page) : IdentifiantGithub
+
+- [Larose Quentin](https://github.com/QuentinLarose) : QuentinLarose
+- [Martin D'Escrienne Yann](https://github.com/Mentra20) : Mentra20
+- [Nersissian Tigran](https://github.com/TIGRAN06) : TIGRAN06
+- [Tognetti Yohann](https://github.com/Idrash) : Idrash
