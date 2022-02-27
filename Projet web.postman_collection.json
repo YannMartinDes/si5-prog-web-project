@@ -722,7 +722,8 @@
 										"exec": [
 											"pm.test(\"Status test\", function () {\r",
 											"    pm.response.to.have.status(201);\r",
-											"})"
+											"    console.log( \"totot\" + pm.response.json()[\"access_token\"])\r",
+											"    pm.globals.set(\"access_token\",pm.response.json()[\"access_token\"])})"
 										],
 										"type": "text/javascript"
 									}
@@ -780,7 +781,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJhbmRvbVUiLCJzdWIiOiI2MjA0ZTAwOTExYTY2NDFjZmQ4ODYyNDYiLCJpYXQiOjE2NDYwMDAwMDIsImV4cCI6MTY0NjAwMTgwMn0.41ZZZravssN7YmoxLpK6boxS30eS8-90u9uQK9eF5xA",
+											"value": "{{access_token}}",
 											"type": "string"
 										}
 									]
@@ -836,7 +837,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJhbmRvbVUiLCJzdWIiOiI2MjA0ZTAwOTExYTY2NDFjZmQ4ODYyNDYiLCJpYXQiOjE2NDYwMDAwMDIsImV4cCI6MTY0NjAwMTgwMn0.41ZZZravssN7YmoxLpK6boxS30eS8-90u9uQK9eF5xA",
+											"value": "{{access_token}}",
 											"type": "string"
 										}
 									]
@@ -889,7 +890,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJhbmRvbVUiLCJzdWIiOiI2MjA0ZTAwOTExYTY2NDFjZmQ4ODYyNDYiLCJpYXQiOjE2NDYwMDAwMDIsImV4cCI6MTY0NjAwMTgwMn0.41ZZZravssN7YmoxLpK6boxS30eS8-90u9uQK9eF5xA",
+											"value": "{{access_token}}",
 											"type": "string"
 										}
 									]
