@@ -17,6 +17,7 @@ export default function SideMenu() {
   const navigate = useNavigateNoUpdates()
   const [gasStationInfo,setGasStationInfo] = useState<GasStationInfo>();
   const {id} = useParams();
+  const {map,navControl,setNavControl}:{map:Map,navControl:any,setNavControl:any} = useContext(MapContext);
   const {userPosition,searchPosition,setSearchPosition} = useContext(GeolocalisationContext)
 
   function getStationInfo(stationId:string) {
@@ -52,21 +53,21 @@ export default function SideMenu() {
   function onItineraireClick(){
     addNavigation()
   }
-  const [map,setMap]:[Map, any] = useContext(MapContext);
-  const [groupNavLayer,setNavGroupLayer] = useState<any>()
+
 
   const addNavigation = () =>{
-    if (groupNavLayer){
-      map.removeControl(groupNavLayer)
+    if(navControl){
+      map.removeControl(navControl)
     }
-    setNavGroupLayer(L.Routing.control({
-      routeWhileDragging: true,
-      //sshowAlternatives: true,
-        waypoints: [
-            L.latLng(userPosition.lat, userPosition.lon),
-            L.latLng(searchPosition.lat,searchPosition.lon)
-        ]
-    }).addTo(map))
+    setNavControl(L.Routing.control({
+      routeWhileDragging: true,   
+      collapsible:true,
+      waypoints: [
+          L.latLng(userPosition.lat, userPosition.lon),
+          L.latLng(gasStationInfo?.position.lat||0,gasStationInfo?.position.lon||0)
+      ]
+    }).addTo(map)
+    )
     
   }
   useEffect(()=>{

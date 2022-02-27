@@ -10,7 +10,7 @@ export default function StationListElement({gasStation}:
     {gasStation:GasStationPosition}) {
 
   const navigate = useNavigateNoUpdates();
-  const [map,setMap]:[Map,any] = useContext(MapContext);
+  const {map}:{map:Map} = useContext(MapContext);
   const {userPosition,searchPosition,setSearchPosition} = useContext(GeolocalisationContext)
   const onStationElementClick = (e:any) =>{
     navigate(FRONT_STATION_ID+gasStation.id);

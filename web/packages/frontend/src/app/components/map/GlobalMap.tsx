@@ -18,7 +18,7 @@ export default function GlobalMap({markersList}:
 {markersList:GasStationPosition[]})
 {
   const {searchPosition,userPosition} = useContext(GeolocalisationContext)
-  const [map,setMap]:[Map,any] = useContext(MapContext);
+  const {setMap}:{setMap:any} = useContext(MapContext);
   
   
 

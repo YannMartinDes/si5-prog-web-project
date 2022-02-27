@@ -28,7 +28,7 @@ export default function MapPage() {
   const [stationList,setStationList] =useContext(GasStationPositionContext)
   const {filterState} = useContext(FilterStationContext)
   const {searchPosition} = useContext(GeolocalisationContext)
-  const [map,setMap]:[Map, any] = useContext(MapContext);
+  const {map}:{map:Map} = useContext(MapContext);
   const [groupLayer, setGroupLayer] = useState<L.FeatureGroup<any>|undefined>()
 
   function getAllStation(currentPos:Position, radius:number, filter:Filter) {

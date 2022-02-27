@@ -5,7 +5,7 @@ import { MapContext } from '../../context/MapContext';
 export default function MapTool() {
 
     const {userPosition,searchPosition,setSearchPosition}= useContext(GeolocalisationContext);
-    const [map,setMap]:[Map, any] = useContext(MapContext);
+    const {map}:{map:Map} = useContext(MapContext);
     const [userMove, setUserMove] = useState(false);
 
     const onDragEnd = ()=>{
