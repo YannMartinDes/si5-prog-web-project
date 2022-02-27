@@ -1,7 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { ConsoleLogger, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { GasStationPosition } from '@web/common/dto';
 import { Model } from 'mongoose';
+import { GasStationPositionDTO } from '../dto/GasStationPositionDTO';
 import { FavoriteStation } from '../schemas/favoriteStation.schema';
+import { Station } from '../schemas/station.schema';
 import { User } from '../schemas/user.schema';
 
 @Injectable()
@@ -9,6 +12,7 @@ export class FavoriteStationService {
 
     constructor(
         @InjectModel("FAVORITE_STATION") private readonly favoriteStationModel: Model<FavoriteStation>,
+        @InjectModel("STATION") private readonly stationModel: Model<Station>,
     ){}
 
     async getUserFavoriteStations(user:User){
@@ -18,8 +22,18 @@ export class FavoriteStationService {
             console.log("There is no favorite station for "+user.username+" in the DB");
             return undefined;
         }
-        console.log("Return favorite station "+favoriteStation.favoriteStations+" for user "+user.username);
-        return favoriteStation?.favoriteStations;
+        console.log("get favorite station Id "+favoriteStation.favoriteStations+" for user "+user.username);
+        const IdList =  favoriteStation!.favoriteStations || [];
+        const stationList:GasStationPosition[] = []
+
+        for(let stationID of IdList){
+            const station = await this.stationModel.findById(stationID);
+            if(station){
+                stationList.push(GasStationPositionDTO.fromStation(station));
+            }
+        }
+        console.log("Return station "+JSON.stringify(stationList));
+        return stationList;
     }
 
 
