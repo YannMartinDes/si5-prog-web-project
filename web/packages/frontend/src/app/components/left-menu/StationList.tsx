@@ -34,7 +34,7 @@ export default function StationList() {
       if (gasTypeFirstElem.gasType==typeStation){
         for (let gasTypeElem of b.prices){
           if (gasTypeElem.gasType==typeStation){
-            undefined =gasTypeElem.price - gasTypeFirstElem.price
+            undefined = gasTypeElem.price - gasTypeFirstElem.price
             return undefined}
           }
           firstCheck = true
@@ -52,10 +52,39 @@ export default function StationList() {
     }
   }
 
- 
+  const sortPriceDescending = (typeStation :string,a:GasStationPosition,b:GasStationPosition)=>{
+    let undefined = 0
+    let firstCheck= false
+    let secondCheck = false
+    for (let gasTypeFirstElem of a.prices){
+      if (gasTypeFirstElem.gasType==typeStation){
+        for (let gasTypeElem of b.prices){
+          if (gasTypeElem.gasType==typeStation){
+            undefined =  gasTypeFirstElem.price - gasTypeElem.price
+            return undefined}
+          }
+          firstCheck = true
+      }
+      secondCheck = true
+    }
+    if (firstCheck && secondCheck){
+      return -100000
+    }
+    if (firstCheck) {
+      return 100000
+    }
+    else {
+      return 100000
+    }
+  }
   const sortPriceUp = (a:GasStationPosition,b:GasStationPosition)=>{
-    let selectedGas: string = (document.getElementById("monselect") as HTMLInputElement).value;
+    let test : string = (document.getElementById("monselect") as HTMLInputElement).value;
     return sortPriceAscending(test,a,b)
+  }
+
+  const sortPriceDown= (a:GasStationPosition,b:GasStationPosition)=>{
+    let test : string = (document.getElementById("monselect") as HTMLInputElement).value;
+    return sortPriceDescending(test,a,b)
   }
   const sortListClickByAdress = ()=>{
     let sortMethod = null;
@@ -67,27 +96,32 @@ export default function StationList() {
   }
 
   const sortListClickByPrice = ()=>{
-    let stationsWithSelectedGasType=[]
-    let stationsWithoutGasType=[]
+    let sortMethod = null;
+    let stations=[]
+    let stationsWithoutTypeGas=[]
     console.log(stationList)
-    let selectedGas: string = (document.getElementById("monselect") as HTMLInputElement).value;
+    let test : string = (document.getElementById("monselect") as HTMLInputElement).value;
     for (let e of stationList){
       let exist = false
       for (let gas of e.prices){
         if(gas.gasType==test){
-          stationsWithSelectedGasType.push(e)
+          stations.push(e)
           console.log(gas.gasType==test)
           exist = true
           break
         }
       }
       if(!exist){
-        stationsWithoutGasType.push(e)
+        stationsWithoutTypeGas.push(e)
       }
     }
-    stationsWithSelectedGasType.sort(sortPriceUp)
-    console.log(stationsWithSelectedGasType.length)
-    setStationList([...stationsWithSelectedGasType,...stationsWithoutGasType])
+    stations.sort((a: GasStationPosition,b: GasStationPosition)=> {
+      isPriceAscending? sortMethod = sortPriceUp: sortMethod = sortPriceDown 
+      return sortMethod(a,b);
+    })
+    setIsPriceAscending(!isPriceAscending);
+    console.log(stations.length)
+    setStationList([...stations,...stationsWithoutTypeGas])
 
 }
   const test: any = MenuList
@@ -103,7 +137,7 @@ export default function StationList() {
       {(stationList?.length) !== 0 ?
         (<div>
           <button className="buttonStyle" onClick={sortListClickByAdress}>Trier A-Z</button>
-          <button className="buttonStyle" onClick={sortListClickByPrice}>Trier par prix et type d'essence </button>
+          <button className="buttonStyle" onClick={sortListClickByPrice}>Trier par prix  type d'essence </button>
           <select id="monselect"> 
           {fuelList.map((elt) => { return  <option value={elt}>{elt}</option> })}
           </select> 
