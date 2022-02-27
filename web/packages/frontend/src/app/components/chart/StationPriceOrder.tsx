@@ -52,7 +52,7 @@ export default function StationPriceOrder() {
 
   return (<div className='wrapper-station-chart'>{
     stationFuelPrice.map(fuel => {
-      const labels = fuel.stations.map((station: { address: any; }) => station.address.substring(0, 15));
+      const labels = fuel.stations.map((station: { address: any; }) => station.address.substring(0, 25));
       const values = fuel.stations.map((station: { price: any; }) => station.price);
       const data = {
         labels: labels,
