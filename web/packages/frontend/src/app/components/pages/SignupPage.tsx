@@ -19,7 +19,6 @@ function SignupPage() {
 
   function handleSubmit(event: { preventDefault: () => void; }) {
     event.preventDefault();
-    //faire requete vers le backend
     const signupUrl = `http://localhost:3333/api/auth/signup`;
     try{
       axios.post(signupUrl, { username: email, password: password })

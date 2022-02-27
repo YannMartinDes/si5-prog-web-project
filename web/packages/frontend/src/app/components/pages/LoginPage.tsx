@@ -29,7 +29,7 @@ function LoginPage() {
         setUser(username);
 
         navigate("/")
-      }).catch((err)=>{//TODO regarder code erreur + verif sur signup
+      }).catch((err)=>{
         alert('Adresse mail ou mot de passe invalide');
         console.log('Login failed : ', err);
       })
@@ -51,7 +51,6 @@ function LoginPage() {
               onChange={(e) => setUsername(e.target.value)}
             />
           </Form.Group>
-
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Mot de passe</Form.Label>
             <Form.Control
