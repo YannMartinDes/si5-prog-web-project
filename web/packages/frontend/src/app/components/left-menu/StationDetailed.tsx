@@ -13,6 +13,7 @@ import { Map } from 'leaflet';
 import 'leaflet-routing-machine';
 import { GeolocalisationContext } from "../../context/GeolocalisationContext";
 import useAxiosAuth from "../../hooks/axios-auth";
+import Geocoder from 'leaflet-control-geocoder'
 
 export default function SideMenu() {
   const navigate = useNavigateNoUpdates()
@@ -22,6 +23,8 @@ export default function SideMenu() {
   const {map,navControl,setNavControl}:{map:Map,navControl:any,setNavControl:any} = useContext(MapContext);
   const {userPosition,searchPosition,setSearchPosition} = useContext(GeolocalisationContext)
   const axiosAuth = useAxiosAuth();
+
+
   function getStationInfo(stationId:string) {
     console.log("GET STATION INFO FOR "+stationId)
 
@@ -63,13 +66,19 @@ export default function SideMenu() {
     }
     setNavControl(L.Routing.control({
       routeWhileDragging: true,   
-      collapsible:true,
+      show:true,
+      router: L.Routing.osrmv1({
+        language: 'fr',
+        profile: 'car'
+      }),
       waypoints: [
           L.latLng(userPosition.lat, userPosition.lon),
           L.latLng(gasStationInfo?.position.lat||0,gasStationInfo?.position.lon||0)
       ]
+      
     }).addTo(map)
     )
+    
     
   }
   useEffect(()=>{
