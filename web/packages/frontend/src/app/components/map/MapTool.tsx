@@ -2,6 +2,7 @@ import { Map } from 'leaflet';
 import React, { useContext, useEffect, useState } from 'react'
 import { GeolocalisationContext } from '../../context/GeolocalisationContext';
 import { MapContext } from '../../context/MapContext';
+import "./MapTool.scss"
 export default function MapTool() {
 
     const {userPosition,searchPosition,setSearchPosition}= useContext(GeolocalisationContext);
@@ -30,7 +31,7 @@ export default function MapTool() {
     },[map])
 
     return (
-        <div>
+        <div className="toolBar">
             <div className='positionLegend'>
                 Position : {searchPosition.lat} , {searchPosition.lon}
             </div>

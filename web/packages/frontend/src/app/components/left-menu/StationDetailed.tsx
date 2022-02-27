@@ -81,7 +81,12 @@ export default function SideMenu() {
     <div className='stationDetailed'>
         <h1>{gasStationInfo?.address||"chargement..."}</h1>
         <h3>{gasStationInfo?.id||"chargement..."}</h3>
-  
+        
+        <div className="toolBar">
+          <button className='buttonStyle' onClick={(e)=>{onItineraireClick()}} >Calculer un itineraire</button>
+
+        </div>
+
         <div className='subInfo'>
           <h2>Essences</h2>
           {gasStationInfo? gasStationInfo.prices.map((value) => {
@@ -121,7 +126,6 @@ export default function SideMenu() {
         </div>
         <button className='buttonStyle' onClick={(e)=>{onBackClick()}} >{"<< Liste des stations"}</button>
         <button className='buttonStyleRed' onClick={(e)=>{onUserReportClick(gasStationInfo?.id!)}} >Signaler un problème</button>
-        <button className='buttonStyle' onClick={(e)=>{onItineraireClick()}} >Calculer un itineraire</button>
     </div>
     );
 }
