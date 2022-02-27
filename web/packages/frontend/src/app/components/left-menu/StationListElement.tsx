@@ -2,6 +2,7 @@ import { GasStationPosition } from '@web/common/dto'
 import { Map } from 'leaflet';
 import React, { useContext } from 'react'
 import { FRONT_STATION_ID } from '../../const/url.const';
+import { GeolocalisationContext } from '../../context/GeolocalisationContext';
 import { MapContext } from '../../context/MapContext';
 import { useNavigateNoUpdates } from '../../context/RouterUtils';
 
@@ -10,10 +11,11 @@ export default function StationListElement({gasStation}:
 
   const navigate = useNavigateNoUpdates();
   const [map,setMap]:[Map,any] = useContext(MapContext);
-
+  const {userPosition,searchPosition,setSearchPosition} = useContext(GeolocalisationContext)
   const onStationElementClick = (e:any) =>{
     navigate(FRONT_STATION_ID+gasStation.id);
     map.setView([gasStation.position.lat, gasStation.position.lon],17);
+    setSearchPosition({lat:gasStation?.position?.lat, lon: gasStation?.position?.lon})
   }
 
   return (

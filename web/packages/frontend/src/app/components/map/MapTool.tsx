@@ -4,7 +4,7 @@ import { GeolocalisationContext } from '../../context/GeolocalisationContext';
 import { MapContext } from '../../context/MapContext';
 export default function MapTool() {
 
-    const {searchPosition,setSearchPosition,userPosition}= useContext(GeolocalisationContext);
+    const {userPosition,searchPosition,setSearchPosition}= useContext(GeolocalisationContext);
     const [map,setMap]:[Map, any] = useContext(MapContext);
     const [userMove, setUserMove] = useState(false);
 

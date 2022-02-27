@@ -42,7 +42,7 @@ export function ChartPriceFuelType() {
 
     const [generalFuelPrice, setGeneralFuelPrice] = useState<FuelTypePrice[]>([])
     const {filterState} = useContext(FilterStationContext)
-    const {searchPosition,setSearchPosition} = useContext(GeolocalisationContext)
+    const {userPosition,searchPosition,setSearchPosition} = useContext(GeolocalisationContext)
 
     useEffect(() => {
         axios.get(BACKEND_BASE_URL + "/chart/general-fuels-price",

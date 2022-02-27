@@ -4,6 +4,7 @@ import { useContext } from 'react';
 import { Marker, Tooltip, useMap } from 'react-leaflet';
 import {gasStationIcon,gasStationIconDark} from '../../../assets/GasStationIcon';
 import { FRONT_STATION_ID } from '../../const/url.const';
+import { GeolocalisationContext } from '../../context/GeolocalisationContext';
 import { useNavigateNoUpdates } from '../../context/RouterUtils';
 import { ThemeContext } from '../../context/ThemeContext';
 
@@ -14,11 +15,12 @@ export default function MapMarker({gasStation}
     const navigate = useNavigateNoUpdates();
     const gasStationPos = gasStation.position;
     const map = useMap();
-
+    const {userPosition,searchPosition,setSearchPosition} = useContext(GeolocalisationContext)
     return (
         <Marker position={[gasStationPos.lat, gasStationPos.lon]} icon={gasStationIcon?gasStationIcon:gasStationIconDark}
             eventHandlers={{
                 click: async () => {
+                    setSearchPosition({lat:gasStationPos.lat, lon: gasStationPos.lon})
                     map.setView([gasStationPos.lat, gasStationPos.lon],17, {animate:true})
                     await navigate(FRONT_STATION_ID+gasStation.id);
                 },

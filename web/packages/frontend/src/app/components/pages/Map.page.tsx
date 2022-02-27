@@ -60,6 +60,7 @@ export default function MapPage() {
       setGroupLayer(groupCircle)
   }
 
+
   useEffect(()=>{
     addCircle(searchPosition.lat, searchPosition.lon)
     getAllStation(searchPosition,filterState.range,{
