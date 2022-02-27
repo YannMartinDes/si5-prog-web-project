@@ -1,25 +1,27 @@
 import "./StationDetailed.scss"
 import { GasStationInfo, UserIssue } from '@web/common/dto';
-import React, { useContext, useEffect, useState } from 'react';
+import {useContext, useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { BACKEND_BASE_URL, REPORT_ISSUE, STATION_INFO } from '../../const/url.const';
+import {BACKEND_BASE_URL, REPORT_ISSUE, STATION_INFO, UPDATE_FAVORITE_STATION_URL} from '../../const/url.const';
 import {TailSpin} from 'react-loader-spinner'
 import { useNavigateNoUpdates } from "../../context/RouterUtils";
+import {AuthContext} from "../../context/AuthContext";
 import { MapContext} from "../../context/MapContext";
 import L from "leaflet";
 import { Map } from 'leaflet';
 import 'leaflet-routing-machine';
-
 import { GeolocalisationContext } from "../../context/GeolocalisationContext";
+import useAxiosAuth from "../../hooks/axios-auth";
 
 export default function SideMenu() {
   const navigate = useNavigateNoUpdates()
   const [gasStationInfo,setGasStationInfo] = useState<GasStationInfo>();
   const {id} = useParams();
+  const { user, favoriteStations, setFavoriteStations, isLogged}:{user:string,favoriteStations:GasStationInfo[],setFavoriteStations:any,isLogged:boolean} = useContext(AuthContext)
   const {map,navControl,setNavControl}:{map:Map,navControl:any,setNavControl:any} = useContext(MapContext);
   const {userPosition,searchPosition,setSearchPosition} = useContext(GeolocalisationContext)
-
+  const axiosAuth = useAxiosAuth();
   function getStationInfo(stationId:string) {
     console.log("GET STATION INFO FOR "+stationId)
 
@@ -44,10 +46,10 @@ export default function SideMenu() {
     navigate("/");
   }
 
-  function onUserReportClick(id : string){
+  function onUserReportClick(station : GasStationInfo){
     const msg = prompt("Quel est votre problème ?");
     if(msg){
-      reportStationIssue(id,msg)
+      reportStationIssue(station.id,msg)
     }
   }
   function onItineraireClick(){
@@ -77,11 +79,57 @@ export default function SideMenu() {
       console.error("NO ID FOUND");
   },[id])
 
+ 
+  function removeFavoriteStation(){
+    if(isLogged){      
+      const newFavoriteStations:GasStationInfo[] = favoriteStations.filter((elt:GasStationInfo)=> elt.id !== gasStationInfo?.id);
+      setFavoriteStations(newFavoriteStations);
+      setNewFavorite(newFavoriteStations).then((res)=> console.log('Favorites updated for current user !'));
+    } else{
+      window.alert("Vous devez être connecté pour utiliser les stations favorites")
+      navigate("/login");
+    }
+  }
+
+  function addFavoriteStation(){
+    if(isLogged){    
+      console.log("add favorit station")
+  
+      const newFavoriteStations:GasStationInfo[] = [...favoriteStations,gasStationInfo!];
+      setFavoriteStations(newFavoriteStations);
+      setNewFavorite(newFavoriteStations).then((res)=> console.log('Favorites updated for current user !'));
+    } else{
+      window.alert("Vous devez être connecté pour utiliser les stations favorites")
+      navigate("/login");
+    }
+  }
+
+  async function setNewFavorite(newFavoriteStations:GasStationInfo[]){
+    if(isLogged){
+      console.log("CALL BACKEND FOR SET FAVORITE STATION OF ", user);
+      try {
+        //TODO acios request
+        await axiosAuth.post(BACKEND_BASE_URL + UPDATE_FAVORITE_STATION_URL,{favoriteStations:newFavoriteStations.map(elt=>elt.id)});
+      } catch (e){
+        console.log(e);
+      }
+    }
+  }
+
+  const favoriteButton = ()=>{
+    if(gasStationInfo && favoriteStations.filter((station)=>station.id===gasStationInfo.id).length>0){
+      return (<button className='buttonStyle' onClick={(e)=>{removeFavoriteStation()}}>Retirer la station des favoris</button>)
+    }
+    else{
+      return (<button className='buttonStyle' onClick={(e)=>{addFavoriteStation()}}>Ajouter la station aux favoris</button>)
+    }
+  }
+
   return(
     <div className='stationDetailed'>
         <h1>{gasStationInfo?.address||"chargement..."}</h1>
         <h3>{gasStationInfo?.id||"chargement..."}</h3>
-  
+
         <div className='subInfo'>
           <h2>Essences</h2>
           {gasStationInfo? gasStationInfo.prices.map((value) => {
@@ -90,7 +138,7 @@ export default function SideMenu() {
           }):
           <TailSpin color="#063d44" width={60} height={60}/>}
         </div>
-      
+
         <div className='subInfo'>
           <h2>Services disponibles</h2>
           <ul>
@@ -101,9 +149,9 @@ export default function SideMenu() {
 
         <div className='subInfo'>
           <h2>Horaire</h2>
-          
-            {gasStationInfo? 
-              ((gasStationInfo.schedules.length !== 0) ? 
+
+            {gasStationInfo?
+              ((gasStationInfo.schedules.length !== 0) ?
                 (<ul>
                   {gasStationInfo.schedules.map((schedule) => {
                     const scheduleText = schedule.day + (schedule.openned? " ouvert ":" fermé ");
@@ -119,8 +167,9 @@ export default function SideMenu() {
                 : (<p>Pas d'informations disponibles</p>))
             :<TailSpin color="#063d44" width={60} height={60}/>}
         </div>
+        {favoriteButton()}
         <button className='buttonStyle' onClick={(e)=>{onBackClick()}} >{"<< Liste des stations"}</button>
-        <button className='buttonStyleRed' onClick={(e)=>{onUserReportClick(gasStationInfo?.id!)}} >Signaler un problème</button>
+        <button className='buttonStyleRed' onClick={(e)=>{onUserReportClick(gasStationInfo!)}} >Signaler un problème</button>
         <button className='buttonStyle' onClick={(e)=>{onItineraireClick()}} >Calculer un itineraire</button>
     </div>
     );

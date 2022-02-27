@@ -3,7 +3,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './LoginPage.scss'
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import {Breadcrumb} from "react-bootstrap";
 import { useNavigateNoUpdates } from "../../context/RouterUtils";
 import { AuthContext } from "../../context/AuthContext";
@@ -12,7 +12,7 @@ function LoginPage() {
   const navigate = useNavigateNoUpdates();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { token, setToken, user, setUser} = useContext(AuthContext);
+  const { setUser,setLogged} = useContext(AuthContext);
 
   function validateForm() {
     return username.length > 0 && password.length > 0;
@@ -22,14 +22,14 @@ function LoginPage() {
     event.preventDefault();
     await axios.post(`http://localhost:3333/api/auth/login`, { username: username, password: password })
       .then(res => {
-        const token = res.data;
-        localStorage.setItem('token', JSON.stringify(token));
-        setToken(token);
+        const token = res.data.access_token;
+        localStorage.setItem('token', token);
+        setLogged(true)
         localStorage.setItem('user', username);
         setUser(username);
 
         navigate("/")
-      }).catch((err)=>{
+      }).catch((err)=>{//TODO regarder code erreur + verif sur signup
         alert('Adresse mail ou mot de passe invalide');
         console.log('Login failed : ', err);
       })
