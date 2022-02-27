@@ -8,6 +8,11 @@
 }
 
 .toolBar .buttonStyle{
-  margin-left: 30px;
-  margin-bottom: 5px;
+  // margin-left: 30px;
+  // margin-bottom: 5px;
+}
+.toolBar .map-button{
+  display:grid;
+  gap: 4px;
+  grid-template-columns: 1fr 1fr;
 }

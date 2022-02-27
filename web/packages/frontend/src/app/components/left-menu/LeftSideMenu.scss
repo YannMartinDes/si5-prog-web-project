@@ -1,5 +1,11 @@
 .sideMenu{
-    max-height: calc(100vh - 50px);
-    z-index: 1; /* Stay on top */
-    overflow-x: hidden; /* Disable horizontal scroll */
+  height: calc(100vh - 50px);
+  z-index: 1; /* Stay on top */
+  overflow-x: hidden; /* Disable horizontal scroll */
+}
+@media screen and (max-width:700px) {
+  .sideMenu{
+    height: 100%;
   }
+
+}
