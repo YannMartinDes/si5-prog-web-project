@@ -1,4 +1,4 @@
-import "./LeftSideMenu.scss"
+import "../left-menu/LeftSideMenu.scss"
 import { GasStationPosition } from '@web/common/dto'
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
@@ -9,7 +9,7 @@ import StationDetailed from "../left-menu/StationDetailed";
 export default function FavStationMenu({gasStationList}:{gasStationList:GasStationPosition[]}) {
   return (
     <div className='sideMenu'>
-      STATIONS FAVORITES
+      <span>STATIONS FAVORITES</span>
       <Routes>
         <Route path="/" element={<StationList stationList={gasStationList}/>}/>
         <Route path={FRONT_STATION_ID+":id"} element={<StationDetailed/>}/>
