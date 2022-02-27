@@ -10,15 +10,12 @@ import {
   ALL_STATION_URL,
   BACKEND_BASE_URL,
   FAVORITE_STATION_URL,
-  FIND_URL,
-  UPDATE_FAVORITE_STATION_URL
 } from '../../const/url.const';
 import { GeolocalisationContext } from '../../context/GeolocalisationContext';
 import LeftSideMenu from '../left-menu/LeftSideMenu';
 import GlobalMap from '../map/GlobalMap';
 import MapTool from '../map/MapTool';
 import {AuthContext} from "../../context/AuthContext";
-import FavStationMenu from "../favorite-stations/FavStationMenu";
 import useAxios from '../../hooks/axios-auth';
 import { MapContext } from '../../context/MapContext';
 import { Map } from 'leaflet';
@@ -51,7 +48,11 @@ export default function MapPage() {
       }
       const groupCircle = L.featureGroup();
       L.circle([lat, lon],filterState.range,{fillOpacity:0.06,opacity:0.5}).addTo(groupCircle)
-      map?.addLayer(groupCircle)
+      try{
+        map?.addLayer(groupCircle)
+      }catch(error){
+        //ignore map error
+      }
       setGroupLayer(groupCircle)
     }
     addCircle(searchPosition.lat, searchPosition.lon)
@@ -88,7 +89,7 @@ export default function MapPage() {
       }
     }
     if(isLogged) getFavoriteStation();
-  },[])
+  },[axiosAuth, isLogged, setFavoriteStations])
 
   return (
     <div className='map-container'>
@@ -100,10 +101,6 @@ export default function MapPage() {
           <GlobalMap markersList={stationList}/>
           <MapTool />
         </div>
-        {isLogged?<div className='grid-side-menu'>
-          <FavStationMenu favoriteStationList={favoriteStations} />
-        </div>:undefined}
-        
       </div>
     </div>
   );

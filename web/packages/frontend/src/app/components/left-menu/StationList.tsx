@@ -3,10 +3,12 @@ import { GasStationPosition } from '@web/common/dto'
 import StationListElement from './StationListElement'
 import { TailSpin } from "react-loader-spinner"
 import { useContext, useEffect, useState } from 'react'
-import { MenuList , OptionMenuList} from "../MenuList"
+import { MenuList, OptionMenuList } from "../MenuList"
 import axios from "axios"
 import { BACKEND_BASE_URL } from "../../const/url.const"
 import { GasStationPositionContext } from "../../context/GasStationPositionContext"
+import { useNavigateNoUpdates } from "../../context/RouterUtils"
+import { AuthContext } from "../../context/AuthContext"
 
 export default function StationList() {
 
@@ -14,6 +16,9 @@ export default function StationList() {
   const [isPriceAscending, setIsPriceAscending] = useState(true);
   const [fuelList, setFuelList] = useState([])
   const [stationList, setStationList] = useContext(GasStationPositionContext)
+  const [isLoad, setLoad] = useState(false)
+  const { isLogged } = useContext(AuthContext)
+  const navigate = useNavigateNoUpdates()
   const sortAddressAscending = (a: GasStationPosition, b: GasStationPosition) => {
     if (a.address < b.address) return -1;
     if (a.address > b.address) return 1;
@@ -57,14 +62,14 @@ export default function StationList() {
   }
 
 
-  const sortPriceUp = (a:GasStationPosition,b:GasStationPosition)=>{
-    const selectedGas : string = (document.getElementById("selectPrice") as HTMLInputElement).value;
-    return sortPriceAscending(selectedGas,a,b)
+  const sortPriceUp = (a: GasStationPosition, b: GasStationPosition) => {
+    const selectedGas: string = (document.getElementById("selectPrice") as HTMLInputElement).value;
+    return sortPriceAscending(selectedGas, a, b)
   }
 
-  const sortPriceDown= (a:GasStationPosition,b:GasStationPosition)=>{
-    const selectedGas : string = (document.getElementById("selectPrice") as HTMLInputElement).value;
-    return sortPriceDescending(selectedGas,a,b)
+  const sortPriceDown = (a: GasStationPosition, b: GasStationPosition) => {
+    const selectedGas: string = (document.getElementById("selectPrice") as HTMLInputElement).value;
+    return sortPriceDescending(selectedGas, a, b)
   }
   const sortListClickByAdress = () => {
     let sortMethod = null;
@@ -81,8 +86,8 @@ export default function StationList() {
     const stationsWithoutTypeGas = []
     console.log(stationList)
 
-    const selectedGas : string = (document.getElementById("selectPrice") as HTMLInputElement).value;
-    for (const e of stationList){
+    const selectedGas: string = (document.getElementById("selectPrice") as HTMLInputElement).value;
+    for (const e of stationList) {
       let exist = false
       for (const gas of e.prices) {
         if (gas.gasType == selectedGas) {
@@ -121,22 +126,28 @@ export default function StationList() {
   const selectedGas: any = MenuList
 
   useEffect(() => {
-    axios.get(BACKEND_BASE_URL + "/station/fuel-type").then((response) => setFuelList(response.data))
+    axios.get(BACKEND_BASE_URL + "/station/fuel-type").then((response) => {
+      setFuelList(response.data);
+      setLoad(true);
+    })
     console.log(fuelList)
   }, [])
 
   return (
     <div className='stationList'>
       <h1>Stations Essences :</h1>
-      {(stationList?.length) !== 0 ?
+
+      {isLoad ?
         (<div>
+          {isLogged && <button className="buttonStyle" onClick={()=>navigate("/favoris")}>Favoris</button>}
+
           <button className="buttonStyle" onClick={sortListClickByAdress}>Trier par adresse</button>
           <button className="buttonStyle" onClick={sortListClickByPrice}>Trier par prix</button>
-          <select id="selectPrice"> 
-            {fuelList.map((elt) => { return  <option value={elt}>{elt}</option> })}
-          </select> 
-          {stationList?.map((station: GasStationPosition)=>{
-            return <StationListElement key={station.id} gasStation={station}/>
+          <select id="selectPrice">
+            {fuelList.map((elt) => { return <option value={elt}>{elt}</option> })}
+          </select>
+          {stationList?.map((station: GasStationPosition) => {
+            return <StationListElement key={station.id} gasStation={station} />
           })}
         </div>)
         : (
