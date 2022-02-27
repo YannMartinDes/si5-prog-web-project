@@ -64,12 +64,12 @@ function LoginPage() {
           <Form.Group className="mb-3" controlId="formBasicCheckbox">
             <Form.Check type="checkbox" label="Remember me" />
           </Form.Group>
-          <Button variant="primary" type="submit" disabled={!validateForm()}>
+          <button className="buttonStyle" type="submit" disabled={!validateForm()}>
             Se connecter
-          </Button>
-          <Button variant="primary" onClick={(e) => navigate(`signup`)}>
+          </button>
+          <button className="buttonStyle" onClick={(e) => navigate(`signup`)}>
             Se créer un compte
-          </Button>
+          </button>
         </Form>
       </div>
     </div>
