@@ -55,9 +55,8 @@ export default function MapPage() {
       setGroupLayer(groupCircle)
     }
     addCircle(searchPosition.lat, searchPosition.lon)
-    //groupLayer only use for remove last 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[filterState.range, searchPosition])
+  },[filterState.range, searchPosition, map])
 
 
   useEffect(()=>{

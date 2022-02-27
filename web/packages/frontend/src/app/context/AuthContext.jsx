@@ -26,7 +26,6 @@ export const AuthContextProvider = ({children}) => {
         setLogged(true)
       }
     }
-
   },[]);
 
   return (
