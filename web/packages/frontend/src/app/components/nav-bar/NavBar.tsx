@@ -17,7 +17,6 @@ export default function NavBar() {
 
     const onHideShowClick = () => {
         setHideBar(!hideBar);
-        console.log("hello")
     }
 
     const onChangeTheme = (checked:boolean) => {

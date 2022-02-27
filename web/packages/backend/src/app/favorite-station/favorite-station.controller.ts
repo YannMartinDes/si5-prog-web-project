@@ -17,8 +17,6 @@ export class FavoriteStationController {
     @UseGuards(JwtAuthGuard)
     @Post('update-user-station')
     updatetUserFavoriteStation(@Request() req: Request&{user:User}, @Body("favoriteStations") favStations:string[]){
-        console.log("-------------------------------")
-        console.log(favStations)
         this.favoriteStationService.setUserFavoriteStations(req.user,favStations);
     }
 }
