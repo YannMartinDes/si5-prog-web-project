@@ -55,13 +55,13 @@ export default function StationList() {
   }
 
   const sortPriceUp = (a:GasStationPosition,b:GasStationPosition)=>{
-    let test : string = (document.getElementById("monselect") as HTMLInputElement).value;
-    return sortPriceAscending(test,a,b)
+    let selectedGas : string = (document.getElementById("monselect") as HTMLInputElement).value;
+    return sortPriceAscending(selectedGas,a,b)
   }
 
   const sortPriceDown= (a:GasStationPosition,b:GasStationPosition)=>{
-    let test : string = (document.getElementById("monselect") as HTMLInputElement).value;
-    return sortPriceDescending(test,a,b)
+    let selectedGas : string = (document.getElementById("monselect") as HTMLInputElement).value;
+    return sortPriceDescending(selectedGas,a,b)
   }
   const sortListClickByAdress = ()=>{
     let sortMethod = null;
@@ -77,13 +77,13 @@ export default function StationList() {
     let stations=[]
     let stationsWithoutTypeGas=[]
     console.log(stationList)
-    let test : string = (document.getElementById("monselect") as HTMLInputElement).value;
+    let selectedGas : string = (document.getElementById("monselect") as HTMLInputElement).value;
     for (let e of stationList){
       let exist = false
       for (let gas of e.prices){
-        if(gas.gasType==test){
+        if(gas.gasType==selectedGas){
           stations.push(e)
-          console.log(gas.gasType==test)
+          console.log(gas.gasType==selectedGas)
           exist = true
           break
         }
@@ -114,7 +114,7 @@ export default function StationList() {
     setStationList([...stations,...stationsWithoutTypeGas])
 
 }
-  const test: any = MenuList
+  const selectedGas: any = MenuList
   
   useEffect(() => {
     axios.get(BACKEND_BASE_URL + "/station/fuel-type").then((response) => setFuelList(response.data))
