@@ -56,16 +56,10 @@ export default function SideMenu() {
    * To add the current station to the favorite stations of the user
    */
   function addFavoriteStation(){
-    if(user!=''){
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      console.log("entering favorites : " , (!favoriteStations.some((e: GasStationInfo) => e.id === gasStationInfo.id)));
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+    if(user!=''){      
       //if the array already contains this favorite, then we do not add it
-      if(!favoriteStations.some((e: GasStationInfo) => e.id === gasStationInfo.id)){
+      if(!favoriteStations.some((e: GasStationInfo) => e.id === gasStationInfo!.id)){
         const newFavoriteStations = favoriteStations;
-        console.log(newFavoriteStations);
         newFavoriteStations.push(gasStationInfo);
         setFavoriteStations(newFavoriteStations);
         setNewFavorite().then(
@@ -77,20 +71,18 @@ export default function SideMenu() {
         console.log('Already added to favorites !');
       }
     }
+    else{
+      //TODO Navigate to login page
+    }
     console.log('lets see current favorites : ', favoriteStations);
   }
 
   async function setNewFavorite(){
     if(user!=''){
-      console.log("CALL BACKEND FOR FAVORITE STATION OF ", user);
+      console.log("CALL BACKEND FOR SET FAVORITE STATION OF ", user);
       try {
-        console.log('route used : ', BACKEND_BASE_URL + UPDATE_FAVORITE_STATION_URL);
         const favorite = await axios.post(BACKEND_BASE_URL + UPDATE_FAVORITE_STATION_URL,
-          {headers: {
-              Authorization: 'Bearer ', token
-            },
-            body:    {favoriteStations}
-          });
+          {headers: {Authorization: 'Bearer ', token}, body:{favoriteStations}});
         console.log('favorite stations updated !');
       } catch (e){
         console.log(e);

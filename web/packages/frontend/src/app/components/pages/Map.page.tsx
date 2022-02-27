@@ -26,7 +26,6 @@ const DefaultIcon = L.icon({
     shadowUrl: iconShadow
 });
 L.Marker.prototype.options.icon = DefaultIcon;
-const range = 20000
 
 
 export default function MapPage() {
@@ -45,19 +44,9 @@ export default function MapPage() {
        });
   }
 
-  function getAllStationByText(text:string){
-    console.log("CALL BACKEND FOR SEARCH TEXT")
-    axios.get(BACKEND_BASE_URL+FIND_URL, { params: {text:text,caseSensitive:false} })
-       .then(res => {
-          const stations:GasStationPosition[] = res.data;
-          setStationList(stations);
-       });
-  }
-
   async function getFavoriteStation(){
     if(user!=''){
       console.log("CALL BACKEND FOR FAVORITE STATION OF ", user);
-      console.log('displaying token ', token);
       try {
         const favorite = await axios.get(BACKEND_BASE_URL + FAVORITE_STATION_URL,
           {headers: {
@@ -68,7 +57,6 @@ export default function MapPage() {
             Authorization: 'Bearer ', token
           }
           });
-        console.log('favorite stations are : ', favorite.data);
         setFavoriteStations(favorite.data);
       } catch (e){
         console.log(e);
@@ -83,7 +71,7 @@ export default function MapPage() {
       services: filterState.servicesFilter,
       schedules: []
     });
-    getFavoriteStation().then(r => console.log('favorite stations in use effect : ', favoriteStations));
+    getFavoriteStation();
   },[filterState, position])
 
   return (
@@ -97,7 +85,7 @@ export default function MapPage() {
           <MapTool />
         </div>
         <div className='grid-side-menu'>
-          <FavStationMenu gasStationList={favoriteStations} />
+          <FavStationMenu favoriteStationList={favoriteStations} />
         </div>
       </div>
     </div>
