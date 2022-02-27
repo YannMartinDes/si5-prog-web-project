@@ -42,47 +42,54 @@ export default function MapPage() {
   const {map}:{map:Map} = useContext(MapContext);
   const [groupLayer, setGroupLayer] = useState<L.FeatureGroup<any>|undefined>()
 
-  function getAllStation(currentPos:Position, radius:number, filter:Filter) {
-    console.log("CALL BACKEND FOR ALL STATION " + JSON.stringify(currentPos));
-    axios.get(BACKEND_BASE_URL+ALL_STATION_URL, { params: { latitude: currentPos.lat, longitude: currentPos.lon, maxDist: radius, filter:filter } })
-       .then(res => {
-          const stations:GasStationPosition[] = res.data;
-          setStationList(stations);
-       });
-  }
-
-  async function getFavoriteStation(){
-    if(isLogged){
-      try {
-        const favorite = await axiosAuth.get<GasStationPosition[]>(BACKEND_BASE_URL + FAVORITE_STATION_URL)
-        setFavoriteStations(favorite.data);
-      } catch (e){
-        console.log(e);
-      }
-    }
-  }
-
-  const addCircle = (lat:number,lon:number) =>{
-    if(!groupLayer) return
-    if (map?.hasLayer(groupLayer)){
-      map.removeLayer(groupLayer)
-    }
-    const groupCircle = L.featureGroup();
-    L.circle([lat, lon],filterState.range,{fillOpacity:0.06,opacity:0.5}).addTo(groupCircle)
-    map?.addLayer(groupCircle)
-    setGroupLayer(groupCircle)
-  }
 
 
   useEffect(()=>{
+    const addCircle = (lat:number,lon:number) =>{
+      if (groupLayer && map?.hasLayer(groupLayer)){
+        map.removeLayer(groupLayer)
+      }
+      const groupCircle = L.featureGroup();
+      L.circle([lat, lon],filterState.range,{fillOpacity:0.06,opacity:0.5}).addTo(groupCircle)
+      map?.addLayer(groupCircle)
+      setGroupLayer(groupCircle)
+    }
     addCircle(searchPosition.lat, searchPosition.lon)
+    //groupLayer only use for remove last 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[filterState.range, searchPosition])
+
+
+  useEffect(()=>{
+    function getAllStation(currentPos:Position, radius:number, filter:Filter) {
+      console.log("CALL BACKEND FOR ALL STATION " + JSON.stringify(currentPos));
+      axios.get(BACKEND_BASE_URL+ALL_STATION_URL, { params: { latitude: currentPos.lat, longitude: currentPos.lon, maxDist: radius, filter:filter } })
+         .then(res => {
+            const stations:GasStationPosition[] = res.data;
+            setStationList(stations);
+         });
+    }
+  
     getAllStation(searchPosition,filterState.range,{
       gas: filterState.gasFilter, 
       services: filterState.servicesFilter,
       schedules: []
     });
+  },[filterState, searchPosition, setStationList])
+
+  useEffect(()=>{
+    async function getFavoriteStation(){
+      if(isLogged){
+        try {
+          const favorite = await axiosAuth.get<GasStationPosition[]>(BACKEND_BASE_URL + FAVORITE_STATION_URL)
+          setFavoriteStations(favorite.data);
+        } catch (e){
+          console.log(e);
+        }
+      }
+    }
     if(isLogged) getFavoriteStation();
-  },[filterState, searchPosition])
+  },[])
 
   return (
     <div className='map-container'>
