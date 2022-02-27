@@ -9,8 +9,6 @@ github repository
 
 ## Subject
 
-<p style="text-align: center;"><img src="https://static.actu.fr/uploads/2020/06/capture-d-ecran-2020-06-27-a-141515.png" width="450"></p>
-
 ## Structure
 
 - [client](web/packages/frontend/src): Client application (React, JSX, TypeScript).
@@ -38,13 +36,12 @@ Our project's frontend contains 5 packages containing the components and the log
 
 Our project's backend contains 5 packages
 - [authentication](web/packages/backend/src/app/authentication) --> that contains 
-all the controllers/modules/services needed to setup the authentication
-
-- [dto](web/packages/backend/src/app/dto) --> contains all our dto : 
+all the controllers/modules/services needed to setup the authentication  
+- [dto](web/packages/backend/src/app/dto) --> contains all our dto :
 data transfer object to communicate our data
-- [favorite-station](web/packages/backend/src/app/favorite-station) -->
-- [schemas](web/packages/backend/src/app/schemas) -->
-- [station](web/packages/backend/src/app/station) -->
+- [favorite-station](web/packages/backend/src/app/favorite-station) --> contains the logic for managing a user's favorite stations  
+- [schemas](web/packages/backend/src/app/schemas) --> folder that contains all the mongodb schema
+- [station](web/packages/backend/src/app/station) --> contains all the logic for the management of the stations: recovery of data according to filters, detailed data of a station...  
 
 ## Requirements
 
