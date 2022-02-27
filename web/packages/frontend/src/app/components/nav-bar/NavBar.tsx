@@ -11,8 +11,8 @@ export default function NavBar() {
 
     const [hideBar, setHideBar] = useState(true);
     const navigate = useNavigateNoUpdates();
-    const {token, user} = useContext(AuthContext);
-    const buttonValue = (token==='') ? 'Se connecter' : user;
+    const { isLogged,user} = useContext(AuthContext);
+    const buttonValue = (!isLogged) ? 'Se connecter' : user;
     const {isDarkTheme,setDarkTheme} = useContext(ThemeContext)
 
     const onHideShowClick = () => {

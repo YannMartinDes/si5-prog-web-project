@@ -1,9 +1,8 @@
 import "./StationList.scss"
 import { GasStationPosition } from '@web/common/dto'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import StationListElement from './StationListElement'
 import { TailSpin } from "react-loader-spinner"
-import { stat } from "fs"
 
 export default function StationList({stationList}:
     {stationList:GasStationPosition[]}) {

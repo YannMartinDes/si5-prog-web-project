@@ -19,6 +19,7 @@ import GlobalMap from '../map/GlobalMap';
 import MapTool from '../map/MapTool';
 import {AuthContext} from "../../context/AuthContext";
 import FavStationMenu from "../favorite-stations/FavStationMenu";
+import useAxios from '../../hooks/axios-auth';
 
 //Extend marker prototype to fix : https://stackoverflow.com/questions/49441600/react-leaflet-marker-files-not-found
 const DefaultIcon = L.icon({
@@ -32,7 +33,8 @@ export default function MapPage() {
   const [stationList,setStationList] = useState<GasStationPosition[]>([]);
   const {filterState} = useContext(FilterStationContext)
   const [position,setPosition] = useContext(GeolocalisationContext)
-  const {user, setUser, token, setToken, favoriteStations, setFavoriteStations} = useContext(AuthContext)
+  const {user, favoriteStations, setFavoriteStations} = useContext(AuthContext)
+  const axiosAuth = useAxios()
 
 
   function getAllStation(currentPos:Position, radius:number, filter:Filter) {
@@ -48,16 +50,8 @@ export default function MapPage() {
     if(user!=''){
       console.log("CALL BACKEND FOR FAVORITE STATION OF ", user);
       try {
-        const favorite = await axios.get(BACKEND_BASE_URL + FAVORITE_STATION_URL,
-          {headers: {
-              "Access-Control-Allow-Origin": "*",
-              "Access-Control-Allow-Credentials": "true",
-              "Access-Control-Allow-Methods": "GET,HEAD,OPTIONS,POST,PUT",
-              "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization",
-            Authorization: 'Bearer ', token
-          }
-          });
-        setFavoriteStations(favorite.data);
+        // const favorite = await axiosAuth.get(BACKEND_BASE_URL + FAVORITE_STATION_URL)
+        // setFavoriteStations(favorite.data);
       } catch (e){
         console.log(e);
       }
