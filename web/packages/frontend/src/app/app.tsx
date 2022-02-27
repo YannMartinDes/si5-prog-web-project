@@ -8,29 +8,32 @@ import { GeolocalisationContextProvider } from './context/GeolocalisationContext
 import NavBar from './components/nav-bar/NavBar';
 import SignupPage from './components/pages/SignupPage';
 import LoginPage from './components/pages/LoginPage';
+import { GasStationPositionContextProvider } from './context/GasStationPositionContext';
 function App() {
 
   return (
-    <AuthContextProvider>
-      <MapContextProvider>
-        <GeolocalisationContextProvider>
-          <FilterStationContextProvider>
-            <Routes>
-              <Route path="/*" element={<>
-                <NavBar />
+    <GasStationPositionContextProvider>
+        <AuthContextProvider>
+          <MapContextProvider>
+            <GeolocalisationContextProvider>
+              <FilterStationContextProvider>
                 <Routes>
-                  <Route path='/*' element={<MapPage/>}/>
-                  <Route path='/chart' element={<ChartPage/>}/>
+                  <Route path="/*" element={<>
+                    <NavBar />
+                    <Routes>
+                      <Route path='/*' element={<MapPage/>}/>
+                      <Route path='/chart' element={<ChartPage/>}/>
+                    </Routes>
+                  </>}>
+                  </Route>
+                  <Route path='/signup' element={<SignupPage/>}/>
+                  <Route path='/login' element={<LoginPage/>}/>
                 </Routes>
-              </>}>
-              </Route>
-              <Route path='/signup' element={<SignupPage/>}/>
-              <Route path='/login' element={<LoginPage/>}/>
-            </Routes>
-          </FilterStationContextProvider>
-        </GeolocalisationContextProvider>
-      </MapContextProvider>
-    </AuthContextProvider>);
+              </FilterStationContextProvider>
+            </GeolocalisationContextProvider>
+          </MapContextProvider>
+        </AuthContextProvider>
+    </GasStationPositionContextProvider>);
 
 }
 

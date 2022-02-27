@@ -20,6 +20,9 @@ import MapTool from '../map/MapTool';
 import {AuthContext} from "../../context/AuthContext";
 import FavStationMenu from "../favorite-stations/FavStationMenu";
 import useAxios from '../../hooks/axios-auth';
+import { MapContext } from '../../context/MapContext';
+import { Map } from 'leaflet';
+import { GasStationPositionContext } from '../../context/GasStationPositionContext';
 
 //Extend marker prototype to fix : https://stackoverflow.com/questions/49441600/react-leaflet-marker-files-not-found
 const DefaultIcon = L.icon({
@@ -30,12 +33,14 @@ L.Marker.prototype.options.icon = DefaultIcon;
 
 
 export default function MapPage() {
-  const [stationList,setStationList] = useState<GasStationPosition[]>([]);
+  const [stationList,setStationList] =useContext(GasStationPositionContext)
   const {filterState} = useContext(FilterStationContext)
-  const [position,setPosition] = useContext(GeolocalisationContext)
   const {user, favoriteStations, setFavoriteStations} = useContext(AuthContext)
   const axiosAuth = useAxios()
 
+  const {searchPosition} = useContext(GeolocalisationContext)
+  const {map}:{map:Map} = useContext(MapContext);
+  const [groupLayer, setGroupLayer] = useState<L.FeatureGroup<any>|undefined>()
 
   function getAllStation(currentPos:Position, radius:number, filter:Filter) {
     console.log("CALL BACKEND FOR ALL STATION " + JSON.stringify(currentPos));
@@ -58,18 +63,29 @@ export default function MapPage() {
     }
   }
 
+  const addCircle = (lat:number,lon:number) =>{
+    if(!groupLayer) return
+    if (map?.hasLayer(groupLayer)){
+      map.removeLayer(groupLayer)
+    }
+    const groupCircle = L.featureGroup();
+    L.circle([lat, lon],filterState.range,{fillOpacity:0.06,opacity:0.5}).addTo(groupCircle)
+    map?.addLayer(groupCircle)
+    setGroupLayer(groupCircle)
+  }
 
-  useEffect(()=>{//== ComponentDidMount
-    getAllStation(position,filterState.range,{
-      gas: filterState.gasFilter,
+
+  useEffect(()=>{
+    addCircle(searchPosition.lat, searchPosition.lon)
+    getAllStation(searchPosition,filterState.range,{
+      gas: filterState.gasFilter, 
       services: filterState.servicesFilter,
       schedules: []
     });
-    getFavoriteStation();
-  },[filterState, position])
+  },[filterState, searchPosition])
 
   return (
-    <div>
+    <div className='map-container'>
       <div className='grid-wrapper'>
         <div className='grid-side-menu'>
           <LeftSideMenu gasStationList={stationList} />

@@ -10,7 +10,7 @@ export default function LeftSideMenu({gasStationList}:{gasStationList:GasStation
   return (
     <div className='sideMenu'>
         <Routes>
-            <Route path="/" element={<StationList stationList={gasStationList}/>}/>
+            <Route path="/" element={<StationList />}/>
             <Route path={FRONT_STATION_ID+":id"} element={<StationDetailed/>}/>
         </Routes>
     </div>

@@ -1,18 +1,25 @@
 import "./StationDetailed.scss"
 import { GasStationInfo, UserIssue } from '@web/common/dto';
-import React, {useContext, useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import {BACKEND_BASE_URL, REPORT_ISSUE, STATION_INFO, UPDATE_FAVORITE_STATION_URL} from '../../const/url.const';
 import {TailSpin} from 'react-loader-spinner'
 import { useNavigateNoUpdates } from "../../context/RouterUtils";
 import {AuthContext} from "../../context/AuthContext";
+import { MapContext} from "../../context/MapContext";
+import L from "leaflet";
+import { Map } from 'leaflet';
+import 'leaflet-routing-machine';
+import { GeolocalisationContext } from "../../context/GeolocalisationContext";
 
 export default function SideMenu() {
   const navigate = useNavigateNoUpdates()
   const [gasStationInfo,setGasStationInfo] = useState<GasStationInfo>();
   const {id} = useParams();
-  const {token, user, favoriteStations, setFavoriteStations} = useContext(AuthContext)
+  const { user, favoriteStations, setFavoriteStations} = useContext(AuthContext)
+  const {map,navControl,setNavControl}:{map:Map,navControl:any,setNavControl:any} = useContext(MapContext);
+  const {userPosition,searchPosition,setSearchPosition} = useContext(GeolocalisationContext)
 
   function getStationInfo(stationId:string) {
     console.log("GET STATION INFO FOR "+stationId)
@@ -44,7 +51,26 @@ export default function SideMenu() {
       reportStationIssue(id,msg)
     }
   }
+  function onItineraireClick(){
+    addNavigation()
+  }
 
+
+  const addNavigation = () =>{
+    if(navControl){
+      map.removeControl(navControl)
+    }
+    setNavControl(L.Routing.control({
+      routeWhileDragging: true,   
+      collapsible:true,
+      waypoints: [
+          L.latLng(userPosition.lat, userPosition.lon),
+          L.latLng(gasStationInfo?.position.lat||0,gasStationInfo?.position.lon||0)
+      ]
+    }).addTo(map)
+    )
+    
+  }
   useEffect(()=>{
     if(id)
       getStationInfo(id);
@@ -68,7 +94,7 @@ export default function SideMenu() {
 
   function addFavoriteStation(){
     if(user!=''){      
-      let newFavoriteStations:string[] = favoriteStations;
+      const newFavoriteStations:string[] = favoriteStations;
       newFavoriteStations.push(gasStationInfo!.id);
 
       setFavoriteStations(newFavoriteStations);
@@ -83,8 +109,9 @@ export default function SideMenu() {
     if(user!=''){
       console.log("CALL BACKEND FOR SET FAVORITE STATION OF ", user);
       try {
-        const favorite = await axios.post(BACKEND_BASE_URL + UPDATE_FAVORITE_STATION_URL,
-          {headers: {Authorization: 'Bearer ', token}, body:{favoriteStations}});
+        //TODO acios request
+        // const favorite = await axios.post(BACKEND_BASE_URL + UPDATE_FAVORITE_STATION_URL,
+        //   {headers: {Authorization: 'Bearer ', token}, body:{favoriteStations}});
       } catch (e){
         console.log(e);
       }
@@ -145,6 +172,7 @@ export default function SideMenu() {
         {favoriteButton()}
         <button className='buttonStyle' onClick={(e)=>{onBackClick()}} >{"<< Liste des stations"}</button>
         <button className='buttonStyleRed' onClick={(e)=>{onUserReportClick(gasStationInfo?.id!)}} >Signaler un problème</button>
+        <button className='buttonStyle' onClick={(e)=>{onItineraireClick()}} >Calculer un itineraire</button>
     </div>
     );
 }

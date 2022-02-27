@@ -1,4 +1,4 @@
-import { GasPrice } from ".";
+import { GasPrice, Position } from ".";
 import { GasStationSchedule } from "./gas-station-schedule";
 
 export interface GasStationInfo {
@@ -37,4 +37,6 @@ export interface GasStationInfo {
     address:string;
     prices:GasPrice[];
     schedules:GasStationSchedule[];
+    position:Position
+
   }

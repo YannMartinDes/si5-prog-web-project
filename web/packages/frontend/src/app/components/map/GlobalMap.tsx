@@ -17,23 +17,23 @@ import PositionMarker from "./PositionMarker";
 export default function GlobalMap({markersList}:
 {markersList:GasStationPosition[]})
 {
-  const [position] = useContext(GeolocalisationContext)
-  const [map,setMap]:[Map,any] = useContext(MapContext);
+  const {searchPosition,userPosition} = useContext(GeolocalisationContext)
+  const {setMap}:{setMap:any} = useContext(MapContext);
   
   
 
     return(
         <div id='map' className='mapDisplayer'>
-            <MapContainer center={[position.lat,position.lon]} zoom={13} zoomControl = {false} scrollWheelZoom={false} whenCreated={setMap}>
+            <MapContainer center={[searchPosition.lat,searchPosition.lon]} zoom={13} zoomControl = {false} scrollWheelZoom={false} whenCreated={setMap}>
               <PositionUpdater />
               <TileLayer className='map-tiles' attribution={'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}
                 url={"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"}
                 />
               <ZoomControl position = "bottomright"/>
               <MarkerClusterGroup >
-                {markersList.map((value,index) => {return (<MapMarker key={value.id} gasStation={value} />)})}
+                {markersList?.map((value,index) => {return (<MapMarker key={value.id} gasStation={value} />)})}
               </MarkerClusterGroup>
-              <PositionMarker position={position}/>
+              <PositionMarker position={userPosition}/>
             </MapContainer>
         </div>
     );
