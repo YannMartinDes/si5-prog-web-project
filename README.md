@@ -28,12 +28,16 @@ The architecture is divided in 2 main parts :
 
 #### Frontend
 
-Our project's frontend contains 5 packages containing the components and the logic of our frontend :
-- [components](web/packages/frontend/src/app/components) -->
-- [const](web/packages/frontend/src/app/const) -->
-- [context](web/packages/frontend/src/app/context) -->
-- [hooks](web/packages/frontend/src/app/hooks) -->
-- [utils](web/packages/frontend/src/app/utils) -->
+Our project's frontend contains 5 packages containing the components and the logic of our frontend : 
+- [components](web/packages/frontend/src/app/components) --> This folder contains all our components react it is divided into the following subfolders: 
+  - chart : all the component of the chart page
+  - favorite-stations : all the component of the user favorite stations part
+  - left-menu : all the component of the left menu of the main page
+  - map : all the component of the central map of the main page
+  - nav-bar : the navBar component and the filter bar
+  - pages : the main component of the different root pages 
+- [const](web/packages/frontend/src/app/const) --> contains all constants, including url addresses to communicate with the backend  
+- [context](web/packages/frontend/src/app/context) --> that folder contain all of our custom context used in the project  
 
 #### Backend
 
