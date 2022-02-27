@@ -16,6 +16,34 @@ github repository
 - [postman](postman): Postman collection.
 - [deliverables](deliverables): Deliverables.
 
+
+### Architecture 
+
+The architecture is divided in 2 main parts : 
+- The frontend 
+- The backend 
+
+#### Frontend
+
+Our project's frontend contains 5 packages containing the components and the logic of our frontend :
+- [components](web/packages/frontend/src/app/components) -->
+- [const](web/packages/frontend/src/app/const) -->
+- [context](web/packages/frontend/src/app/context) -->
+- [hooks](web/packages/frontend/src/app/hooks) -->
+- [utils](web/packages/frontend/src/app/utils) -->
+
+#### Backend
+
+Our project's backend contains 5 packages
+- [authentication](web/packages/backend/src/app/authentication) --> that contains 
+all the controllers/modules/services needed to setup the authentication
+
+- [dto](web/packages/backend/src/app/dto) --> contains all our dto : 
+data transfer object to communicate our data
+- [favorite-station](web/packages/backend/src/app/favorite-station) -->
+- [schemas](web/packages/backend/src/app/schemas) -->
+- [station](web/packages/backend/src/app/station) -->
+
 ## Requirements
 
 - Install [Docker](https://docs.docker.com/engine/install/).
