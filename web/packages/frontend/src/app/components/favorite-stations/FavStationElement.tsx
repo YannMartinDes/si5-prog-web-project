@@ -4,6 +4,7 @@ import { Map } from 'leaflet';
 import { MapContext } from '../../context/MapContext';
 import { useNavigateNoUpdates } from '../../context/RouterUtils';
 import { FRONT_STATION_ID } from '../../const/url.const';
+import "./FavStationMenuElement.scss"
 
 export default function FavStationElement({favoriteStation}:{favoriteStation:GasStationPosition}) {
   const navigate = useNavigateNoUpdates();
@@ -18,8 +19,8 @@ export default function FavStationElement({favoriteStation}:{favoriteStation:Gas
     <div className='favStationElement' onClick={onStationElementClick}>
         <h3>{favoriteStation.address}</h3>
         {favoriteStation.prices.map((price)=>{
-            const priceText = price.gasType + " : "+price.price+"€";
-            return <span>{priceText}</span>
+            const priceText = price.gasType + " : "+price.price+"€ ";
+            return <p>{priceText}</p>
         })}
     </div>
   )

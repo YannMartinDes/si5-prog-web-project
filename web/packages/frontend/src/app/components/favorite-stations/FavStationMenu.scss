@@ -1,0 +1,26 @@
+.theme--dark {
+  background-color:#333;
+}
+.favMenu {
+    padding-left: 10px;
+  
+    h2{
+      .theme--dark &{
+        color:#ccc
+      }
+      color: #063d44;
+      margin-bottom: 0;
+      margin-top: 0;
+      font-size: 25pt;
+      text-decoration: underline;
+    }
+
+    .favoriteList{
+      margin-top: 20px;
+    }
+
+    .buttonStyle{
+      margin-top: 20px;
+    }
+}
+  
