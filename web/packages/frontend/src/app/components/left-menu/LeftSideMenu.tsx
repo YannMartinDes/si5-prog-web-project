@@ -15,9 +15,7 @@ export default function LeftSideMenu({gasStationList}:{gasStationList:GasStation
     <div className='sideMenu'>
         <Routes>
             <Route path={FRONT_STATION_ID+":id"} element={<StationDetailed/>}/>
-            {isLogged?
-            <Route path="favoris" element={<FavStationMenu favoriteStationList={favoriteStations} />}/>
-            :undefined}
+            {isLogged && <Route path="favoris" element={<FavStationMenu favoriteStationList={favoriteStations} />}/>}
             <Route path="/*" element={<StationList />}/>
         </Routes>
     </div>
