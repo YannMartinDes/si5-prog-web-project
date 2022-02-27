@@ -11,7 +11,6 @@ import { GeolocalisationContext } from '../../context/GeolocalisationContext';
 import LeftSideMenu from '../left-menu/LeftSideMenu';
 import GlobalMap from '../map/GlobalMap';
 import MapTool from '../map/MapTool';
-import { DrawContext } from '../../context/DrawContext';
 import { MapContext } from '../../context/MapContext';
 import { Map } from 'leaflet';
 import { GasStationPositionContext } from '../../context/GasStationPositionContext';
@@ -30,7 +29,7 @@ export default function MapPage() {
   const {filterState} = useContext(FilterStationContext)
   const {searchPosition} = useContext(GeolocalisationContext)
   const [map,setMap]:[Map, any] = useContext(MapContext);
-  const [groupLayer, setGroupLayer] = useContext(DrawContext)
+  const [groupLayer, setGroupLayer] = useState<L.FeatureGroup<any>|undefined>()
 
   function getAllStation(currentPos:Position, radius:number, filter:Filter) {
     console.log("CALL BACKEND FOR ALL STATION " + JSON.stringify(currentPos));
@@ -51,13 +50,14 @@ export default function MapPage() {
   }
 
   const addCircle = (lat:number,lon:number) =>{
+    if(!groupLayer) return
     if (map?.hasLayer(groupLayer)){
-        map.removeLayer(groupLayer)
-      }
-      let groupCircle = L.featureGroup();
-      L.circle([lat, lon],filterState.range).addTo(groupCircle)
-      map?.addLayer(groupCircle)
-      setGroupLayer(groupCircle)
+      map.removeLayer(groupLayer)
+    }
+    const groupCircle = L.featureGroup();
+    L.circle([lat, lon],filterState.range,{fillOpacity:0.06,opacity:0.5}).addTo(groupCircle)
+    map?.addLayer(groupCircle)
+    setGroupLayer(groupCircle)
   }
 
 
@@ -71,7 +71,7 @@ export default function MapPage() {
   },[filterState, searchPosition])
 
   return (
-    <div>
+    <div className='map-container'>
       <div className='grid-wrapper'>
         <div className='grid-side-menu'>
           <LeftSideMenu gasStationList={stationList} />

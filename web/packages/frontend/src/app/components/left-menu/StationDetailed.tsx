@@ -9,7 +9,6 @@ import { useNavigateNoUpdates } from "../../context/RouterUtils";
 import { MapContext} from "../../context/MapContext";
 import L from "leaflet";
 import { Map } from 'leaflet';
-import { DrawContext } from "../../context/DrawContext";
 import 'leaflet-routing-machine';
 
 import { GeolocalisationContext } from "../../context/GeolocalisationContext";
@@ -54,7 +53,7 @@ export default function SideMenu() {
     addNavigation()
   }
   const [map,setMap]:[Map, any] = useContext(MapContext);
-  const [groupLayer, setGroupeLayer,groupNavLayer,setNavGroupLayer] = useContext(DrawContext)
+  const [groupNavLayer,setNavGroupLayer] = useState<any>()
 
   const addNavigation = () =>{
     if (groupNavLayer){

@@ -28,9 +28,9 @@ export default function StationList() {
   
   const sortPriceAscending = (typeStation :string,a:GasStationPosition,b:GasStationPosition)=>{
     let diffPrice = 0
-    for (let gasTypeFirstElem of a.prices){
+    for (const gasTypeFirstElem of a.prices){
       if (gasTypeFirstElem.gasType==typeStation){
-        for (let gasTypeElem of b.prices){
+        for (const gasTypeElem of b.prices){
           if (gasTypeElem.gasType==typeStation){
             diffPrice = gasTypeElem.price - gasTypeFirstElem.price
             return diffPrice}
@@ -42,9 +42,9 @@ export default function StationList() {
 
   const sortPriceDescending = (typeStation :string,a:GasStationPosition,b:GasStationPosition)=>{
     let diffPrice = 0
-    for (let gasTypeFirstElem of a.prices){
+    for (const gasTypeFirstElem of a.prices){
       if (gasTypeFirstElem.gasType==typeStation){
-        for (let gasTypeElem of b.prices){
+        for (const gasTypeElem of b.prices){
           if (gasTypeElem.gasType==typeStation){
             diffPrice =  gasTypeFirstElem.price - gasTypeElem.price
             return diffPrice}
@@ -55,12 +55,12 @@ export default function StationList() {
   }
 
   const sortPriceUp = (a:GasStationPosition,b:GasStationPosition)=>{
-    let selectedGas : string = (document.getElementById("monselect") as HTMLInputElement).value;
+    const selectedGas : string = (document.getElementById("monselect") as HTMLInputElement).value;
     return sortPriceAscending(selectedGas,a,b)
   }
 
   const sortPriceDown= (a:GasStationPosition,b:GasStationPosition)=>{
-    let selectedGas : string = (document.getElementById("monselect") as HTMLInputElement).value;
+    const selectedGas : string = (document.getElementById("monselect") as HTMLInputElement).value;
     return sortPriceDescending(selectedGas,a,b)
   }
   const sortListClickByAdress = ()=>{
@@ -74,13 +74,13 @@ export default function StationList() {
 
   const sortListClickByPrice = ()=>{
     let sortMethod = null;
-    let stations=[]
-    let stationsWithoutTypeGas=[]
+    const stations=[]
+    const stationsWithoutTypeGas=[]
     console.log(stationList)
-    let selectedGas : string = (document.getElementById("monselect") as HTMLInputElement).value;
-    for (let e of stationList){
+    const selectedGas : string = (document.getElementById("monselect") as HTMLInputElement).value;
+    for (const e of stationList){
       let exist = false
-      for (let gas of e.prices){
+      for (const gas of e.prices){
         if(gas.gasType==selectedGas){
           stations.push(e)
           console.log(gas.gasType==selectedGas)
