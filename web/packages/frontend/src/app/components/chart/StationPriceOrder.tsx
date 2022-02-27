@@ -29,7 +29,6 @@ export default function StationPriceOrder() {
   const [stationFuelPrice, setStationFuelPrice] = useState<FuelStationPriceOrder[]>([])
   const { filterState } = useContext(FilterStationContext)
   const {searchPosition} = useContext(GeolocalisationContext)
-  const range = 20000
 
   useEffect(() => {
     axios.get(BACKEND_BASE_URL + "/chart/fuels-station-order-price",
@@ -38,7 +37,7 @@ export default function StationPriceOrder() {
         {
           latitude: searchPosition.lat,
           longitude: searchPosition.lon,
-          maxDist: range,
+          maxDist: filterState.range,
           filter: {
             gas: filterState.gasFilter,
             services: filterState.servicesFilter,
