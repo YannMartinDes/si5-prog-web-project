@@ -31,7 +31,7 @@ export default function GlobalMap({markersList}:
                 />
               <ZoomControl position = "bottomright"/>
               <MarkerClusterGroup >
-                {markersList.map((value,index) => {return (<MapMarker key={value.id} gasStation={value} />)})}
+                {markersList?.map((value,index) => {return (<MapMarker key={value.id} gasStation={value} />)})}
               </MarkerClusterGroup>
               <PositionMarker position={userPosition}/>
             </MapContainer>

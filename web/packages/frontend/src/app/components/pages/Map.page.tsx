@@ -14,6 +14,7 @@ import MapTool from '../map/MapTool';
 import { DrawContext } from '../../context/DrawContext';
 import { MapContext } from '../../context/MapContext';
 import { Map } from 'leaflet';
+import { GasStationPositionContext } from '../../context/GasStationPositionContext';
 
 //Extend marker prototype to fix : https://stackoverflow.com/questions/49441600/react-leaflet-marker-files-not-found
 const DefaultIcon = L.icon({
@@ -25,7 +26,7 @@ const range = 20000
 
 
 export default function MapPage() {
-  const [stationList,setStationList] = useState<GasStationPosition[]>([]);
+  const [stationList,setStationList] =useContext(GasStationPositionContext)
   const {filterState} = useContext(FilterStationContext)
   const {searchPosition} = useContext(GeolocalisationContext)
   const [map,setMap]:[Map, any] = useContext(MapContext);
