@@ -52,29 +52,31 @@ export default function SideMenu() {
       console.error("NO ID FOUND");
   },[id])
 
-  /**
-   * To add the current station to the favorite stations of the user
-   */
+ 
+  function removeFavoriteStation(){
+    if(user!=''){      
+      let newFavoriteStations:string[] = [];
+      newFavoriteStations = favoriteStations.filter((elt:string)=> elt !== gasStationInfo?.id);
+
+      setFavoriteStations(newFavoriteStations);
+      setNewFavorite().then((res)=> console.log('Favorites updated for current user !'));
+    } else{
+      window.alert("Vous devez être connecté pour utiliser les stations favorites")
+      navigate("/login");
+    }
+  }
+
   function addFavoriteStation(){
     if(user!=''){      
-      //if the array already contains this favorite, then we do not add it
-      if(!favoriteStations.some((e: GasStationInfo) => e.id === gasStationInfo!.id)){
-        const newFavoriteStations = favoriteStations;
-        newFavoriteStations.push(gasStationInfo);
-        setFavoriteStations(newFavoriteStations);
-        setNewFavorite().then(
-          res => {
-            console.log('Favorites updated for current user !')
-          }
-        );
-      } else {
-        console.log('Already added to favorites !');
-      }
+      let newFavoriteStations:string[] = favoriteStations;
+      newFavoriteStations.push(gasStationInfo!.id);
+
+      setFavoriteStations(newFavoriteStations);
+      setNewFavorite().then((res)=> console.log('Favorites updated for current user !'));
+    } else{
+      window.alert("Vous devez être connecté pour utiliser les stations favorites")
+      navigate("/login");
     }
-    else{
-      //TODO Navigate to login page
-    }
-    console.log('lets see current favorites : ', favoriteStations);
   }
 
   async function setNewFavorite(){
@@ -83,10 +85,18 @@ export default function SideMenu() {
       try {
         const favorite = await axios.post(BACKEND_BASE_URL + UPDATE_FAVORITE_STATION_URL,
           {headers: {Authorization: 'Bearer ', token}, body:{favoriteStations}});
-        console.log('favorite stations updated !');
       } catch (e){
         console.log(e);
       }
+    }
+  }
+
+  const favoriteButton = ()=>{
+    if(gasStationInfo && favoriteStations.includes(gasStationInfo.id)){
+      return (<button className='buttonStyle' onClick={(e)=>{removeFavoriteStation()}}>Retirer la station des favoris</button>)
+    }
+    else{
+      return (<button className='buttonStyle' onClick={(e)=>{addFavoriteStation()}}>Ajouter la station aux favoris</button>)
     }
   }
 
@@ -132,7 +142,7 @@ export default function SideMenu() {
                 : (<p>Pas d'informations disponibles</p>))
             :<TailSpin color="#063d44" width={60} height={60}/>}
         </div>
-        <button className='buttonStyle' onClick={(e)=>{addFavoriteStation()}}>Ajouter la station aux favoris</button>
+        {favoriteButton()}
         <button className='buttonStyle' onClick={(e)=>{onBackClick()}} >{"<< Liste des stations"}</button>
         <button className='buttonStyleRed' onClick={(e)=>{onUserReportClick(gasStationInfo?.id!)}} >Signaler un problème</button>
     </div>
