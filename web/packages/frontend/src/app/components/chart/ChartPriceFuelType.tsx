@@ -36,7 +36,7 @@ const options = {
     },
   },
 };
-const range = 20000
+
 
 export function ChartPriceFuelType() {
 
@@ -49,7 +49,7 @@ export function ChartPriceFuelType() {
         { params: 
           { latitude: searchPosition.lat, 
             longitude: searchPosition.lon, 
-            maxDist: range, 
+            maxDist: filterState.range, 
             filter:{
               gas: filterState.gasFilter, 
               services: filterState.servicesFilter,

@@ -31,7 +31,6 @@ export default function StationPriceOrder() {
   const { filterState } = useContext(FilterStationContext)
   const {searchPosition} = useContext(GeolocalisationContext)
   const navigate = useNavigateNoUpdates()
-  const range = 20000
 
   useEffect(() => {
     axios.get(BACKEND_BASE_URL + "/chart/fuels-station-order-price",
@@ -40,7 +39,7 @@ export default function StationPriceOrder() {
         {
           latitude: searchPosition.lat,
           longitude: searchPosition.lon,
-          maxDist: range,
+          maxDist: filterState.range,
           filter: {
             gas: filterState.gasFilter,
             services: filterState.servicesFilter,
@@ -55,7 +54,7 @@ export default function StationPriceOrder() {
 
   return (<div className='wrapper-station-chart'>{
     stationFuelPrice.map(fuel => {
-      const labels = fuel.stations.map((station: { address: any; }) => station.address.substring(0, 15));
+      const labels = fuel.stations.map((station: { address: any; }) => station.address.substring(0, 25));
       const values = fuel.stations.map((station: { price: any; }) => station.price);
       const data = {
         labels: labels,
