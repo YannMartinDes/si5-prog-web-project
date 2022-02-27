@@ -86,7 +86,9 @@ export default function SideMenu() {
       try {
         console.log('route used : ', BACKEND_BASE_URL + UPDATE_FAVORITE_STATION_URL);
         const favorite = await axios.post(BACKEND_BASE_URL + UPDATE_FAVORITE_STATION_URL,
-          {headers: {Authorization: 'Bearer ' + token},
+          {headers: {
+              Authorization: 'Bearer ', token
+            },
             body:    {favoriteStations}
           });
         console.log('favorite stations updated !');
