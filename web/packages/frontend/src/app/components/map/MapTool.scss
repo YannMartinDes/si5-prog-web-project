@@ -11,8 +11,14 @@
   // margin-left: 30px;
   // margin-bottom: 5px;
 }
-.toolBar .map-button{
+.toolBar .map-button {
   display:grid;
   gap: 4px;
   grid-template-columns: 1fr 1fr;
+}
+
+.stationDetailed .toolBar{
+  display:grid;
+  gap: 4px;
+  grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
 }

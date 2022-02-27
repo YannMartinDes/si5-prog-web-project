@@ -34,6 +34,9 @@ export default function GlobalMap({markersList}:
                 {markersList?.map((value,index) => {return (<MapMarker key={value.id} gasStation={value} />)})}
               </MarkerClusterGroup>
               <PositionMarker position={userPosition}/>
+              <div className='positionLegend'>
+                Position : {searchPosition.lat} , {searchPosition.lon}
+              </div>
             </MapContainer>
         </div>
     );

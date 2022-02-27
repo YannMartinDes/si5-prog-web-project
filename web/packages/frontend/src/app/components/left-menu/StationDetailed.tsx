@@ -172,9 +172,10 @@ export default function SideMenu() {
                 : (<p>Pas d'informations disponibles</p>))
             :<TailSpin color="#063d44" width={60} height={60}/>}
         </div>
-        
-        <button className='buttonStyle' onClick={(e)=>{onBackClick()}} >{"<< Liste des stations"}</button>
-        <button className='buttonStyleRed' onClick={(e)=>{onUserReportClick(gasStationInfo!)}} >Signaler un problème</button>
+        <div className="action-wrapper">
+          <button className='buttonStyle' onClick={(e)=>{onBackClick()}} >{"<< Liste des stations"}</button>
+          <button className='buttonStyleRed' onClick={(e)=>{onUserReportClick(gasStationInfo!)}} >Signaler un problème</button>
+        </div>
     </div>
     );
 }
