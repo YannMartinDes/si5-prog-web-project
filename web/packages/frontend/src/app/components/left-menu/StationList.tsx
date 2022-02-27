@@ -3,7 +3,7 @@ import { GasStationPosition } from '@web/common/dto'
 import StationListElement from './StationListElement'
 import { TailSpin } from "react-loader-spinner"
 import { useContext, useEffect, useState } from 'react'
-import { MenuList } from "../MenuList"
+import { MenuList , OptionMenuList} from "../MenuList"
 import axios from "axios"
 import { BACKEND_BASE_URL } from "../../const/url.const"
 import { GasStationPositionContext } from "../../context/GasStationPositionContext"
@@ -56,14 +56,15 @@ export default function StationList() {
     return 0
   }
 
-  const sortPriceUp = (a: GasStationPosition, b: GasStationPosition) => {
-    const selectedGas: string = (document.getElementById("monselect") as HTMLInputElement).value;
-    return sortPriceAscending(selectedGas, a, b)
+
+  const sortPriceUp = (a:GasStationPosition,b:GasStationPosition)=>{
+    const selectedGas : string = (document.getElementById("selectPrice") as HTMLInputElement).value;
+    return sortPriceAscending(selectedGas,a,b)
   }
 
-  const sortPriceDown = (a: GasStationPosition, b: GasStationPosition) => {
-    const selectedGas: string = (document.getElementById("monselect") as HTMLInputElement).value;
-    return sortPriceDescending(selectedGas, a, b)
+  const sortPriceDown= (a:GasStationPosition,b:GasStationPosition)=>{
+    const selectedGas : string = (document.getElementById("selectPrice") as HTMLInputElement).value;
+    return sortPriceDescending(selectedGas,a,b)
   }
   const sortListClickByAdress = () => {
     let sortMethod = null;
@@ -79,8 +80,9 @@ export default function StationList() {
     const stations = []
     const stationsWithoutTypeGas = []
     console.log(stationList)
-    const selectedGas: string = (document.getElementById("monselect") as HTMLInputElement).value;
-    for (const e of stationList) {
+
+    const selectedGas : string = (document.getElementById("selectPrice") as HTMLInputElement).value;
+    for (const e of stationList){
       let exist = false
       for (const gas of e.prices) {
         if (gas.gasType == selectedGas) {
@@ -128,13 +130,13 @@ export default function StationList() {
       <h1>Stations Essences :</h1>
       {(stationList?.length) !== 0 ?
         (<div>
-          <button className="buttonStyle" onClick={sortListClickByAdress}>Trier A-Z</button>
-          <button className="buttonStyle" onClick={sortListClickByPrice}>Trier par prix  type d'essence </button>
-          <select id="monselect">
-            {fuelList.map((elt) => { return <option value={elt}>{elt}</option> })}
-          </select>
-          {stationList?.map((station: GasStationPosition) => {
-            return <StationListElement key={station.id} gasStation={station} />
+          <button className="buttonStyle" onClick={sortListClickByAdress}>Trier par adresse</button>
+          <button className="buttonStyle" onClick={sortListClickByPrice}>Trier par prix</button>
+          <select id="selectPrice"> 
+            {fuelList.map((elt) => { return  <option value={elt}>{elt}</option> })}
+          </select> 
+          {stationList?.map((station: GasStationPosition)=>{
+            return <StationListElement key={station.id} gasStation={station}/>
           })}
         </div>)
         : (

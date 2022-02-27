@@ -129,6 +129,11 @@ export default function SideMenu() {
     <div className='stationDetailed'>
         <h1>{gasStationInfo?.address||"chargement..."}</h1>
         <h3>{gasStationInfo?.id||"chargement..."}</h3>
+        
+        <div className="toolBar">
+          <button className='buttonStyle' onClick={(e)=>{onItineraireClick()}} >Calculer un itineraire</button>
+          {favoriteButton()}
+        </div>
 
         <div className='subInfo'>
           <h2>Essences</h2>
@@ -167,10 +172,9 @@ export default function SideMenu() {
                 : (<p>Pas d'informations disponibles</p>))
             :<TailSpin color="#063d44" width={60} height={60}/>}
         </div>
-        {favoriteButton()}
+        
         <button className='buttonStyle' onClick={(e)=>{onBackClick()}} >{"<< Liste des stations"}</button>
         <button className='buttonStyleRed' onClick={(e)=>{onUserReportClick(gasStationInfo!)}} >Signaler un problème</button>
-        <button className='buttonStyle' onClick={(e)=>{onItineraireClick()}} >Calculer un itineraire</button>
     </div>
     );
 }

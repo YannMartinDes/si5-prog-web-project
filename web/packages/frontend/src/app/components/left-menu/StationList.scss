@@ -14,57 +14,62 @@
       font-size: 25pt;
       text-decoration: underline;
     }
-  }
+
+    .buttonStyle{
+      margin: 5px 10px;
+      font-size: 10pt;
+    }
+}
   
-  .stationListElement:hover{
+.stationListElement:hover{
+  .theme--dark &{
+    background-color:#111
+  }
+  background-color: #1B6D92;
+  transition: background-color 300ms;
+
+  cursor: pointer;
+  h2{
     .theme--dark &{
-      background-color:#111
+      color:#ccc
     }
-    background-color: #1B6D92;
-    transition: background-color 300ms;
-  
-    cursor: pointer;
-    h2{
-      .theme--dark &{
-        color:#ccc
-      }
-      transition: color 300ms;
-      color: white;
-    }
-  
-    p{
-      .theme--dark &{
-        color:#ccc
-      }
-      transition: color 300ms;
-      color: white;
-    }
+    transition: color 300ms;
+    color: white;
   }
-  
-  .stationListElement {
+
+  p{
     .theme--dark &{
-      border-bottom:solid #ccc 2px;
+      color:#ccc
     }
-    border-bottom: solid 2px #106b77;
-    padding: 5%;
-  
-    h2{
-      .theme--dark &{
-        color:#ccc
-      }
-      margin-top: 0;
-      margin-bottom: 2%;
-      color: #063d44;
-      font-size: 18pt;
-    }
-  
-    p{
-      .theme--dark &{
-        color:#ccc
-      }
-      margin: 0;
-      padding: 0;
-      color: #106b77;
-    }
+    transition: color 300ms;
+    color: white;
   }
+}
+
+.stationListElement {
+  .theme--dark &{
+    border-bottom:solid #ccc 2px;
+  }
+  border-bottom: solid 2px #106b77;
+  padding: 5%;
+
+  h2{
+    .theme--dark &{
+      color:#ccc
+    }
+    margin-top: 0;
+    margin-bottom: 2%;
+    color: #063d44;
+    font-size: 18pt;
+  }
+
+  p{
+    .theme--dark &{
+      color:#ccc
+    }
+    margin: 0;
+    padding: 0;
+    color: #106b77;
+  }
+}
   

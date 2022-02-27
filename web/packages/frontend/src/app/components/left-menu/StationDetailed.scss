@@ -19,6 +19,14 @@
       margin: 10px 0px;
     }
 
+    .buttonStyle{
+      margin: 0 10px 5px 10px;
+    }
+
+    .toolBar .buttonStyle{
+      font-size: 11pt;
+    }
+
     .subInfo{
         .theme--dark &{
           color:#ccc;
@@ -44,5 +52,7 @@
           margin-top: 3%;
           margin-bottom: 1%;
         }
-      }
+    }
+
+      
   }
