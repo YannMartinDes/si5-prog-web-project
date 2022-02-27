@@ -11,6 +11,9 @@ import { GeolocalisationContext } from '../../context/GeolocalisationContext';
 import LeftSideMenu from '../left-menu/LeftSideMenu';
 import GlobalMap from '../map/GlobalMap';
 import MapTool from '../map/MapTool';
+import { DrawContext } from '../../context/DrawContext';
+import { MapContext } from '../../context/MapContext';
+import { Map } from 'leaflet';
 
 //Extend marker prototype to fix : https://stackoverflow.com/questions/49441600/react-leaflet-marker-files-not-found
 const DefaultIcon = L.icon({
@@ -25,7 +28,8 @@ export default function MapPage() {
   const [stationList,setStationList] = useState<GasStationPosition[]>([]);
   const {filterState} = useContext(FilterStationContext)
   const {searchPosition} = useContext(GeolocalisationContext)
-
+  const [map,setMap]:[Map, any] = useContext(MapContext);
+  const [groupLayer, setGroupLayer] = useContext(DrawContext)
 
   function getAllStation(currentPos:Position, radius:number, filter:Filter) {
     console.log("CALL BACKEND FOR ALL STATION " + JSON.stringify(currentPos));
@@ -45,8 +49,18 @@ export default function MapPage() {
        });
   }
 
+  const addCircle = (lat:number,lon:number) =>{
+    if (map?.hasLayer(groupLayer)){
+        map.removeLayer(groupLayer)
+      }
+      let groupCircle = L.featureGroup();
+      L.circle([lat, lon],filterState.range).addTo(groupCircle)
+      map?.addLayer(groupCircle)
+      setGroupLayer(groupCircle)
+  }
 
-  useEffect(()=>{//== ComponentDidMount
+  useEffect(()=>{
+    addCircle(searchPosition.lat, searchPosition.lon)
     getAllStation(searchPosition,filterState.range,{
       gas: filterState.gasFilter, 
       services: filterState.servicesFilter,
