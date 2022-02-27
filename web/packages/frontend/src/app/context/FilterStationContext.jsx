@@ -1,5 +1,6 @@
-import React, {
-	useReducer, createContext,
+import {
+	useReducer, 
+	createContext,
 } from 'react';
 import PropTypes from 'prop-types';
 

@@ -26,7 +26,6 @@ export class ChartService {
     }
 
     if (longitudeCurrent && latitudeCurrent && maxDist) {
-      console.log(maxDist)
       aggregateQuery.push({
         $geoNear: {
           near: { type: "Point", coordinates: [longitudeCurrent, latitudeCurrent] },
@@ -84,7 +83,6 @@ export class ChartService {
     }
 
     if (longitudeCurrent && latitudeCurrent && maxDist) {
-      console.log(maxDist)
       aggregateQuery.push({
         $geoNear: {
           near: { type: "Point", coordinates: [longitudeCurrent, latitudeCurrent] },

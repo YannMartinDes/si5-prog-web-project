@@ -20,7 +20,6 @@ export default function MapMarker({gasStation}
         <Marker position={[gasStationPos.lat, gasStationPos.lon]} icon={gasStationIcon?gasStationIcon:gasStationIconDark}
             eventHandlers={{
                 click: async () => {
-                    console.log("im call ---------------")
                     map.setView([gasStationPos.lat, gasStationPos.lon],17, {animate:true})
                     await navigate(FRONT_STATION_ID+gasStation.id);
                 },
