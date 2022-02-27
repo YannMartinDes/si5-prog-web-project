@@ -27,56 +27,33 @@ export default function StationList() {
   }
   
   const sortPriceAscending = (typeStation :string,a:GasStationPosition,b:GasStationPosition)=>{
-    let undefined = 0
-    let firstCheck= false
-    let secondCheck = false
+    let diffPrice = 0
     for (let gasTypeFirstElem of a.prices){
       if (gasTypeFirstElem.gasType==typeStation){
         for (let gasTypeElem of b.prices){
           if (gasTypeElem.gasType==typeStation){
-            undefined = gasTypeElem.price - gasTypeFirstElem.price
-            return undefined}
+            diffPrice = gasTypeElem.price - gasTypeFirstElem.price
+            return diffPrice}
           }
-          firstCheck = true
       }
-      secondCheck = true
     }
-    if (firstCheck && secondCheck){
-      return -100000
-    }
-    if (firstCheck) {
-      return 100000
-    }
-    else {
-      return 100000
-    }
+      return 0
   }
 
   const sortPriceDescending = (typeStation :string,a:GasStationPosition,b:GasStationPosition)=>{
-    let undefined = 0
-    let firstCheck= false
-    let secondCheck = false
+    let diffPrice = 0
     for (let gasTypeFirstElem of a.prices){
       if (gasTypeFirstElem.gasType==typeStation){
         for (let gasTypeElem of b.prices){
           if (gasTypeElem.gasType==typeStation){
-            undefined =  gasTypeFirstElem.price - gasTypeElem.price
-            return undefined}
+            diffPrice =  gasTypeFirstElem.price - gasTypeElem.price
+            return diffPrice}
           }
-          firstCheck = true
       }
-      secondCheck = true
     }
-    if (firstCheck && secondCheck){
-      return -100000
-    }
-    if (firstCheck) {
-      return 100000
-    }
-    else {
-      return 100000
-    }
+      return 0
   }
+
   const sortPriceUp = (a:GasStationPosition,b:GasStationPosition)=>{
     let test : string = (document.getElementById("monselect") as HTMLInputElement).value;
     return sortPriceAscending(test,a,b)
@@ -115,6 +92,19 @@ export default function StationList() {
         stationsWithoutTypeGas.push(e)
       }
     }
+
+    stations.sort((a: GasStationPosition,b: GasStationPosition)=> {
+      isPriceAscending? sortMethod = sortPriceUp: sortMethod = sortPriceDown 
+      return sortMethod(a,b);
+    })
+    stations.sort((a: GasStationPosition,b: GasStationPosition)=> {
+      isPriceAscending? sortMethod = sortPriceUp: sortMethod = sortPriceDown 
+      return sortMethod(a,b);
+    })
+    stations.sort((a: GasStationPosition,b: GasStationPosition)=> {
+      isPriceAscending? sortMethod = sortPriceUp: sortMethod = sortPriceDown 
+      return sortMethod(a,b);
+    })
     stations.sort((a: GasStationPosition,b: GasStationPosition)=> {
       isPriceAscending? sortMethod = sortPriceUp: sortMethod = sortPriceDown 
       return sortMethod(a,b);
