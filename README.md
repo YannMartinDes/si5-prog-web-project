@@ -20,8 +20,8 @@ github repository
 ### Architecture 
 
 The architecture is divided in 2 main parts : 
-- The frontend 
-- The backend 
+- The [frontend](web/packages/frontend)
+- The [backend](web/packages/backend)
 
 #### Frontend
 
