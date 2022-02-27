@@ -18,7 +18,7 @@ export default function GlobalMap({markersList}:
 {markersList:GasStationPosition[]})
 {
   const {searchPosition,userPosition} = useContext(GeolocalisationContext)
-  const [map,setMap]:[Map,any] = useContext(MapContext);
+  const {setMap}:{setMap:any} = useContext(MapContext);
   
   
 
@@ -31,7 +31,7 @@ export default function GlobalMap({markersList}:
                 />
               <ZoomControl position = "bottomright"/>
               <MarkerClusterGroup >
-                {markersList.map((value,index) => {return (<MapMarker key={value.id} gasStation={value} />)})}
+                {markersList?.map((value,index) => {return (<MapMarker key={value.id} gasStation={value} />)})}
               </MarkerClusterGroup>
               <PositionMarker position={userPosition}/>
             </MapContainer>

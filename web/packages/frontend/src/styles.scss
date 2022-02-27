@@ -66,4 +66,12 @@ body{
 .grid-wrapper{
   display: grid;
   grid-template-columns:30% 70%;  
+  width: 100%;
+}
+
+.leaflet-routing-container{
+  max-height: 500px;
+  max-width: 450px;
+  overflow-y: scroll;
+  background-color: rgba(255,255,255,0.6);
 }

@@ -11,6 +11,9 @@ import { GeolocalisationContext } from '../../context/GeolocalisationContext';
 import LeftSideMenu from '../left-menu/LeftSideMenu';
 import GlobalMap from '../map/GlobalMap';
 import MapTool from '../map/MapTool';
+import { MapContext } from '../../context/MapContext';
+import { Map } from 'leaflet';
+import { GasStationPositionContext } from '../../context/GasStationPositionContext';
 
 //Extend marker prototype to fix : https://stackoverflow.com/questions/49441600/react-leaflet-marker-files-not-found
 const DefaultIcon = L.icon({
@@ -22,10 +25,11 @@ const range = 20000
 
 
 export default function MapPage() {
-  const [stationList,setStationList] = useState<GasStationPosition[]>([]);
+  const [stationList,setStationList] =useContext(GasStationPositionContext)
   const {filterState} = useContext(FilterStationContext)
   const {searchPosition} = useContext(GeolocalisationContext)
-
+  const {map}:{map:Map} = useContext(MapContext);
+  const [groupLayer, setGroupLayer] = useState<L.FeatureGroup<any>|undefined>()
 
   function getAllStation(currentPos:Position, radius:number, filter:Filter) {
     console.log("CALL BACKEND FOR ALL STATION " + JSON.stringify(currentPos));
@@ -45,8 +49,20 @@ export default function MapPage() {
        });
   }
 
+  const addCircle = (lat:number,lon:number) =>{
+    if(!groupLayer) return
+    if (map?.hasLayer(groupLayer)){
+      map.removeLayer(groupLayer)
+    }
+    const groupCircle = L.featureGroup();
+    L.circle([lat, lon],filterState.range,{fillOpacity:0.06,opacity:0.5}).addTo(groupCircle)
+    map?.addLayer(groupCircle)
+    setGroupLayer(groupCircle)
+  }
 
-  useEffect(()=>{//== ComponentDidMount
+
+  useEffect(()=>{
+    addCircle(searchPosition.lat, searchPosition.lon)
     getAllStation(searchPosition,filterState.range,{
       gas: filterState.gasFilter, 
       services: filterState.servicesFilter,
@@ -55,7 +71,7 @@ export default function MapPage() {
   },[filterState, searchPosition])
 
   return (
-    <div>
+    <div className='map-container'>
       <div className='grid-wrapper'>
         <div className='grid-side-menu'>
           <LeftSideMenu gasStationList={stationList} />
