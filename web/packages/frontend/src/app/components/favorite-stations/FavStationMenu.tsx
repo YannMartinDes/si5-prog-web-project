@@ -1,9 +1,9 @@
 import "../left-menu/LeftSideMenu.scss"
-import { GasStationPosition } from '@web/common/dto'
-import React from 'react'
+import { GasStationInfo } from '@web/common/dto'
 import FavStationElement from "./FavStationElement"
 
-export default function FavStationMenu({favoriteStationList}:{favoriteStationList:GasStationPosition[]}) {
+export default function FavStationMenu({favoriteStationList}:{favoriteStationList:GasStationInfo[]}) {
+
   return (
     <div className='favMenu'>
       <h2>Stations favorites</h2>

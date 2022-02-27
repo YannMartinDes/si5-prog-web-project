@@ -12,15 +12,16 @@ import L from "leaflet";
 import { Map } from 'leaflet';
 import 'leaflet-routing-machine';
 import { GeolocalisationContext } from "../../context/GeolocalisationContext";
+import useAxiosAuth from "../../hooks/axios-auth";
 
 export default function SideMenu() {
   const navigate = useNavigateNoUpdates()
   const [gasStationInfo,setGasStationInfo] = useState<GasStationInfo>();
   const {id} = useParams();
-  const { user, favoriteStations, setFavoriteStations} = useContext(AuthContext)
+  const { user, favoriteStations, setFavoriteStations, isLogged}:{user:string,favoriteStations:GasStationInfo[],setFavoriteStations:any,isLogged:boolean} = useContext(AuthContext)
   const {map,navControl,setNavControl}:{map:Map,navControl:any,setNavControl:any} = useContext(MapContext);
   const {userPosition,searchPosition,setSearchPosition} = useContext(GeolocalisationContext)
-
+  const axiosAuth = useAxiosAuth();
   function getStationInfo(stationId:string) {
     console.log("GET STATION INFO FOR "+stationId)
 
@@ -45,10 +46,10 @@ export default function SideMenu() {
     navigate("/");
   }
 
-  function onUserReportClick(id : string){
+  function onUserReportClick(station : GasStationInfo){
     const msg = prompt("Quel est votre problème ?");
     if(msg){
-      reportStationIssue(id,msg)
+      reportStationIssue(station.id,msg)
     }
   }
   function onItineraireClick(){
@@ -80,12 +81,10 @@ export default function SideMenu() {
 
  
   function removeFavoriteStation(){
-    if(user!=''){      
-      let newFavoriteStations:string[] = [];
-      newFavoriteStations = favoriteStations.filter((elt:string)=> elt !== gasStationInfo?.id);
-
+    if(isLogged){      
+      const newFavoriteStations:GasStationInfo[] = favoriteStations.filter((elt:GasStationInfo)=> elt.id !== gasStationInfo?.id);
       setFavoriteStations(newFavoriteStations);
-      setNewFavorite().then((res)=> console.log('Favorites updated for current user !'));
+      setNewFavorite(newFavoriteStations).then((res)=> console.log('Favorites updated for current user !'));
     } else{
       window.alert("Vous devez être connecté pour utiliser les stations favorites")
       navigate("/login");
@@ -93,25 +92,24 @@ export default function SideMenu() {
   }
 
   function addFavoriteStation(){
-    if(user!=''){      
-      const newFavoriteStations:string[] = favoriteStations;
-      newFavoriteStations.push(gasStationInfo!.id);
-
+    if(isLogged){    
+      console.log("add favorit station")
+  
+      const newFavoriteStations:GasStationInfo[] = [...favoriteStations,gasStationInfo!];
       setFavoriteStations(newFavoriteStations);
-      setNewFavorite().then((res)=> console.log('Favorites updated for current user !'));
+      setNewFavorite(newFavoriteStations).then((res)=> console.log('Favorites updated for current user !'));
     } else{
       window.alert("Vous devez être connecté pour utiliser les stations favorites")
       navigate("/login");
     }
   }
 
-  async function setNewFavorite(){
-    if(user!=''){
+  async function setNewFavorite(newFavoriteStations:GasStationInfo[]){
+    if(isLogged){
       console.log("CALL BACKEND FOR SET FAVORITE STATION OF ", user);
       try {
         //TODO acios request
-        // const favorite = await axios.post(BACKEND_BASE_URL + UPDATE_FAVORITE_STATION_URL,
-        //   {headers: {Authorization: 'Bearer ', token}, body:{favoriteStations}});
+        await axiosAuth.post(BACKEND_BASE_URL + UPDATE_FAVORITE_STATION_URL,{favoriteStations:newFavoriteStations.map(elt=>elt.id)});
       } catch (e){
         console.log(e);
       }
@@ -119,7 +117,7 @@ export default function SideMenu() {
   }
 
   const favoriteButton = ()=>{
-    if(gasStationInfo && favoriteStations.includes(gasStationInfo.id)){
+    if(gasStationInfo && favoriteStations.filter((station)=>station.id===gasStationInfo.id).length>0){
       return (<button className='buttonStyle' onClick={(e)=>{removeFavoriteStation()}}>Retirer la station des favoris</button>)
     }
     else{
@@ -171,7 +169,7 @@ export default function SideMenu() {
         </div>
         {favoriteButton()}
         <button className='buttonStyle' onClick={(e)=>{onBackClick()}} >{"<< Liste des stations"}</button>
-        <button className='buttonStyleRed' onClick={(e)=>{onUserReportClick(gasStationInfo?.id!)}} >Signaler un problème</button>
+        <button className='buttonStyleRed' onClick={(e)=>{onUserReportClick(gasStationInfo!)}} >Signaler un problème</button>
         <button className='buttonStyle' onClick={(e)=>{onItineraireClick()}} >Calculer un itineraire</button>
     </div>
     );

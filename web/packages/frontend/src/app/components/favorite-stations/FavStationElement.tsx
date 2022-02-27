@@ -7,7 +7,7 @@ import { FRONT_STATION_ID } from '../../const/url.const';
 
 export default function FavStationElement({favoriteStation}:{favoriteStation:GasStationPosition}) {
   const navigate = useNavigateNoUpdates();
-  const [map,setMap]:[Map,any] = useContext(MapContext);
+  const {map,setMap}:{map:Map,setMap:any} = useContext(MapContext);
   
   const onStationElementClick = (e:any) =>{
     navigate(FRONT_STATION_ID+favoriteStation.id);

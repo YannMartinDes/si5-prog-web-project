@@ -35,7 +35,7 @@ L.Marker.prototype.options.icon = DefaultIcon;
 export default function MapPage() {
   const [stationList,setStationList] =useContext(GasStationPositionContext)
   const {filterState} = useContext(FilterStationContext)
-  const {user, favoriteStations, setFavoriteStations} = useContext(AuthContext)
+  const {user, favoriteStations, setFavoriteStations, isLogged} = useContext(AuthContext)
   const axiosAuth = useAxios()
 
   const {searchPosition} = useContext(GeolocalisationContext)
@@ -52,11 +52,10 @@ export default function MapPage() {
   }
 
   async function getFavoriteStation(){
-    if(user!=''){
-      console.log("CALL BACKEND FOR FAVORITE STATION OF ", user);
+    if(isLogged){
       try {
-        // const favorite = await axiosAuth.get(BACKEND_BASE_URL + FAVORITE_STATION_URL)
-        // setFavoriteStations(favorite.data);
+        const favorite = await axiosAuth.get<GasStationPosition[]>(BACKEND_BASE_URL + FAVORITE_STATION_URL)
+        setFavoriteStations(favorite.data);
       } catch (e){
         console.log(e);
       }
@@ -82,6 +81,7 @@ export default function MapPage() {
       services: filterState.servicesFilter,
       schedules: []
     });
+    if(isLogged) getFavoriteStation();
   },[filterState, searchPosition])
 
   return (
@@ -94,9 +94,10 @@ export default function MapPage() {
           <GlobalMap markersList={stationList}/>
           <MapTool />
         </div>
-        <div className='grid-side-menu'>
+        {isLogged?<div className='grid-side-menu'>
           <FavStationMenu favoriteStationList={favoriteStations} />
-        </div>
+        </div>:undefined}
+        
       </div>
     </div>
   );

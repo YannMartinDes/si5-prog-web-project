@@ -20,7 +20,7 @@ export class FavoriteStationService {
 
         if(!favoriteStation){
             console.log("There is no favorite station for "+user.username+" in the DB");
-            return undefined;
+            return [];
         }
         console.log("get favorite station Id "+favoriteStation.favoriteStations+" for user "+user.username);
         const IdList =  favoriteStation!.favoriteStations || [];
