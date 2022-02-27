@@ -20,7 +20,7 @@ export default function FavStationElement({favoriteStation}:{favoriteStation:Gas
         <h3>{favoriteStation.address}</h3>
         {favoriteStation.prices.map((price)=>{
             const priceText = price.gasType + " : "+price.price+"€ ";
-            return <p>{priceText}</p>
+            return <p key={price.gasType}>{priceText}</p>
         })}
     </div>
   )

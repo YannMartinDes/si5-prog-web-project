@@ -24,8 +24,6 @@ export default function NavBar() {
         setDarkTheme(checked);
     }
 
-    console.log('load :'+isDarkTheme)
-
     return (
         <div className=''>
             <div className='navBar'>

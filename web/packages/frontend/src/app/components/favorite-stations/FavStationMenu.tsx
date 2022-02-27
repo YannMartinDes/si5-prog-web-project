@@ -17,7 +17,7 @@ export default function FavStationMenu({favoriteStationList}:{favoriteStationLis
       {favoriteStationList.length===0?"Acune station":
         <div className="favoriteList">
           {favoriteStationList.map((favStation) => {
-            return <FavStationElement favoriteStation={favStation}/>
+            return <FavStationElement key={favStation.id} favoriteStation={favStation}/>
           })}
         </div>
       }

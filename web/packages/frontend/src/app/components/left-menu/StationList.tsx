@@ -144,7 +144,7 @@ export default function StationList() {
           <button className="buttonStyle" onClick={sortListClickByAdress}>Trier par adresse</button>
           <button className="buttonStyle" onClick={sortListClickByPrice}>Trier par prix</button>
           <select id="selectPrice">
-            {fuelList.map((elt) => { return <option value={elt}>{elt}</option> })}
+            {fuelList.map((elt,index) => { return <option key={index} value={elt}>{elt}</option> })}
           </select>
           {stationList?.map((station: GasStationPosition) => {
             return <StationListElement key={station.id} gasStation={station} />
