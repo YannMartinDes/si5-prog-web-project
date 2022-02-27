@@ -6,8 +6,12 @@ import AdmZip = require('adm-zip');
 import { Model } from 'mongoose';
 import { firstValueFrom } from 'rxjs';
 import convert = require('xml-js');
-import { Station } from '../../schemas/station.schema';
 import { StationService } from '../station-repository.service';
+import { LoadStation } from './load-schema/load-station.class';
+import { Point } from 'geojson'
+import { transformLoadStationToModelStation } from './load-schema/station-transformer';
+import { Station } from '../../schemas/station.schema';
+import { StationFilterList } from '../station-filter-list.service';
 
 @Injectable()
 export class StationLoaderService {
@@ -15,8 +19,9 @@ export class StationLoaderService {
 
   constructor(private http:HttpService,
     private stationRepository:StationService,
+    private stationFilter:StationFilterList,
     @InjectModel("STATION") private readonly stationModel: Model<Station>,
-
+    
     ){
 
   }
@@ -42,8 +47,41 @@ export class StationLoaderService {
     // else {
     //   url="https://donnees.roulez-eco.fr/opendata/jour/"+date.getFullYear()+ month +day}
     console.log("CRON: start update from gouv api")
-    await this.loadStation();
-    await this.stationRepository.createIndex();
+    const loadStationList = await this.loadStation();
+    const stationSchemaList = loadStationList.map(transformLoadStationToModelStation)
+    
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const writeOperation:any = stationSchemaList.map((station: Station) => {
+      return ({
+        updateOne: {
+          filter: { _id: station._id },
+          update: { $set: station },
+          upsert: true
+        }
+      });
+    })
+    writeOperation.push(
+      {
+        deleteMany:{
+          filter:{_id:{$not: {$in: stationSchemaList.map((station:Station)=>station._id)}}}
+        }
+      }
+    )
+    const result = await this.stationModel.bulkWrite(writeOperation)
+
+    // await this.stationModel.deleteMany()
+
+    // for( const station of stationSchemaList){ //FOR DEBUG ONLY
+    //   console.log(station.position)
+    //   await this.stationModel.create(new this.stationModel(station))
+    // }
+    // const stationSchemaListSaved = await this.stationModel.insertMany(stationSchemaList)
+    console.log("nMatched :"+result.result.nMatched);
+    console.log("nInserted :"+result.result.nUpserted);
+    console.log("nModified :"+result.result.nModified);
+    console.log("nRemoved :"+result.result.nRemoved);
+
+    this.stationFilter.refreshAll()
     console.log("CRON: successful update")
 
   }
@@ -63,16 +101,21 @@ export class StationLoaderService {
     return convert.xml2json(xml, {compact: true});
   }
 
-  async loadStation() :Promise<Station[]>{
+  async loadStation() :Promise<LoadStation[]>{
       const resultJson=await this.getJsonFromUrl();
-      const dict=JSON.parse(resultJson)
-      const arrayLocal:Station[]=[]
+      const dict=JSON.parse(resultJson);
+      const arrayLocal:LoadStation[]=[];
       for (const element of dict["pdv_liste"]["pdv"]){
-          element["coordinates"]= [element["_attributes"]["longitude"]*0.00001 , element["_attributes"]["latitude"]*0.00001]
-          arrayLocal.push(element)
+        const geoJsonPoint:Point={
+          type: 'Point',
+          coordinates:[element["_attributes"]["longitude"]*0.00001 , element["_attributes"]["latitude"]*0.00001]
+        }
+        element.location=geoJsonPoint;
+        arrayLocal.push(element);
       }
-      await this.stationModel.deleteMany();
-      return await this.stationModel.insertMany(arrayLocal)
+      return arrayLocal;
+      // await this.stationModel.deleteMany();
+      // return await this.stationModel.insertMany(arrayLocal)
   }
 
   // deltaDate(input, days, months, years) {

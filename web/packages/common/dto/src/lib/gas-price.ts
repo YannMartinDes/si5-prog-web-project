@@ -9,5 +9,5 @@ export interface GasPrice {
       SP98,
     */
     gasType:string;
-    price:string
+    price:number
   }

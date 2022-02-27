@@ -1,5 +1,4 @@
 import { ConflictException, Injectable } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { InjectModel } from '@nestjs/mongoose';
@@ -11,7 +10,6 @@ import {AuthCredentialsDto} from "./dtos/auth-credentials.dto";
 export class AuthService {
   constructor(
     @InjectModel('User') private userModel: Model<User>,
-    private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
 
