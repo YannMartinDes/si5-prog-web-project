@@ -15,6 +15,7 @@ import { FuelStationPriceOrder } from '@web/common/dto';
 import { FilterStationContext } from '../../context/FilterStationContext';
 import "./StationPriceOrder.scss"
 import { GeolocalisationContext } from '../../context/GeolocalisationContext';
+import { useNavigateNoUpdates } from '../../context/RouterUtils';
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -29,6 +30,7 @@ export default function StationPriceOrder() {
   const [stationFuelPrice, setStationFuelPrice] = useState<FuelStationPriceOrder[]>([])
   const { filterState } = useContext(FilterStationContext)
   const {searchPosition} = useContext(GeolocalisationContext)
+  const navigate = useNavigateNoUpdates()
 
   useEffect(() => {
     axios.get(BACKEND_BASE_URL + "/chart/fuels-station-order-price",
@@ -71,13 +73,20 @@ export default function StationPriceOrder() {
           title: {
             display: true,
             text: `Top station pour le ${fuel.fuel}`,
-          },
-          ticks: {
+          }
+        },
+        scales: {
+          y: {
             beginAtZero: false
           },
-
         },
-        
+        onClick:(_: any,elt: { index: number; }[])=>{
+          if(elt.length===1){
+            navigate("/station/"+fuel.stations[elt[0].index].idStation)
+          }
+        }
+
+
       };
       return <Bar key={fuel.fuel} width="500px" height="450px" className='wrapper-station-chart-element' options={options} data={data} />
     })

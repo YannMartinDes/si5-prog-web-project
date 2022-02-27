@@ -32,9 +32,6 @@ export default function MapTool() {
 
     return (
         <div className="toolBar">
-            {/* <div className='positionLegend'>
-                Position : {searchPosition.lat} , {searchPosition.lon}
-            </div> */}
             <div className='map-button'>
                 <button className='buttonStyle' onClick={onRecenterInfo}>Afficher les stations de la zone</button>
                 {userMove && <button className='buttonStyle' onClick={onRecenterClick}>Recentrer sur ma position</button>}

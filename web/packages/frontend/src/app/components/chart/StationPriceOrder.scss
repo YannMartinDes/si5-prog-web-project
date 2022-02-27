@@ -3,7 +3,7 @@
     grid-template-columns: repeat(auto-fill,minmax(550px,1fr));
     justify-items: center;
     justify-content: center;
-
+    margin-right: 10px; //annulation du decalage des graphique
     canvas{
         margin: 5%;
     }
