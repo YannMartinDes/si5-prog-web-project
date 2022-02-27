@@ -125,7 +125,10 @@ following command and visualize it:
 docker ps -a
 ```
 ## Deploy
-For generate docker image of the backend run `npx nx run backend:deploy` this generate backend-web docker image.  
+To generate the docker image of the backend run `npx nx run backend:deploy` this generate backend-web docker image.  
+To build the frontend in production mode, run `npx nx run frontend:build:production` this generate the build code in `./web/dist/frontend`.  
+You can do the same for the back to deploy without docker.
+
 ## Authors
 
 This follows the following format : 
