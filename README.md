@@ -9,6 +9,9 @@ github repository
 
 ## Subject
 
+<p style="text-align: center;"><img src="https://static.actu.fr/uploads/2020/06/capture-d-ecran-2020-06-27-a-141515.png" width="450"></p>
+
+
 ## Structure
 
 - [client](web/packages/frontend/src): Client application (React, JSX, TypeScript).
