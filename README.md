@@ -136,6 +136,6 @@ This follows the following format :
 [NomEtudiant PrenomEtudiant](link to github page) : IdentifiantGithub
 
 - [Larose Quentin](https://github.com/QuentinLarose) : QuentinLarose
-- [Martin D'Escrienne Yann](https://github.com/Mentra20) : Mentra20
+- [Martin D'Escrienne Yann](https://github.com/Mentra20) : Mentra20 (now YannMartinDes)
 - [Nersissian Tigran](https://github.com/TIGRAN06) : TIGRAN06
 - [Tognetti Yohann](https://github.com/Idrash) : Idrash
