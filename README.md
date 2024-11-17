@@ -1,4 +1,4 @@
-# ProgWeb Project - Team LMNT
+![image](https://github.com/user-attachments/assets/fd353302-aedb-4e2f-8429-50b3cb62f2e6)# ProgWeb Project - Team LMNT
 
 ProgWeb Project : Client and Server Side
 
@@ -9,8 +9,7 @@ github repository
 
 ## Subject
 
-<p style="text-align: center;"><img src="https://static.actu.fr/uploads/2020/06/capture-d-ecran-2020-06-27-a-141515.png" width="450"></p>
-
+<p style="text-align: center;"><img src="https://static.actu.fr/uploads/2020/06/capture-d-ecran-2020-06-27-a-141515.png" width="450"></p>  
 
 ## Structure
 
@@ -128,6 +127,13 @@ docker ps -a
 To generate the docker image of the backend run `npx nx run backend:deploy` this generate backend-web docker image.  
 To build the frontend in production mode, run `npx nx run frontend:build:production` this generate the build code in `./web/dist/frontend`.  
 You can do the same for the back to deploy without docker.
+
+## Screenshots
+![image](https://github.com/user-attachments/assets/d9c2b970-0da9-44df-ad90-b9a9e50570e1)
+![image](https://github.com/user-attachments/assets/92165c97-c9ac-4330-9a79-e2e73db72571)
+![image](https://github.com/user-attachments/assets/cec727de-ef56-4b62-952e-5433326e9d69)
+
+
 
 ## Authors
 
