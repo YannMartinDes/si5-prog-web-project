@@ -1,6 +1,4 @@
-![image](https://github.com/user-attachments/assets/fd353302-aedb-4e2f-8429-50b3cb62f2e6)# ProgWeb Project - Team LMNT
-
-ProgWeb Project : Client and Server Side
+# ProgWeb Project : Client and Server Side
 
 ## Project URL 
 
